@@ -14,7 +14,21 @@ public class UsuarioController {
     // CADASTRO
     @PostMapping("/cadastrar")
     public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
-        usuarios.add(usuario);
+        if(contemArroba(usuario.getEmail())){
+            return ResponseEntity.status(400).build();
+        }
+
+        if(emailExiste(usuario.getEmail())){
+            return ResponseEntity.status(409).build();
+        }
+
+            usuario.setEmail(usuario.getEmail());
+            usuario.setSenha(usuario.getSenha());
+            usuario.setTelefone(usuario.getTelefone());
+            usuario.setNomeUser(usuario.getNomeUser());
+
+            usuarios.add(usuario);
+
         return ResponseEntity.status(200).body(usuario);
     }
 
@@ -23,7 +37,7 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<Usuario> login(@RequestParam String email, @RequestParam String senha) {
         for (Usuario usuario : usuarios) {
-            if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
+            if (usuario.getEmail().equalsIgnoreCase(email) && usuario.getSenha().equals(senha)) {
                 return ResponseEntity.status(200).body(usuario);
             }
         }
@@ -40,7 +54,7 @@ public class UsuarioController {
     }
 
     // MÉTODO  PUT ->  UPDATE
-    @PutMapping("/indice")
+    @PutMapping("/{indice}")
     public ResponseEntity<Usuario> PutUsuarios(@RequestBody Usuario usuario,@PathVariable int indice){
         if(existeUsuario(indice)){
             usuarios.set(indice,usuario);
@@ -49,21 +63,8 @@ public class UsuarioController {
         return ResponseEntity.status(404).build();
     }
 
-
-
-    // MÉTODO POST ->  CREATE
-    @PostMapping
-    public ResponseEntity<Usuario> PostUsuarios(@RequestBody Usuario usuario){
-        if(usuario.isAtivo()){
-            usuarios.add(usuario);
-            return ResponseEntity.status(200).body(usuario);
-        }
-        return ResponseEntity.status(404).build();
-
-    }
-
     // MÉTODO DELETE -> DELETE
-    @DeleteMapping
+    @DeleteMapping("/{indice}")
     public ResponseEntity<Usuario> DeleteUsuarios(@PathVariable int indice){
         if(existeUsuario(indice)){
             usuarios.remove(indice);
@@ -74,5 +75,24 @@ public class UsuarioController {
     public boolean existeUsuario(int indice){
         return usuarios.size() > indice && indice >= 0;
     }
+
+    public Boolean emailExiste (String email){
+        for (Usuario usuario: usuarios){
+            if(usuario.getEmail().equalsIgnoreCase(email)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Boolean contemArroba (String email){
+        for (Usuario usuario: usuarios){
+            if(usuario.getEmail().contains("@")){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
