@@ -1,6 +1,6 @@
 package org.example.sorters;
 
-import org.example.Sorter;
+import org.example.utils.Sorter;
 
 public class RatingSorter extends Sorter {
     private int[] ratings;
