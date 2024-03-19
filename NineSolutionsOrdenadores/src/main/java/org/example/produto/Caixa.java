@@ -14,6 +14,10 @@ public class Caixa {
         this.mensagem = mensagem;
     }
 
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
     public void adicionarProduto(Produto produto){
         produto.setId(++idProduto);
         produtos.add(produto);
