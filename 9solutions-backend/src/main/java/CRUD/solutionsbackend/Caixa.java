@@ -1,18 +1,22 @@
 package CRUD.solutionsbackend;
 
+import CRUD.solutionsbackend.enums.OpcoesDoacao;
+
 public class Caixa {
     private Usuario usuario;
     private Double valor;
-    private Genero escolhaGenero;
-    private Idade escolhaIdade;
-    private Brinquedo escolhaBrinquedo;
-    private MaterialEscolar escolhaMaterial;
-    private Higiene escolhaHigiene;
-    private ItensDiversos[] itensDiversos = new ItensDiversos[3];
-    private ItensUsoPessoal escolhaItensUso;
-    private DocesChocolates[] docesChocolates = new DocesChocolates[3];
+
+    private OpcoesDoacao.Genero escolhaGenero;
+    private OpcoesDoacao.Idade escolhaIdade;
+    private OpcoesDoacao.Brinquedo escolhaBrinquedo;
+    private OpcoesDoacao.MaterialEscolar escolhaMaterial;
+    private OpcoesDoacao.Higiene escolhaHigiene;
+    private OpcoesDoacao.ItensDiversos[] itensDiversos = new OpcoesDoacao.ItensDiversos[3];
+    private OpcoesDoacao.ItensUsoPessoal escolhaItensUso;
+    private OpcoesDoacao.DocesChocolates[] itensDoces = new OpcoesDoacao.DocesChocolates[3];
     private String foto;
     private String cartinha;
+
 
     public Usuario getUsuario() {
         return usuario;
@@ -30,68 +34,68 @@ public class Caixa {
         this.valor = valor;
     }
 
-    public Genero getEscolhaGenero() {
+    public OpcoesDoacao.Genero getEscolhaGenero() {
         return escolhaGenero;
     }
 
-    public void setEscolhaGenero(Genero escolhaGenero) {
+    public void setEscolhaGenero(OpcoesDoacao.Genero escolhaGenero) {
         this.escolhaGenero = escolhaGenero;
     }
 
-    public Idade getEscolhaIdade() {
+    public OpcoesDoacao.Idade getEscolhaIdade() {
         return escolhaIdade;
     }
 
-    public void setEscolhaIdade(Idade escolhaIdade) {
+    public void setEscolhaIdade(OpcoesDoacao.Idade escolhaIdade) {
         this.escolhaIdade = escolhaIdade;
     }
 
-    public Brinquedo getEscolhaBrinquedo() {
+    public OpcoesDoacao.Brinquedo getEscolhaBrinquedo() {
         return escolhaBrinquedo;
     }
 
-    public void setEscolhaBrinquedo(Brinquedo escolhaBrinquedo) {
+    public void setEscolhaBrinquedo(OpcoesDoacao.Brinquedo escolhaBrinquedo) {
         this.escolhaBrinquedo = escolhaBrinquedo;
     }
 
-    public MaterialEscolar getEscolhaMaterial() {
+    public OpcoesDoacao.MaterialEscolar getEscolhaMaterial() {
         return escolhaMaterial;
     }
 
-    public void setEscolhaMaterial(MaterialEscolar escolhaMaterial) {
+    public void setEscolhaMaterial(OpcoesDoacao.MaterialEscolar escolhaMaterial) {
         this.escolhaMaterial = escolhaMaterial;
     }
 
-    public Higiene getEscolhaHigiene() {
+    public OpcoesDoacao.Higiene getEscolhaHigiene() {
         return escolhaHigiene;
     }
 
-    public void setEscolhaHigiene(Higiene escolhaHigiene) {
+    public void setEscolhaHigiene(OpcoesDoacao.Higiene escolhaHigiene) {
         this.escolhaHigiene = escolhaHigiene;
     }
 
-    public ItensDiversos[] getItensDiversos() {
+    public OpcoesDoacao.ItensDiversos[] getItensDiversos() {
         return itensDiversos;
     }
 
-    public void setItensDiversos(ItensDiversos[] itensDiversos) {
+    public void setItensDiversos(OpcoesDoacao.ItensDiversos[] itensDiversos) {
         this.itensDiversos = itensDiversos;
     }
 
-    public ItensUsoPessoal getEscolhaItensUso() {
+    public OpcoesDoacao.ItensUsoPessoal getEscolhaItensUso() {
         return escolhaItensUso;
     }
 
-    public void setEscolhaItensUso(ItensUsoPessoal escolhaItensUso) {
+    public void setEscolhaItensUso(OpcoesDoacao.ItensUsoPessoal escolhaItensUso) {
         this.escolhaItensUso = escolhaItensUso;
     }
 
-    public DocesChocolates[] getDocesChocolates() {
-        return docesChocolates;
+    public OpcoesDoacao.DocesChocolates[] getItensDoces() {
+        return itensDoces;
     }
 
-    public void setDocesChocolates(DocesChocolates[] docesChocolates) {
-        this.docesChocolates = docesChocolates;
+    public void setItensDoces(OpcoesDoacao.DocesChocolates[] itensDoces) {
+        this.itensDoces = itensDoces;
     }
 
     public String getFoto() {
