@@ -6,7 +6,11 @@ public class Usuario {
     private String senha;
     private String telefone;
 
-    public Usuario() {
+    public Usuario() {}
+
+    public Usuario(String email, String senha){
+        this.email = email;
+        this.senha = senha;
     }
 
     public String getNomeUser() {
