@@ -30,10 +30,31 @@ public class UsuarioController {
         return ResponseEntity.status(404).build();
     }
 
+    // Listar os nomes, ordenando pelo nome
+    @GetMapping("/order-by-nome")
+    public ResponseEntity<List<Usuario>> orderByName(){
+        if(!usuarios.isEmpty()){
+            bubbleSort(usuarios);
+            return ResponseEntity.status(200).body(usuarios);
+        }
+        return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Usuario> binarySearchName(){
+        bubbleSort(usuarios);
+        int indice = binarySearch(usuarios, "edu", 0, usuarios.size()-1);
+         if(indice != -1){
+             return ResponseEntity.status(200).body(usuarios.get(indice));
+         }
+        return ResponseEntity.status(404).build();
+    }
+
+
     // Cadastrar usuario
     @PostMapping
     public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
-        if(contemArroba(usuario.getEmail())){
+        if(!contemArroba(usuario.getEmail())){
             return ResponseEntity.status(400).build();
         }
 
@@ -44,7 +65,6 @@ public class UsuarioController {
         usuarios.add(usuario);
         return ResponseEntity.status(200).body(usuario);
     }
-
 
     // Login do usuario
     @PostMapping("/login")
@@ -61,8 +81,6 @@ public class UsuarioController {
         }
         return ResponseEntity.status(403).build();
     }
-
-
 
     // Atualizar usuario
     @PutMapping("/{indice}")
@@ -101,13 +119,54 @@ public class UsuarioController {
     }
 
     public Boolean contemArroba (String email){
-        for (Usuario usuario: usuarios){
-            if(usuario.getEmail().contains("@")){
-                return true;
-            }
+        if(email.contains("@")){
+            return true;
         }
         return false;
     }
+
+    public static void bubbleSort(List<Usuario> usuarios) {
+        for (int i = 0; i < usuarios.size() - 1; i++) {
+            for (int j = 0; j < usuarios.size() - 1; j++) {
+
+                String nome1 = usuarios.get(j).getNomeUser();
+                String nome2 = usuarios.get(j + 1).getNomeUser();
+                int comparacaoNome = nome1.compareTo(nome2);
+
+                if(comparacaoNome > 0){
+                    var usuarioMenor = usuarios.get(j + 1);
+                    var usuarioMaior = usuarios.get(j);
+
+                    usuarios.set(j+1, usuarioMaior);
+                    usuarios.set(j, usuarioMenor);
+                }
+
+            }
+        }
+    }
+
+    public static int binarySearch(List<Usuario> usuarios, String nome, int inicio, int fim) {
+
+        int meio = (inicio + fim) / 2;
+
+        int comparacaoNomes = usuarios.get(meio).getNomeUser().compareTo(nome);
+
+        if(fim >= inicio) {
+
+            if(comparacaoNomes == 0) {
+                return meio;
+
+            } else if(comparacaoNomes > 0) {
+                return binarySearch(usuarios, nome, inicio, meio - 1);
+
+            }
+            return binarySearch(usuarios, nome, meio + 1, fim );
+
+        }
+        return -1;
+
+    }
+
 
 
 }
