@@ -3,9 +3,8 @@ package CRUD.solutionsbackend;
 import CRUD.solutionsbackend.enums.OpcoesDoacao;
 
 public class Caixa {
-    private Usuario usuario;
+    private int fkUsuario;
     private Double valor;
-
     private OpcoesDoacao.Genero escolhaGenero;
     private OpcoesDoacao.Idade escolhaIdade;
     private OpcoesDoacao.Brinquedo escolhaBrinquedo;
@@ -18,12 +17,12 @@ public class Caixa {
     private String cartinha;
 
 
-    public Usuario getUsuario() {
-        return usuario;
+    public int getFkUsuario() {
+        return fkUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setFkUsuario(int fkUsuario) {
+        this.fkUsuario = fkUsuario;
     }
 
     public Double getValor() {
