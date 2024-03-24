@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.Caixa;
+import app.model.Item;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,15 @@ public class CaixaController {
         if(!Objects.isNull(caixa)) {
             caixas.add(caixa);
             return ResponseEntity.status(200).body(caixa);
+        }
+        return ResponseEntity.status(404).build();
+    }
+
+    @PostMapping("/item/{indice}")
+    public ResponseEntity<Caixa> adicionarItemCaixa(@RequestBody Item item, @PathVariable int indice){
+        if(caixaExiste(indice)){
+            caixas.get(indice).adicionarItemCaixa(item);
+            return ResponseEntity.status(200).body(caixas.get(indice));
         }
         return ResponseEntity.status(404).build();
     }
@@ -134,6 +144,11 @@ public class CaixaController {
         }
         return -1;
 
+    }
+
+
+    public Boolean  caixaExiste(int indice){
+        return indice >= 0 && indice < caixas.size();
     }
 
 }

@@ -2,7 +2,12 @@ package app.model;
 
 import app.enums.OpcoesDoacao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Caixa {
+
+    private List<Item> itemCaixa = new ArrayList<>();
     private int fkUsuario;
     private Double valor;
     private OpcoesDoacao.Genero escolhaGenero;
@@ -16,6 +21,14 @@ public class Caixa {
     private String foto;
     private String cartinha;
 
+
+    public List<Item> getItemCaixa() {
+        return itemCaixa;
+    }
+
+    public void setItemCaixa(List<Item> itemCaixa) {
+        this.itemCaixa = itemCaixa;
+    }
 
     public int getFkUsuario() {
         return fkUsuario;
@@ -111,5 +124,9 @@ public class Caixa {
 
     public void setCartinha(String cartinha) {
         this.cartinha = cartinha;
+    }
+
+    public void adicionarItemCaixa(Item item){
+        this.itemCaixa.add(item);
     }
 }
