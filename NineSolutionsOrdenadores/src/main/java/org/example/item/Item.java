@@ -1,13 +1,13 @@
-package org.example.produto;
+package org.example.item;
 
-public class Produto {
+public class Item {
     private int id;
     private String nome;
     private String descricao;
     private double preco;
-    public Produto() {
+    public Item() {
     }
-    public Produto(String nome, String descricao, double preco) {
+    public Item(String nome, String descricao, double preco) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;

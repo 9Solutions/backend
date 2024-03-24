@@ -1,16 +1,16 @@
 package org.example.utils;
 
-import org.example.produto.Produto;
+import org.example.item.Item;
 
 public abstract class Sorter {
-    public static void bubbleSort(Produto[] ordenado) {
+    public static void bubbleSort(Item[] ordenado) {
         int comparacao = 0;
         int troca = 0;
 
         for (int i = 0; i < ordenado.length - 1; i++) {
             for (int j = 0; j < ordenado.length - i - 1; j++) {
                 if (ordenado[j].getPreco() > ordenado[j + 1].getPreco()) {
-                    Produto temp = ordenado[j];
+                    Item temp = ordenado[j];
                     ordenado[j] = ordenado[j + 1];
                     ordenado[j + 1] = temp;
                     troca++;
@@ -19,8 +19,8 @@ public abstract class Sorter {
             }
         }
     }
-    public static void selectionSortOtimizado(Produto[] desordenados) {
-        Produto[] ordenados = desordenados;
+    public static void selectionSortOtimizado(Item[] desordenados) {
+        Item[] ordenados = desordenados;
         Integer n = ordenados.length;
         Integer comparacao = 0;
         Integer troca = 0;
@@ -34,7 +34,7 @@ public abstract class Sorter {
                 }
                 comparacao++;
             }
-            Produto menorDaVez = ordenados[minimo];
+            Item menorDaVez = ordenados[minimo];
             ordenados[minimo] = ordenados[i];
             ordenados[i] = menorDaVez;
         }
@@ -43,12 +43,12 @@ public abstract class Sorter {
 //        System.out.println("QTD TROCAS: " + troca);
     }
 
-    public static void insertionSort(Produto[] lista) {
-        Produto[] ordenados = lista;
+    public static void insertionSort(Item[] lista) {
+        Item[] ordenados = lista;
         Integer n = ordenados.length;
 
         for (int i = 1; i < n; i++) {
-            Produto key = ordenados[i];
+            Item key = ordenados[i];
             int j;
             for (j = i - 1; j >= 0 && ordenados[j].getPreco() > key.getPreco(); j--) {
                 ordenados[j + 1] = ordenados[j];
