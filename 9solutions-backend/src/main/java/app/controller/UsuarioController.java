@@ -1,5 +1,6 @@
-package CRUD.solutionsbackend;
+package app.controller;
 
+import app.model.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +42,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Usuario> binarySearchName(){
+    public ResponseEntity<Usuario> binarySearchName(
+            @RequestParam String nome
+    ){
         bubbleSort(usuarios);
-        int indice = binarySearch(usuarios, "edu", 0, usuarios.size()-1);
+        int indice = binarySearch(usuarios, nome, 0, usuarios.size()-1);
          if(indice != -1){
              return ResponseEntity.status(200).body(usuarios.get(indice));
          }

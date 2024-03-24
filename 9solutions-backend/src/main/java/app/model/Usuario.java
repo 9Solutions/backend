@@ -1,4 +1,4 @@
-package CRUD.solutionsbackend;
+package app.model;
 
 public class Usuario {
     private String nomeUser;

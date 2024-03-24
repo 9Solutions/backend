@@ -1,6 +1,6 @@
-package CRUD.solutionsbackend;
+package app.model;
 
-import CRUD.solutionsbackend.enums.OpcoesDoacao;
+import app.enums.OpcoesDoacao;
 
 public class Caixa {
     private int fkUsuario;
