@@ -1,4 +1,4 @@
-package CRUD.solutionsbackend.enums;
+package app.enums;
 
 public class OpcoesDoacao {
     public enum Genero {
