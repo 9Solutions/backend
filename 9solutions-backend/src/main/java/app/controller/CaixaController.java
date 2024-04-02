@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.CaixaDTO;
 import app.model.Caixa;
 import app.model.Item;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,11 @@ import java.util.Objects;
 @RequestMapping("/caixas")
 public class CaixaController {
 
-    List<Caixa> caixas = new ArrayList<>();
+    List<CaixaDTO> caixas = new ArrayList<>();
 
     // Listar todas as caixas
     @GetMapping
-    public ResponseEntity<List<Caixa>> listarCaixas(){
+    public ResponseEntity<List<CaixaDTO>> listarCaixas(){
         if(caixas.isEmpty()){
             return ResponseEntity.status(204).build();
         }
@@ -26,7 +27,7 @@ public class CaixaController {
 
     // Listar dados de uma caixa, buscando por indice
     @GetMapping("/{indice}")
-    public ResponseEntity<Caixa> buscarPorIndice(@PathVariable int indice) {
+    public ResponseEntity<CaixaDTO> buscarPorIndice(@PathVariable int indice) {
         if(existeCaixa(indice)) {
             return ResponseEntity.status(200).body(caixas.get(indice));
         }
@@ -35,7 +36,7 @@ public class CaixaController {
 
     // Ordena a lista pelo valor (do menor para o maior)
     @GetMapping("/order-by-valor")
-    public ResponseEntity<List<Caixa>> orderByValor() {
+    public ResponseEntity<List<CaixaDTO>> orderByValor() {
         if(!caixas.isEmpty()) {
             selectionSortOtimizado(caixas);
             return ResponseEntity.status(200).body(caixas);
@@ -45,7 +46,7 @@ public class CaixaController {
 
     // Busca uma caixa pelo seu valor
     @GetMapping("/search")
-    public ResponseEntity<Caixa> searchByValor(
+    public ResponseEntity<CaixaDTO> searchByValor(
             @RequestParam double valor
     ) {
         if(!caixas.isEmpty()) {
@@ -60,7 +61,7 @@ public class CaixaController {
 
     // Cadastrar uma caixa
     @PostMapping
-    public ResponseEntity<Caixa> cadastrarCaixa(@RequestBody Caixa caixa) {
+    public ResponseEntity<CaixaDTO> cadastrarCaixa(@RequestBody CaixaDTO caixa) {
         if(!Objects.isNull(caixa)) {
             caixas.add(caixa);
             return ResponseEntity.status(200).body(caixa);
@@ -69,7 +70,7 @@ public class CaixaController {
     }
 
     @PostMapping("/item/{indice}")
-    public ResponseEntity<Caixa> adicionarItemCaixa(@RequestBody Item item, @PathVariable int indice){
+    public ResponseEntity<CaixaDTO> adicionarItemCaixa(@RequestBody Item item, @PathVariable int indice){
         if(caixaExiste(indice)){
             caixas.get(indice).adicionarItemCaixa(item);
             return ResponseEntity.status(200).body(caixas.get(indice));
@@ -79,9 +80,9 @@ public class CaixaController {
 
     // Atualizar dados de uma caixa
     @PutMapping("/{indice}")
-    public ResponseEntity<Caixa> atualizarCaixa(
+    public ResponseEntity<CaixaDTO> atualizarCaixa(
             @PathVariable int indice,
-            @RequestBody Caixa caixa
+            @RequestBody CaixaDTO caixa
     ) {
         if(existeCaixa(indice)) {
             caixas.set(indice,caixa);
@@ -92,7 +93,7 @@ public class CaixaController {
 
     // Deletar uam caixa por indice
     @DeleteMapping("/{indice}")
-    public ResponseEntity<Caixa> deletarCaixa(@PathVariable int indice) {
+    public ResponseEntity<CaixaDTO> deletarCaixa(@PathVariable int indice) {
         if(existeCaixa(indice)) {
             caixas.remove(indice);
             return ResponseEntity.status(204).build();
@@ -104,7 +105,7 @@ public class CaixaController {
         return caixas.size() > indice && indice >= 0;
     }
 
-    public static void selectionSortOtimizado(List<Caixa> caixas) {
+    public static void selectionSortOtimizado(List<CaixaDTO> caixas) {
 
         Integer n = caixas.size();
 
@@ -126,7 +127,7 @@ public class CaixaController {
 
     }
 
-    public static int binarySearch(List<Caixa> caixas, double valor, int inicio, int fim) {
+    public static int binarySearch(List<CaixaDTO> caixas, double valor, int inicio, int fim) {
 
         int meio = (inicio + fim) / 2;
 

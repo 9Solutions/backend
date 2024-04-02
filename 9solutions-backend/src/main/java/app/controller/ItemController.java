@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.ItemDTO;
 import app.model.Caixa;
 import app.model.Item;
 import app.model.Usuario;
@@ -12,12 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 public class ItemController {
-    List<Item> itens = new ArrayList<>();
+    List<ItemDTO> itens = new ArrayList<>();
 
 
     // Criando item
     @PostMapping
-    public ResponseEntity<Item> cadastrarItem(@RequestBody Item item){
+    public ResponseEntity<ItemDTO> cadastrarItem(@RequestBody ItemDTO item){
         if(item==null){
             return ResponseEntity.status(400).build();
         }

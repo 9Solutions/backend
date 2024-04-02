@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.dto.UsuarioDTO;
 import app.model.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,12 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    public List<Usuario> usuarios = new ArrayList<>();
+    public List<UsuarioDTO> usuarios = new ArrayList<>();
 
     // Listar todos os usuários
     @GetMapping
-    public ResponseEntity<List<Usuario>> listarUsuarios(){
-        if(usuarios.isEmpty()){
+    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+        if (usuarios.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(usuarios);
@@ -24,8 +25,8 @@ public class UsuarioController {
 
     // Listar dados do usuários por indice
     @GetMapping("/{indice}")
-    public ResponseEntity<Usuario> buscarPorIndice(@PathVariable int indice) {
-        if(existeUsuario(indice)){
+    public ResponseEntity<UsuarioDTO> buscarPorIndice(@PathVariable int indice) {
+        if (existeUsuario(indice)) {
             return ResponseEntity.status(200).body(usuarios.get(indice));
         }
         return ResponseEntity.status(404).build();
@@ -33,8 +34,8 @@ public class UsuarioController {
 
     // Listar os nomes, ordenando pelo nome
     @GetMapping("/order-by-nome")
-    public ResponseEntity<List<Usuario>> orderByName(){
-        if(!usuarios.isEmpty()){
+    public ResponseEntity<List<UsuarioDTO>> orderByName() {
+        if (!usuarios.isEmpty()) {
             bubbleSort(usuarios);
             return ResponseEntity.status(200).body(usuarios);
         }
@@ -42,26 +43,26 @@ public class UsuarioController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Usuario> binarySearchName(
+    public ResponseEntity<UsuarioDTO> binarySearchName(
             @RequestParam String nome
-    ){
+    ) {
         bubbleSort(usuarios);
-        int indice = binarySearch(usuarios, nome, 0, usuarios.size()-1);
-         if(indice != -1){
-             return ResponseEntity.status(200).body(usuarios.get(indice));
-         }
+        int indice = binarySearch(usuarios, nome, 0, usuarios.size() - 1);
+        if (indice != -1) {
+            return ResponseEntity.status(200).body(usuarios.get(indice));
+        }
         return ResponseEntity.status(404).build();
     }
 
 
     // Cadastrar usuario
     @PostMapping
-    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
-        if(!contemArroba(usuario.getEmail())){
+    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody UsuarioDTO usuario) {
+        if (!contemArroba(usuario.getEmail())) {
             return ResponseEntity.status(400).build();
         }
 
-        if(emailExiste(usuario.getEmail())){
+        if (emailExiste(usuario.getEmail())) {
             return ResponseEntity.status(409).build();
         }
 
@@ -71,13 +72,13 @@ public class UsuarioController {
 
     // Login do usuario
     @PostMapping("/login")
-    public ResponseEntity<Usuario> login(@RequestBody Usuario usuario) {
+    public ResponseEntity<UsuarioDTO> login(@RequestBody UsuarioDTO usuario) {
         String emailLogin = usuario.getEmail();
         String senhaLogin = usuario.getSenha();
 
-        for (Usuario userAtual : usuarios) {
-            if( userAtual.getEmail().equalsIgnoreCase(emailLogin)
-                && userAtual.getSenha().equalsIgnoreCase(senhaLogin)
+        for (UsuarioDTO userAtual : usuarios) {
+            if (userAtual.getEmail().equalsIgnoreCase(emailLogin)
+                    && userAtual.getSenha().equalsIgnoreCase(senhaLogin)
             ) {
                 return ResponseEntity.status(200).body(userAtual);
             }
@@ -87,12 +88,12 @@ public class UsuarioController {
 
     // Atualizar usuario
     @PutMapping("/{indice}")
-    public ResponseEntity<Usuario> atualizarUsuario(
+    public ResponseEntity<UsuarioDTO> atualizarUsuario(
             @PathVariable int indice,
-            @RequestBody Usuario usuario
+            @RequestBody UsuarioDTO usuario
     ) {
-        if(existeUsuario(indice)){
-            usuarios.set(indice,usuario);
+        if (existeUsuario(indice)) {
+            usuarios.set(indice, usuario);
             return ResponseEntity.status(200).body(usuarios.get(indice));
         }
         return ResponseEntity.status(404).build();
@@ -100,35 +101,35 @@ public class UsuarioController {
 
     // Deltar usuario
     @DeleteMapping("/{indice}")
-    public ResponseEntity<Usuario> deletarUsuario(@PathVariable int indice){
-        if(existeUsuario(indice)){
+    public ResponseEntity<UsuarioDTO> deletarUsuario(@PathVariable int indice) {
+        if (existeUsuario(indice)) {
             usuarios.remove(indice);
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(404).build();
     }
 
-    public boolean existeUsuario(int indice){
+    public boolean existeUsuario(int indice) {
         return usuarios.size() > indice && indice >= 0;
     }
 
-    public Boolean emailExiste (String email){
-        for (Usuario usuario: usuarios){
-            if(usuario.getEmail().equalsIgnoreCase(email)){
+    public Boolean emailExiste(String email) {
+        for (UsuarioDTO usuario : usuarios) {
+            if (usuario.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }
         return false;
     }
 
-    public Boolean contemArroba (String email){
-        if(email.contains("@")){
+    public Boolean contemArroba(String email) {
+        if (email.contains("@")) {
             return true;
         }
         return false;
     }
 
-    public static void bubbleSort(List<Usuario> usuarios) {
+    public static void bubbleSort(List<UsuarioDTO> usuarios) {
         for (int i = 0; i < usuarios.size() - 1; i++) {
             for (int j = 0; j < usuarios.size() - 1; j++) {
 
@@ -136,11 +137,11 @@ public class UsuarioController {
                 String nome2 = usuarios.get(j + 1).getNomeUser();
                 int comparacaoNome = nome1.compareTo(nome2);
 
-                if(comparacaoNome > 0){
+                if (comparacaoNome > 0) {
                     var usuarioMenor = usuarios.get(j + 1);
                     var usuarioMaior = usuarios.get(j);
 
-                    usuarios.set(j+1, usuarioMaior);
+                    usuarios.set(j + 1, usuarioMaior);
                     usuarios.set(j, usuarioMenor);
                 }
 
@@ -148,28 +149,26 @@ public class UsuarioController {
         }
     }
 
-    public static int binarySearch(List<Usuario> usuarios, String nome, int inicio, int fim) {
+    public static int binarySearch(List<UsuarioDTO> usuarios, String nome, int inicio, int fim) {
 
         int meio = (inicio + fim) / 2;
 
         int comparacaoNomes = usuarios.get(meio).getNomeUser().compareTo(nome);
 
-        if(fim >= inicio) {
+        if (fim >= inicio) {
 
-            if(comparacaoNomes == 0) {
+            if (comparacaoNomes == 0) {
                 return meio;
 
-            } else if(comparacaoNomes > 0) {
+            } else if (comparacaoNomes > 0) {
                 return binarySearch(usuarios, nome, inicio, meio - 1);
 
             }
-            return binarySearch(usuarios, nome, meio + 1, fim );
+            return binarySearch(usuarios, nome, meio + 1, fim);
 
         }
         return -1;
 
     }
-
-
 
 }
