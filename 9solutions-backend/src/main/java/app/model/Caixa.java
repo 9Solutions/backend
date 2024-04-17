@@ -26,10 +26,6 @@ public class Caixa {
         return itemCaixa;
     }
 
-    public void setItemCaixa(List<Item> itemCaixa) {
-        this.itemCaixa = itemCaixa;
-    }
-
     public int getFkUsuario() {
         return fkUsuario;
     }
