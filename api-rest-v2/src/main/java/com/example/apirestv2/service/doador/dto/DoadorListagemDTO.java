@@ -1,17 +1,8 @@
-package com.example.apirestv2.domain.doador;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.CreationTimestamp;
+package com.example.apirestv2.service.doador.dto;
 
 import java.time.LocalDate;
 
-@Entity
-public class Doador {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DoadorListagemDTO {
     private int id;
     private String nomeCompleto;
     private int identificador;

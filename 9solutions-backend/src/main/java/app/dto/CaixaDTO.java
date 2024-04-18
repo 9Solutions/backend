@@ -2,6 +2,9 @@ package app.dto;
 
 import app.enums.OpcoesDoacao;
 import app.model.Item;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,6 +13,9 @@ import javax.validation.constraints.Size;
 
 public class CaixaDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_caixa;
     @NotNull(message = "O campo fkUsuario não pode ser nulo")
     private Integer fkUsuario;
 
@@ -38,6 +44,14 @@ public class CaixaDTO {
     @NotBlank(message = "O campo cartinha não pode estar em branco")
     @Size(max = 1000, message = "O campo cartinha deve ter no máximo 1000 caracteres")
     private String cartinha;
+
+    public int getId_caixa() {
+        return id_caixa;
+    }
+
+    public void setId_caixa(int id_caixa) {
+        this.id_caixa = id_caixa;
+    }
 
     public Integer getFkUsuario() {
         return fkUsuario;

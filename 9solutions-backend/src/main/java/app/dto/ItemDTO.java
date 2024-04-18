@@ -1,13 +1,18 @@
 package app.dto;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 public class ItemDTO {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_item;
-
     @NotBlank(message = "O nome do item não pode estar em branco")
     private String item_nome;
 

@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 public class UsuarioDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_usuario;
     @NotBlank(message = "O nome de usuário não pode estar em branco")
     private String nomeUser;
 
@@ -27,6 +28,14 @@ public class UsuarioDTO {
 
     @Pattern(regexp = "\\d{10,11}", message = "O telefone deve conter apenas números e ter entre 10 e 11 dígitos")
     private String telefone;
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
 
     public String getNomeUser() {
         return nomeUser;

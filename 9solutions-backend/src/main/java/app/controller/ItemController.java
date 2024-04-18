@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/items")
+@RequestMapping("/i tems")
 public class ItemController {
     List<ItemDTO> itens = new ArrayList<>();
 
