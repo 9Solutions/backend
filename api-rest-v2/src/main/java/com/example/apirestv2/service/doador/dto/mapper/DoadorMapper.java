@@ -26,7 +26,7 @@ public class DoadorMapper {
 
         Doador novoDoador = new Doador();
 
-        novoDoador.setNome(entity.getNome());
+        novoDoador.setNomeCompleto(entity.getNomeCompleto());
         novoDoador.setEmail(entity.getEmail());
         novoDoador.setSenha(entity.getSenha());
         return novoDoador;
