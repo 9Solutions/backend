@@ -13,6 +13,7 @@ public class ProdutoMapper {
         produto.setFaixaEtaria(dto.getFaixaEtaria());
         produto.setValor(dto.getValor());
         produto.setGenero(dto.getGenero());
+        produto.setAtivo(1);
 
         return produto;
 
@@ -28,6 +29,7 @@ public class ProdutoMapper {
         dto.setValor(produto.getValor());
         dto.setFaixaEtaria(produto.getFaixaEtaria());
         dto.setGenero(produto.getGenero());
+        dto.setAtivo(produto.getAtivo());
 
         return dto;
 

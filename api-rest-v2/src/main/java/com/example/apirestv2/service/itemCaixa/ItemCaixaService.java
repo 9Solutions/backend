@@ -2,7 +2,10 @@ package com.example.apirestv2.service.itemCaixa;
 
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.itemCaixa.repository.ItemCaixaRepository;
+import com.example.apirestv2.service.itemCaixa.dto.ItemCaixaMapper;
+import com.example.apirestv2.service.itemCaixa.dto.ItemsCaixaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,22 +17,25 @@ public class ItemCaixaService {
     @Autowired
     private ItemCaixaRepository action;
 
-    public void insertItems(int idCaixa, int[] itemsCaixa){
+    public List<ItemCaixa> listByIdItemsCaixa(Integer id){
+        List<ItemCaixa> lista = action.findByIdCaixaEquals(id);
+        if(!lista.isEmpty()){
+            return lista;
+        }
+        return null;
+    }
+
+
+    public boolean insertItems(int idCaixa, int[] itemsCaixa){
 
       List<ItemCaixa> listaItemsCaixa = this.transformArrayToListEntity(idCaixa, itemsCaixa);
 
       if(!listaItemsCaixa.isEmpty()){
-          boolean teste = insertIntoDatabase(0, listaItemsCaixa);
-          if(teste){
-              System.out.println("INSERIU");
-          }else{
-              System.out.println("Deu merda");
-          }
-      }
-      for(ItemCaixa item : listaItemsCaixa){
-          System.out.println(item);
+          boolean madeInsertion = insertIntoDatabase(0, listaItemsCaixa);
+          return madeInsertion ? true : false;
       }
 
+      return false;
     }
 
     // Insere de forma recursiva os items no banco de dados
@@ -52,7 +58,6 @@ public class ItemCaixaService {
         for(int idProduto : itemsCaixa){
             ItemCaixa novoItem = new ItemCaixa();
             novoItem.setIdCaixa(idCaixa);
-            novoItem.setIdProduto(idProduto);
 
             listaItemsCaixa.add(novoItem);
         }

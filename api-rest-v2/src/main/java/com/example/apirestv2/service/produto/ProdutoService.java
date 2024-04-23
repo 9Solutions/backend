@@ -18,7 +18,7 @@ public class ProdutoService {
 
     /* LISTA TODOS OS PRODUTOS */
     public ResponseEntity<List<ProdutoListagemDTO>> listAll(){
-        List<Produto> produtos = action.findAll();
+        List<Produto> produtos = action.findByAtivoIs(1);
         if(!produtos.isEmpty()){
 
             List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toListDTO(produtos);
@@ -94,7 +94,24 @@ public class ProdutoService {
         return ResponseEntity.status(404).build();
     }
 
+    public ResponseEntity<Void> disableItem(int id){
+        Optional<Produto> produto = action.findById(id);
+        if(produto.isPresent()){
+            produto.get().setAtivo(0);
+            action.save(produto.get());
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 
-
+    public ResponseEntity<Void> enableItem(int id){
+        Optional<Produto> produto = action.findById(id);
+        if(produto.isPresent()){
+            produto.get().setAtivo(1);
+            action.save(produto.get());
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 }

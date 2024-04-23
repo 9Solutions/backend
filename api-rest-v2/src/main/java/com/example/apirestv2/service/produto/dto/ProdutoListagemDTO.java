@@ -16,6 +16,8 @@ public class ProdutoListagemDTO {
 
     private EnumGenero genero;
 
+    private int ativo;
+
     public Integer getId() {
         return id;
     }
@@ -62,5 +64,13 @@ public class ProdutoListagemDTO {
 
     public void setFaixaEtaria(Integer faixaEtaria) {
         this.faixaEtaria = faixaEtaria;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
     }
 }

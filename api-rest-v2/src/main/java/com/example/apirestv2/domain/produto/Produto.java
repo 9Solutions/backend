@@ -28,6 +28,9 @@ public class Produto {
     @Column(name = "fk_faixa_etaria")
     private Integer faixaEtaria;
 
+    @Column(name = "ativo")
+    private int ativo;
+
 
     public Integer getId() {
         return id;
@@ -75,5 +78,13 @@ public class Produto {
 
     public void setFaixaEtaria(Integer faixaEtaria) {
         this.faixaEtaria = faixaEtaria;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int ativo) {
+        this.ativo = ativo;
     }
 }

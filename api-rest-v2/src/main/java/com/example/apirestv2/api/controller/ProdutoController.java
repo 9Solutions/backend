@@ -62,4 +62,9 @@ public class ProdutoController {
         return service.updateNameAndPrice(id, novosDados);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> disableItem(@PathVariable int id){
+        return service.disableItem(id);
+    }
+
 }

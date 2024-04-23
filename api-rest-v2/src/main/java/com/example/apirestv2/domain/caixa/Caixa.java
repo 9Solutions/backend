@@ -17,6 +17,7 @@ public class Caixa {
     private Integer id;
 
     @Column(name = "genero")
+    @Enumerated(EnumType.STRING)
     private EnumGenero genero;
 
     @Column(name = "carta")
