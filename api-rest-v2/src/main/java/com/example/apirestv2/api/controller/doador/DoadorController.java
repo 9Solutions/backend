@@ -1,8 +1,10 @@
-package com.example.apirestv2.api.controller;
+package com.example.apirestv2.api.controller.doador;
 
 import com.example.apirestv2.domain.doador.Doador;
 import com.example.apirestv2.domain.doador.repository.DoadorRepository;
 import com.example.apirestv2.service.doador.DoadorService;
+import com.example.apirestv2.service.doador.autenticacao.dto.DoadorLoginDTO;
+import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
 import com.example.apirestv2.service.doador.dto.DoadorCriacaoDTO;
 import com.example.apirestv2.service.doador.dto.DoadorListagemDTO;
 import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
@@ -18,7 +20,7 @@ import org.w3c.dom.stylesheets.LinkStyle;
 import java.util.List;
 
 @RestController
-@RequestMapping("/doador")
+@RequestMapping("/doadores")
 @RequiredArgsConstructor
 public class DoadorController {
     private final DoadorService doadorService;
@@ -37,9 +39,17 @@ public class DoadorController {
     //cadastro do doador
     @PostMapping
     @SecurityRequirement(name = "Bearer")
-    public ResponseEntity<Void> cadastrar(@Valid @RequestBody DoadorCriacaoDTO doadorCriacaoDTO) {
-        this.doadorService.cadastrar(doadorCriacaoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Void> cadastrar(@RequestBody @Valid DoadorCriacaoDTO doadorCriacaoDto) {
+        this.doadorService.cadastrar(doadorCriacaoDto);
+        return ResponseEntity.status(201).build();
+    }
+
+    //login do doador
+    @PostMapping("/login")
+    public ResponseEntity<DoadorTokenDTO> login(@RequestBody DoadorLoginDTO doadorLoginDTO) {
+        DoadorTokenDTO doadorTokenDto = this.doadorService.login(doadorLoginDTO);
+
+        return ResponseEntity.status(200).body(doadorTokenDto);
     }
 
     //atualizacao de senha do doador

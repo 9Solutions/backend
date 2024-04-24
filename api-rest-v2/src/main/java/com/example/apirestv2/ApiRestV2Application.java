@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ApiRestV2Application {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ApiRestV2Application.class, args);
 	}

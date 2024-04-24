@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -53,8 +54,13 @@ public class GerenciadorTokenJwt {
                 .parseClaimsJws(token).getBody();
     }
 
-    private SecretKey parseSecret(){
+    private SecretKey parseSecret() {
         return Keys.hmacShaKeyFor(this.secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 }
