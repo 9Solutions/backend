@@ -65,24 +65,21 @@ public class CaixaService {
         return ResponseEntity.status(404).build();
     }
 
-    /*public ResponseEntity<List<ItemsCaixaDTO>> listByIdItemsCaixa(Integer id){
+
+    public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(Integer id){
 
         Optional<Caixa> caixa = action.findById(id);
         if(caixa.isPresent()){
-            List<ItemsCaixaDTO> listaDeItemsDaCaixa = itemCaixaService.listByIdItemsCaixa(id);
-            return ResponseEntity.status(200).body(listaDeItemsDaCaixa);
+            List<ItemCaixa> listaDeItemsDaCaixa = itemCaixaService.listByIdItemsCaixa(id);
+            if(!listaDeItemsDaCaixa.isEmpty()){
+                return ResponseEntity.status(200).body(listaDeItemsDaCaixa);
+            }
         }
         return ResponseEntity.status(404).build();
+    }
+
+    /*public ResponseEntity<Void> delete(Integer id){
 
     }*/
-
-    public List<ItemCaixa> teste(Integer id){
-
-        Optional<Caixa> caixa = action.findById(id);
-        List<ItemCaixa> listaDeItemsDaCaixa = itemCaixaService.listByIdItemsCaixa(id);
-        return listaDeItemsDaCaixa;
-
-
-    }
 
 }

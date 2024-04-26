@@ -19,10 +19,7 @@ public class ItemCaixaService {
 
     public List<ItemCaixa> listByIdItemsCaixa(Integer id){
         List<ItemCaixa> lista = action.findByIdCaixaEquals(id);
-        if(!lista.isEmpty()){
-            return lista;
-        }
-        return null;
+        return lista;
     }
 
 
@@ -58,7 +55,7 @@ public class ItemCaixaService {
         for(int idProduto : itemsCaixa){
             ItemCaixa novoItem = new ItemCaixa();
             novoItem.setIdCaixa(idCaixa);
-
+            novoItem.setIdProduto(idProduto);
             listaItemsCaixa.add(novoItem);
         }
         return listaItemsCaixa;
