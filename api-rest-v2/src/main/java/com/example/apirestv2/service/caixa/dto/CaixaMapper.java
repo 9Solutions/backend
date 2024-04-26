@@ -1,6 +1,7 @@
 package com.example.apirestv2.service.caixa.dto;
 
 import com.example.apirestv2.domain.caixa.Caixa;
+import java.util.List;
 
 public class CaixaMapper {
 
@@ -28,5 +29,10 @@ public class CaixaMapper {
 
         return dto;
     }
+
+    public static List<CaixaListagemDTO> toDTO(List<Caixa> caixas) {
+        return caixas.stream().map(CaixaMapper::toDTO).toList();
+    }
+
 
 }
