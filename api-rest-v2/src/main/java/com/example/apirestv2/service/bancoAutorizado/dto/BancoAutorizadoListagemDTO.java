@@ -1,4 +1,4 @@
-package com.example.apirestv2.domain.bancosAutorizado;
+package com.example.apirestv2.service.bancoAutorizado.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BancoAutorizado {
+public class BancoAutorizadoListagemDTO {
     private String ispb;
     private String name;
-    private int code;
+    private String code;
     private String fullName;
 }
