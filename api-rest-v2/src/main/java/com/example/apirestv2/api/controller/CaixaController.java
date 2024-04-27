@@ -40,12 +40,5 @@ public class CaixaController {
         return service.create(novaCaixa);
     }
 
-    /*@DeleteMapping("/{id}")
-    public ResponseEntity<Void> update(
-            @PathVariable Integer id
-    ){
-        return service.delete(id);
-    }*/
-
 
 }

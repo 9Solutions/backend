@@ -2,10 +2,12 @@ package com.example.apirestv2.service.caixa.dto;
 
 import com.example.apirestv2.service.produto.enums.EnumGenero;
 import jakarta.validation.constraints.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Data
 public class CaixaCriacaoDTO {
 
     private EnumGenero genero;
@@ -17,6 +19,9 @@ public class CaixaCriacaoDTO {
     @NotBlank
     private String url;
 
+    @NotNull
+    private Integer quantidade;
+
     @FutureOrPresent
     private LocalDate dataCriacao;
 
@@ -26,51 +31,7 @@ public class CaixaCriacaoDTO {
     @NotEmpty
     private int[] itensCaixa = new int[3];
 
-    public EnumGenero getGenero() {
-        return genero;
-    }
+    @NotNull
+    private int idPedido;
 
-    public void setGenero(EnumGenero genero) {
-        this.genero = genero;
-    }
-
-    public String getCarta() {
-        return carta;
-    }
-
-    public void setCarta(String carta) {
-        this.carta = carta;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public int getFaixaEtaria() {
-        return faixaEtaria;
-    }
-
-    public void setFaixaEtaria(int faixaEtaria) {
-        this.faixaEtaria = faixaEtaria;
-    }
-
-    public int[] getItensCaixa() {
-        return itensCaixa;
-    }
-
-    public void setItensCaixa(int[] itensCaixa) {
-        this.itensCaixa = itensCaixa;
-    }
 }

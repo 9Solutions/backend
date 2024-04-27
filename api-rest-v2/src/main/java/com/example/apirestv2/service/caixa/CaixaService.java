@@ -78,8 +78,4 @@ public class CaixaService {
         return ResponseEntity.status(404).build();
     }
 
-    /*public ResponseEntity<Void> delete(Integer id){
-
-    }*/
-
 }
