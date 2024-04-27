@@ -24,11 +24,11 @@ public class ItemCaixa {
     @Column(name = "fk_caixa")
     private int idCaixa;
 
-    @Column(name = "fk_produto", insertable = false, updatable = false)
+    @Column(name = "fk_produto")
     private Integer idProduto;
 
     @OneToOne
-    @JoinColumn(name = "fk_produto")
+    @JoinColumn(name = "fk_produto", insertable = false, updatable = false)
     private Produto produto;
 
 }

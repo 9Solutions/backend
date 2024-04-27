@@ -9,9 +9,11 @@ public class CaixaMapper {
         Caixa caixa = new Caixa();
         caixa.setGenero(dto.getGenero());
         caixa.setCarta(dto.getCarta());
+        caixa.setQuantidade(dto.getQuantidade());
         caixa.setDataCriacao(dto.getDataCriacao());
         caixa.setFaixaEtaria(dto.getFaixaEtaria());
         caixa.setUrl(dto.getUrl());
+        caixa.setIdPedido(dto.getIdPedido());
         caixa.setDataEntrega(null);
 
         return caixa;
@@ -23,9 +25,11 @@ public class CaixaMapper {
         dto.setCarta(caixa.getCarta());
         dto.setGenero(caixa.getGenero());
         dto.setUrl(caixa.getUrl());
+        dto.setQuantidade(caixa.getQuantidade());
         dto.setDataCriacao(caixa.getDataCriacao());
         dto.setDataEntrega(caixa.getDataEntrega());
         dto.setFaixaEtaria(caixa.getFaixaEtaria());
+        dto.setIdPedido(caixa.getIdPedido());
 
         return dto;
     }
