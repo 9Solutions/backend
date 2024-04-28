@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class DoadorListagemDTO {
     private Long id;
     private String nomeCompleto;
-    private int identificador;
+    private String identificador;
     private String email;
     private LocalDate dataCadastro;
     private String telefone;

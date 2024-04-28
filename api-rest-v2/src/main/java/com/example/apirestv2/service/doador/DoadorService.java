@@ -30,6 +30,7 @@ public class DoadorService {
     private final AuthenticationManager authenticationManager;
 
     public void cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
+        System.out.println(doadorCriacaoDto);
         final Doador novoDoador = DoadorMapper.toEntity(doadorCriacaoDto);
 
         String senhaCriptografada = passwordEncoder.encode(novoDoador.getSenha());

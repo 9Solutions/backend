@@ -16,7 +16,6 @@ public class DoadorMapper {
         dto.setId(entity.getId());
         dto.setNomeCompleto(entity.getNomeCompleto());
         dto.setEmail(entity.getEmail());
-        dto.setDataCadastro(entity.getDataCadastro());
         dto.setTelefone(entity.getTelefone());
         dto.setSenha(entity.getSenha());
 
@@ -30,6 +29,7 @@ public class DoadorMapper {
 
         novoDoador.setNomeCompleto(entity.getNomeCompleto());
         novoDoador.setEmail(entity.getEmail());
+        novoDoador.setIdentificador(entity.getIdentificador());
         novoDoador.setSenha(entity.getSenha());
         novoDoador.setTelefone(entity.getTelefone());
 
@@ -56,7 +56,7 @@ public class DoadorMapper {
         novoDoador.setId(entity.getId());
         novoDoador.setNomeCompleto(entity.getNomeCompleto());
         novoDoador.setEmail(entity.getEmail());
-        novoDoador.setDataCadastro(entity.getDataCadastro());
+        novoDoador.setIdentificador(entity.getIdentificador());
         novoDoador.setTelefone(entity.getTelefone());
         novoDoador.setSenha(entity.getSenha());
 
