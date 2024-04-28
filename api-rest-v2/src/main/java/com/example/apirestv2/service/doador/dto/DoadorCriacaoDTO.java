@@ -19,13 +19,12 @@ public class DoadorCriacaoDTO {
     private String nomeCompleto;
     @NotBlank
     @Size(min = 11, max = 14)
-    private int identificador;
+    private String identificador;
     @NotBlank
     @Email
     private String email;
-    @CurrentTimestamp
-    private LocalDate dataCadastro;
     @NotBlank
+    @Size(max = 20)
     private String telefone;
     @NotBlank
     @Size(min = 8, max = 30)
