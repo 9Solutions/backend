@@ -56,7 +56,7 @@ public class FaixaEtariaService {
 
     public ResponseEntity<FaixaEtariaListagemDTO> update(int id, FaixaEtariaUpdateDTO faixaEtariaUpdateDTO){
         if(!faixaEtariaRepository.existsById(id)){
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.notFound().build();
         }
 
         FaixaEtaria faixaEtaria = FaixaEtariaMapper.toEntity(faixaEtariaUpdateDTO);
@@ -68,7 +68,7 @@ public class FaixaEtariaService {
 
     public ResponseEntity<Void> delete(int id){
         if(!faixaEtariaRepository.existsById(id)) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.notFound().build();
         }
 
         faixaEtariaRepository.deleteById(id);

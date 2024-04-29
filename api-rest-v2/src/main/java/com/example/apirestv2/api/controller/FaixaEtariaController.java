@@ -20,18 +20,26 @@ public class FaixaEtariaController {
     private final FaixaEtariaService service;
 
     @GetMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando as faixas etarias"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma faixa etaria cadastrada"),
+    })
     public ResponseEntity<List<FaixaEtariaListagemDTO>> listar(){
         return service.listAll();
     }
 
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando a faixa etaria"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
     public ResponseEntity<FaixaEtariaListagemDTO> buscarPId(@PathVariable int id){
         return service.findById(id);
     }
 
     @PostMapping
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Cria o produto"),
+            @ApiResponse(responseCode = "201", description = "Faixa etaria cadastrada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
     })
     public ResponseEntity<FaixaEtariaListagemDTO> criar(@Valid @RequestBody FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO){
@@ -40,8 +48,9 @@ public class FaixaEtariaController {
 
     @PutMapping("/{id}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Faixa etaria atualizada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
     public ResponseEntity<FaixaEtariaListagemDTO> update(
             @Valid @RequestBody FaixaEtariaUpdateDTO faixaEtariaUpdateDTO,
@@ -52,7 +61,8 @@ public class FaixaEtariaController {
 
     @DeleteMapping("/{id}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Exluido com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Faixa etaria excluida com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
     public ResponseEntity<Void> delete(@PathVariable int id){
         return service.delete(id);

@@ -20,25 +20,52 @@ public class CaixaController {
     private CaixaService service;
 
     @GetMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando as caixas"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma caixa cadastrada"),
+    })
     public ResponseEntity<List<CaixaListagemDTO>> listAll(){
         return service.listAll();
     }
 
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando a caixa"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
     public ResponseEntity<CaixaListagemDTO> listByID(@PathVariable Integer id) {
         return service.listByID(id);
     }
 
     @GetMapping("/{id}/items-caixa")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando os produtos da caixa"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
+    public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(@PathVariable Integer id) {
+
+    public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
+
     public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
         return service.listByIdItemsCaixa(id);
     }
 
     @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Caixa cadastrada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+    })
     public ResponseEntity<CaixaListagemDTO> create(
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
     ){
         return service.create(novaCaixa);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<CaixaListagemDTO> update(
+            @PathVariable Integer id,
+            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
+    ) {
+        return service.update(id, caixaAtualixada);
     }
 
     @PutMapping("/{id}")
@@ -48,6 +75,4 @@ public class CaixaController {
     ) {
         return service.update(id, caixaAtualixada);
     }
-
-
 }

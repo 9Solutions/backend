@@ -39,13 +39,21 @@ public class DoadorController {
     //cadastro do doador
     @PostMapping
     @SecurityRequirement(name = "Bearer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Doador cadastrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma caixa cadastrada"),
+    })
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid DoadorCriacaoDTO doadorCriacaoDto) {
         this.doadorService.cadastrar(doadorCriacaoDto);
         return ResponseEntity.status(201).build();
     }
 
     //login do doador
-    @PostMapping("/login")
+    @PostMapping("/login")@ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login realizado"),
+            @ApiResponse(responseCode = "401", description = "Token inválido"),
+            @ApiResponse(responseCode = "404", description = "Email do doador não cadastrado"),
+    })
     public ResponseEntity<DoadorTokenDTO> login(@RequestBody DoadorLoginDTO doadorLoginDTO) {
         DoadorTokenDTO doadorTokenDto = this.doadorService.login(doadorLoginDTO);
 
