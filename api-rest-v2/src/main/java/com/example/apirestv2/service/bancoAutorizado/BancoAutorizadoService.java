@@ -57,4 +57,25 @@ public class BancoAutorizadoService {
 
         return listTemp;
     }
+
+    public BancoAutorizadoListagemDTO pesquisarPorNome(List<BancoAutorizadoListagemDTO> dto, String nome){
+        return pesquisarPorNome(dto, nome, 0, dto.size() - 1);
+    }
+
+    private BancoAutorizadoListagemDTO pesquisarPorNome(List<BancoAutorizadoListagemDTO> dto, String nome, int inicio, int fim){
+        if (inicio > fim) {
+            return null;
+        }
+
+        int meio = (inicio + fim) / 2;
+        BancoAutorizadoListagemDTO banco = dto.get(meio);
+
+        if(banco.getFullName().equals(nome)){
+            return banco;
+        } else if (banco.getFullName().compareTo(nome) > 0){
+            return pesquisarPorNome(dto, nome, inicio, meio - 1);
+        } else {
+            return pesquisarPorNome(dto, nome, meio + 1, fim);
+        }
+    }
 }
