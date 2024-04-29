@@ -5,6 +5,7 @@ import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.service.caixa.CaixaService;
 import com.example.apirestv2.service.caixa.dto.CaixaCriacaoDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
+import com.example.apirestv2.service.caixa.dto.CaixaUpdateDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class CaixaController {
     }
 
     @GetMapping("/{id}/items-caixa")
-    public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(@PathVariable Integer id) {
+    public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
         return service.listByIdItemsCaixa(id);
     }
 
@@ -38,6 +39,14 @@ public class CaixaController {
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
     ){
         return service.create(novaCaixa);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CaixaListagemDTO> update(
+            @PathVariable Integer id,
+            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
+    ) {
+        return service.update(id, caixaAtualixada);
     }
 
 

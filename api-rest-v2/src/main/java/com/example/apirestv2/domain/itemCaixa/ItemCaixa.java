@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Entity
 @Table(name = "item_caixa", schema = "db_9solutions")
@@ -26,9 +27,5 @@ public class ItemCaixa {
 
     @Column(name = "fk_produto")
     private Integer idProduto;
-
-    @OneToOne
-    @JoinColumn(name = "fk_produto", insertable = false, updatable = false)
-    private Produto produto;
 
 }
