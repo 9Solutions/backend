@@ -38,15 +38,15 @@ public class CaixaController {
     }
 
     @GetMapping("/{id}/items-caixa")
-<<<<<<< HEAD
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listando os produtos da caixa"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
     public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(@PathVariable Integer id) {
-=======
+
     public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
->>>>>>> 4ae56432230ec0e864cfc30a402f204b13574ace
+
+    public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
         return service.listByIdItemsCaixa(id);
     }
 
@@ -60,9 +60,6 @@ public class CaixaController {
     ){
         return service.create(novaCaixa);
     }
-<<<<<<< HEAD
-=======
-
     @PutMapping("/{id}")
     public ResponseEntity<CaixaListagemDTO> update(
             @PathVariable Integer id,
@@ -71,6 +68,11 @@ public class CaixaController {
         return service.update(id, caixaAtualixada);
     }
 
-
->>>>>>> 4ae56432230ec0e864cfc30a402f204b13574ace
+    @PutMapping("/{id}")
+    public ResponseEntity<CaixaListagemDTO> update(
+            @PathVariable Integer id,
+            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
+    ) {
+        return service.update(id, caixaAtualixada);
+    }
 }
