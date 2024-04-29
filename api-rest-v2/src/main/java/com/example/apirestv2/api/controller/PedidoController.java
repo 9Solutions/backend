@@ -20,16 +20,28 @@ public class PedidoController {
     private final PedidoService service;
 
     @GetMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando todos os pedidos"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma produto cadastrado"),
+    })
     public ResponseEntity<List<Pedido>> listAll(){
         return service.listAll();
     }
 
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando o pedido"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
     public ResponseEntity<PedidoListagemDTO> listById(@PathVariable Integer id){
         return service.listById(id);
     }
 
     @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Pedido cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+    })
     public ResponseEntity<PedidoListagemDTO> create(
             @RequestBody @Valid PedidoCriacaoDTO novoPedido
     ) {
@@ -37,6 +49,11 @@ public class PedidoController {
     }
 
     @PatchMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Status do pedido atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
     public ResponseEntity<PedidoListagemDTO> statusChange(
             @PathVariable Integer id,
             @RequestBody @Valid PedidoPatchDTO statusChange

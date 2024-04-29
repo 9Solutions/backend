@@ -20,18 +20,26 @@ public class CategoriaController {
     private final CategoriaService service;
 
     @GetMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando as categorias"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma categoria cadastrada"),
+    })
     public ResponseEntity<List<CategoriaListagemDTO>> listar(){
         return service.listAll();
     }
 
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando a categoria"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
     public ResponseEntity<CategoriaListagemDTO> buscarPId(@PathVariable int id){
         return service.findById(id);
     }
 
     @PostMapping
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Cria o produto"),
+            @ApiResponse(responseCode = "201", description = "Categoria cadastrada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
     })
     public ResponseEntity<CategoriaListagemDTO> criar(@Valid @RequestBody CategoriaCriacaoDTO categoriaCriacaoDTO){
@@ -40,8 +48,9 @@ public class CategoriaController {
 
     @PutMapping("/{id}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Categoria atualizada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
     public ResponseEntity<CategoriaListagemDTO> update(
             @Valid @RequestBody CategoriaUpdateDTO categoriaUpdateDTO,
@@ -52,7 +61,9 @@ public class CategoriaController {
 
     @DeleteMapping("/{id}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Exluido com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Categoria excluida com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
     public ResponseEntity<Void> delete(@PathVariable int id){
         return service.delete(id);

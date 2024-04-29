@@ -6,6 +6,7 @@ import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.service.caixa.dto.CaixaCriacaoDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaMapper;
+import com.example.apirestv2.service.caixa.dto.CaixaUpdateDTO;
 import com.example.apirestv2.service.itemCaixa.ItemCaixaService;
 import com.example.apirestv2.service.itemCaixa.dto.ItemCaixaMapper;
 import com.example.apirestv2.service.itemCaixa.dto.ItemsCaixaDTO;
@@ -66,16 +67,30 @@ public class CaixaService {
     }
 
 
-    public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(Integer id){
+    public ResponseEntity<Caixa> listByIdItemsCaixa(Integer id){
 
         Optional<Caixa> caixa = action.findById(id);
         if(caixa.isPresent()){
-            List<ItemCaixa> listaDeItemsDaCaixa = itemCaixaService.listByIdItemsCaixa(id);
-            if(!listaDeItemsDaCaixa.isEmpty()){
-                return ResponseEntity.status(200).body(listaDeItemsDaCaixa);
-            }
+            return ResponseEntity.status(200).body(caixa.get());
         }
         return ResponseEntity.status(404).build();
+    }
+
+    public ResponseEntity<CaixaListagemDTO> update(Integer id, CaixaUpdateDTO caixaAtualizada){
+
+        Optional<Caixa> caixa = action.findById(id);
+        if(caixa.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        caixa.get().setCarta(caixaAtualizada.getCarta());
+        caixa.get().setUrl(caixaAtualizada.getUrl());
+        caixa.get().setQuantidade(caixaAtualizada.getQuantidade());
+
+        Caixa caixaAtualizadaBanco = action.save(caixa.get());
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaAtualizadaBanco);
+        return ResponseEntity.ok(caixaDTO);
+
     }
 
 }

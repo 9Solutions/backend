@@ -22,7 +22,10 @@ public class BancosAutorizadosController {
     private final BancoAutorizadoService bancoAutorizadoService;
 
     @GetMapping
-    @ApiResponse(responseCode = "200", description = "Lista de bancos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando os bancos"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma banco cadastrado"),
+    })
     public ResponseEntity<List<BancoAutorizadoListagemDTO>> listar() {
         List<BancoAutorizadoExternoDTO> externoDTO = bancoAutorizadoService.fetchAll();
 
@@ -36,7 +39,10 @@ public class BancosAutorizadosController {
     }
 
     @GetMapping("/ordenado-nome")
-    @ApiResponse(responseCode = "200", description = "Lista de bancos ordenados por nome")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando os bancos ordenados por nome"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma banco cadastrado"),
+    })
     public ResponseEntity<List<BancoAutorizadoListagemDTO>> listarOrdenadoPorNome() {
         List<BancoAutorizadoExternoDTO> externoDTO = bancoAutorizadoService.fetchAll();
 
@@ -51,7 +57,10 @@ public class BancosAutorizadosController {
     }
 
     @GetMapping("/pesquisar-nome/{nome}")
-    @ApiResponse(responseCode = "200", description = "Lista de bancos ordenados por nome")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando banco com nome especifico"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma banco cadastrado"),
+    })
     public ResponseEntity<BancoAutorizadoListagemDTO> listarOrdenadoPorNome(@PathVariable String nome) {
         List<BancoAutorizadoExternoDTO> externoDTO = bancoAutorizadoService.fetchAll();
 

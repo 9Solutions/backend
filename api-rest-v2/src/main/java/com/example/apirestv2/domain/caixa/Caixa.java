@@ -1,5 +1,6 @@
 package com.example.apirestv2.domain.caixa;
 
+import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.service.produto.enums.EnumGenero;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,5 +46,9 @@ public class Caixa {
 
     @Column(name = "fk_pedido")
     private int idPedido;
+
+    @OneToMany
+    @JoinColumn(name = "fk_caixa", insertable = false, updatable = false)
+    private List<ItemCaixa> itens;
 
 }
