@@ -58,7 +58,8 @@ public class PedidoController {
     public ResponseEntity<PedidoListagemDTO> create(
             @RequestBody @Valid PedidoCriacaoDTO novoPedido
     ) {
-        Pedido pedidoCriado = service.create(novoPedido);
+        Pedido pedido = PedidoMapper.toEntity(novoPedido);
+        Pedido pedidoCriado = service.create(pedido);
         PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoCriado);
         return ResponseEntity.ok(pedidoDTO);
     }

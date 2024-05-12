@@ -28,7 +28,11 @@ public class CaixaController {
             @ApiResponse(responseCode = "204", description = "Nenhuma caixa cadastrada"),
     })
     public ResponseEntity<List<CaixaListagemDTO>> listAll(){
-        return service.listAll();
+        List<Caixa> caixas = service.listAll();
+        if(caixas.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<CaixaListagemDTO> caixasDTO = CaixaMapper.toDTO(caixas);
+        return ResponseEntity.ok(caixasDTO);
     }
 
 
@@ -37,8 +41,12 @@ public class CaixaController {
             @ApiResponse(responseCode = "200", description = "Listando a caixa"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
-    public ResponseEntity<CaixaListagemDTO> listByID(@PathVariable Integer id) {
-        return service.listByID(id);
+    public ResponseEntity<CaixaListagemDTO> listByID(
+            @PathVariable Integer id
+    ) {
+        Caixa caixaPorID = service.listByID(id);
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaPorID);
+        return ResponseEntity.ok(caixaDTO);
     }
 
 
@@ -60,9 +68,11 @@ public class CaixaController {
     @PutMapping("/{id}")
     public ResponseEntity<CaixaListagemDTO> update(
             @PathVariable Integer id,
-            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
+            @RequestBody @Valid CaixaUpdateDTO novosDados
     ) {
-        return service.update(id, caixaAtualixada);
+        Caixa caixaAtualizada = service.update(id, novosDados);
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaAtualizada);
+        return ResponseEntity.ok(caixaDTO);
     }
 
 }

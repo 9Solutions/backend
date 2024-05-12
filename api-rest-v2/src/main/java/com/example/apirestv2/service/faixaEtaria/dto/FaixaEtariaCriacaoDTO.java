@@ -15,12 +15,16 @@ import lombok.NoArgsConstructor;
 public class FaixaEtariaCriacaoDTO {
     @NotBlank
     private String faixaNome;
+
     @Min(0)
     private Integer limiteInferior;
+
     @Min(0)
     private Integer limiteSuperior;
+
     @AssertTrue(message = "O limite inferior deve ser menor que o limite superior")
     public boolean checkLimite() {
         return limiteInferior > limiteSuperior;
     }
+
 }

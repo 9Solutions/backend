@@ -1,11 +1,10 @@
 package com.example.apirestv2.service.produto.dto;
 
 import com.example.apirestv2.service.produto.enums.EnumGenero;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import lombok.Data;
 
+@Data
 public class ProdutoAtualizacaoDTO {
 
     @NotBlank
@@ -15,7 +14,7 @@ public class ProdutoAtualizacaoDTO {
     private EnumGenero genero;
 
     @NotNull
-    @Positive
+    @PositiveOrZero
     private Double valor;
 
     @NotNull
@@ -26,43 +25,4 @@ public class ProdutoAtualizacaoDTO {
     @NotNull
     private Integer faixaEtaria;
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public EnumGenero getGenero() {
-        return genero;
-    }
-
-    public void setGenero(EnumGenero genero) {
-        this.genero = genero;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-
-    public Integer getCategoriaProduto() {
-        return categoriaProduto;
-    }
-
-    public void setCategoriaProduto(Integer categoriaProduto) {
-        this.categoriaProduto = categoriaProduto;
-    }
-
-    public Integer getFaixaEtaria() {
-        return faixaEtaria;
-    }
-
-    public void setFaixaEtaria(Integer faixaEtaria) {
-        this.faixaEtaria = faixaEtaria;
-    }
 }

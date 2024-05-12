@@ -28,7 +28,4 @@ public class Doador {
     private LocalDate dataCadastro;
     private String telefone;
     private String senha;
-
-    // @OneToMany
-    // private List<Carrinho> carrinhos;
 }

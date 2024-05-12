@@ -4,8 +4,11 @@ import com.example.apirestv2.domain.produto.Produto;
 import com.example.apirestv2.domain.produto.repository.ProdutoRepository;
 import com.example.apirestv2.service.produto.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,11 +33,10 @@ public class ProdutoService {
 
     /* LISTA UM PRODUTO POR ID */
     public Produto listById(Integer id){
-        Optional<Produto> produto = action.findById(id);
-        if(produto.isPresent()){
-            return produto.get();
-        }
-        throw new IllegalArgumentException("Não existe");
+        Produto produto = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
+        return produto;
     }
 
     /* CRIA UM PRODUTO NO BANCO DE DADOS */

@@ -40,9 +40,8 @@ public class CaixaService {
 
     public Caixa create(
             Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
-    ){
+    ) {
         if(!Objects.isNull(novaCaixa)){
-
             Pedido pedido = pedidoService.listById(idPedido);
             novaCaixa.setPedido(pedido);
             Caixa caixaSalva = action.save(novaCaixa);
@@ -62,53 +61,29 @@ public class CaixaService {
     }
 
 
-    public ResponseEntity<List<CaixaListagemDTO>> listAll(){
-        List<Caixa> listaCaixas = action.findAll();
-
-        if(!listaCaixas.isEmpty()){
-            List<CaixaListagemDTO> caixasDTO = CaixaMapper.toDTO(listaCaixas);
-            return ResponseEntity.status(200).body(caixasDTO);
-        }
-        return ResponseEntity.status(204).build();
-
+    public List<Caixa> listAll(){
+        return action.findAll();
     }
 
 
-    public ResponseEntity<CaixaListagemDTO> listByID(Integer id){
-        Optional<Caixa> caixa = action.findById(id);
-        if(caixa.isPresent()){
-            CaixaListagemDTO dto = CaixaMapper.toDTO(caixa.get());
-            return ResponseEntity.status(200).body(dto);
-        }
-        return ResponseEntity.status(404).build();
+    public Caixa listByID(Integer id){
+        return action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
     }
 
 
-    public ResponseEntity<Caixa> listByIdItemsCaixa(Integer id){
+    public Caixa update(
+            Integer id, CaixaUpdateDTO caixaAtualizada
+    ) {
+        Caixa caixa = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
 
-        Optional<Caixa> caixa = action.findById(id);
-        if(caixa.isPresent()){
-            return ResponseEntity.status(200).body(caixa.get());
-        }
-        return ResponseEntity.status(404).build();
-    }
-
-
-    public ResponseEntity<CaixaListagemDTO> update(Integer id, CaixaUpdateDTO caixaAtualizada){
-
-        Optional<Caixa> caixa = action.findById(id);
-        if(caixa.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        caixa.get().setCarta(caixaAtualizada.getCarta());
-        caixa.get().setUrl(caixaAtualizada.getUrl());
-        caixa.get().setQuantidade(caixaAtualizada.getQuantidade());
-
-        Caixa caixaAtualizadaBanco = action.save(caixa.get());
-        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaAtualizadaBanco);
-        return ResponseEntity.ok(caixaDTO);
-
+        caixa.setCarta(caixaAtualizada.getCarta());
+        caixa.setUrl(caixaAtualizada.getUrl());
+        caixa.setQuantidade(caixaAtualizada.getQuantidade());
+        return action.save(caixa);
     }
 
 }
