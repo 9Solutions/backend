@@ -32,16 +32,16 @@ public class ProdutoController {
         return service.listAll();
     }
 
-    @GetMapping("/{id}")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listando o produto"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
-    })
-    public ResponseEntity<ProdutoListagemDTO> listById(
-            @PathVariable Integer id
-    ) {
-        return service.listById(id);
-    }
+//    @GetMapping("/{id}")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Listando o produto"),
+//            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+//    })
+//    public ResponseEntity<ProdutoListagemDTO> listById(
+//            @PathVariable Integer id
+//    ) {
+//        return service.listById(id);
+//    }
 
     @PostMapping
     @ApiResponses(value = {

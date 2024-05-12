@@ -2,8 +2,12 @@ package com.example.apirestv2.domain.produto;
 
 import com.example.apirestv2.service.produto.enums.EnumGenero;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "produto", schema = "db_9solutions")
 public class Produto {
 
@@ -31,60 +35,4 @@ public class Produto {
     @Column(name = "ativo")
     private int ativo;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public EnumGenero getGenero() {
-        return genero;
-    }
-
-    public void setGenero(EnumGenero genero) {
-        this.genero = genero;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
-    }
-
-    public Integer getCategoriaProduto() {
-        return categoriaProduto;
-    }
-
-    public void setCategoriaProduto(Integer categoriaProduto) {
-        this.categoriaProduto = categoriaProduto;
-    }
-
-    public Integer getFaixaEtaria() {
-        return faixaEtaria;
-    }
-
-    public void setFaixaEtaria(Integer faixaEtaria) {
-        this.faixaEtaria = faixaEtaria;
-    }
-
-    public int getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(int ativo) {
-        this.ativo = ativo;
-    }
 }

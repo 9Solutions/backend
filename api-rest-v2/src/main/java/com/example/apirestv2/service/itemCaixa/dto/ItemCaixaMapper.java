@@ -7,8 +7,8 @@ public class ItemCaixaMapper {
     public static ItemsCaixaDTO toDTO(ItemCaixa item){
         ItemsCaixaDTO dto = new ItemsCaixaDTO();
         dto.setId(item.getId());
-        dto.setIdCaixa(item.getIdCaixa());
-        dto.setIdProduto(item.getIdProduto());
+//        dto.setIdCaixa(item.getIdCaixa());
+//        dto.setIdProduto(item.getIdProduto());
         return dto;
     }
 

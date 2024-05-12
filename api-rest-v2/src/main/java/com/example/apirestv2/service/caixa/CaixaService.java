@@ -3,6 +3,7 @@ package com.example.apirestv2.service.caixa;
 import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.caixa.repository.CaixaRepository;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
+import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.service.caixa.dto.CaixaCriacaoDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaMapper;
@@ -10,11 +11,15 @@ import com.example.apirestv2.service.caixa.dto.CaixaUpdateDTO;
 import com.example.apirestv2.service.itemCaixa.ItemCaixaService;
 import com.example.apirestv2.service.itemCaixa.dto.ItemCaixaMapper;
 import com.example.apirestv2.service.itemCaixa.dto.ItemsCaixaDTO;
+import com.example.apirestv2.service.pedido.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.Objects;
@@ -29,22 +34,33 @@ public class CaixaService {
     @Autowired
     private ItemCaixaService itemCaixaService;
 
-    public ResponseEntity<CaixaListagemDTO> create(
-            CaixaCriacaoDTO novaCaixa
+    @Autowired
+    private PedidoService pedidoService;
+
+
+    public Caixa create(
+            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
     ){
         if(!Objects.isNull(novaCaixa)){
-            Caixa caixa = action.save(CaixaMapper.toEntity(novaCaixa));
 
-            boolean madeInsertion = itemCaixaService.insertItems(
-                    caixa.getId(), novaCaixa.getItensCaixa()
+            Pedido pedido = pedidoService.listById(idPedido);
+            novaCaixa.setPedido(pedido);
+            Caixa caixaSalva = action.save(novaCaixa);
+
+            List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(
+                    caixaSalva, listIdsProdutos
             );
 
-            if(madeInsertion){
-                return ResponseEntity.status(201).build();
+            if(madeInsertion.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Itens não cadastrados");
+            } else {
+                caixaSalva.setItens(madeInsertion);
+                return caixaSalva;
             }
         }
-        return ResponseEntity.status(400).build();
+        return null;
     }
+
 
     public ResponseEntity<List<CaixaListagemDTO>> listAll(){
         List<Caixa> listaCaixas = action.findAll();
@@ -56,6 +72,7 @@ public class CaixaService {
         return ResponseEntity.status(204).build();
 
     }
+
 
     public ResponseEntity<CaixaListagemDTO> listByID(Integer id){
         Optional<Caixa> caixa = action.findById(id);
@@ -75,6 +92,7 @@ public class CaixaService {
         }
         return ResponseEntity.status(404).build();
     }
+
 
     public ResponseEntity<CaixaListagemDTO> update(Integer id, CaixaUpdateDTO caixaAtualizada){
 

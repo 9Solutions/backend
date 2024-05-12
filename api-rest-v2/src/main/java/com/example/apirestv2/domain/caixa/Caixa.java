@@ -46,7 +46,10 @@ public class Caixa {
     private int faixaEtaria;
 
     @ManyToOne
-    @JoinColumn(name = "fk_pedido")
+    @JoinColumn(name = "fk_pedido", insertable = true)
     private Pedido pedido;
+
+    @OneToMany(mappedBy = "caixa", fetch = FetchType.LAZY)
+    private List<ItemCaixa> itens;
 
 }

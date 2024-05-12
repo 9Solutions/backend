@@ -29,15 +29,12 @@ public class ProdutoService {
     }
 
     /* LISTA UM PRODUTO POR ID */
-    public ResponseEntity<ProdutoListagemDTO> listById(Integer id){
+    public Produto listById(Integer id){
         Optional<Produto> produto = action.findById(id);
         if(produto.isPresent()){
-
-            ProdutoListagemDTO dto = ProdutoMapper.toDTO(produto.get());
-            return ResponseEntity.status(200).body(dto);
-
+            return produto.get();
         }
-        return ResponseEntity.status(404).build();
+        throw new IllegalArgumentException("Não existe");
     }
 
     /* CRIA UM PRODUTO NO BANCO DE DADOS */
