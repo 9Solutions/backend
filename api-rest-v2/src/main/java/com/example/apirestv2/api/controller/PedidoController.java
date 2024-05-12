@@ -4,7 +4,10 @@ import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.service.pedido.PedidoService;
 import com.example.apirestv2.service.pedido.dto.PedidoCriacaoDTO;
 import com.example.apirestv2.service.pedido.dto.PedidoListagemDTO;
+import com.example.apirestv2.service.pedido.dto.PedidoMapper;
 import com.example.apirestv2.service.pedido.dto.PedidoPatchDTO;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +27,16 @@ public class PedidoController {
             @ApiResponse(responseCode = "200", description = "Listando todos os pedidos"),
             @ApiResponse(responseCode = "204", description = "Nenhuma produto cadastrado"),
     })
-    public ResponseEntity<List<Pedido>> listAll(){
-        return service.listAll();
+    public ResponseEntity<List<PedidoListagemDTO>> listAll(){
+
+        List<Pedido> pedidos = service.listAll();
+        if(pedidos.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<PedidoListagemDTO> pedidosDTO = PedidoMapper.toDTO(pedidos);
+        return ResponseEntity.ok(pedidosDTO);
+
     }
+
 
     @GetMapping("/{id}")
     @ApiResponses(value = {
@@ -34,8 +44,11 @@ public class PedidoController {
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
     public ResponseEntity<PedidoListagemDTO> listById(@PathVariable Integer id){
-        return service.listById(id);
+        Pedido pedido =  service.listById(id);
+        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedido);
+        return ResponseEntity.ok(pedidoDTO);
     }
+
 
     @PostMapping
     @ApiResponses(value = {
@@ -45,8 +58,11 @@ public class PedidoController {
     public ResponseEntity<PedidoListagemDTO> create(
             @RequestBody @Valid PedidoCriacaoDTO novoPedido
     ) {
-        return service.create(novoPedido);
+        Pedido pedidoCriado = service.create(novoPedido);
+        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoCriado);
+        return ResponseEntity.ok(pedidoDTO);
     }
+
 
     @PatchMapping("/{id}")
     @ApiResponses(value = {
@@ -57,8 +73,10 @@ public class PedidoController {
     public ResponseEntity<PedidoListagemDTO> statusChange(
             @PathVariable Integer id,
             @RequestBody @Valid PedidoPatchDTO statusChange
-            ) {
-        return service.statusChange(id, statusChange);
+    ) {
+        Pedido pedidoAtualizado = service.statusChange(id, statusChange);
+        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoAtualizado);
+        return ResponseEntity.ok(pedidoDTO);
     }
 
 }

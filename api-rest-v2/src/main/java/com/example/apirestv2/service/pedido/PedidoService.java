@@ -20,46 +20,30 @@ public class PedidoService {
 
     private final PedidoRepository action;
 
-    public ResponseEntity<List<Pedido>> listAll(){
-        List<Pedido> pedidos = action.findAll();
-        if(pedidos.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-//        List<PedidoListagemDTO> pedidosDTO = PedidoMapper.toDTO(pedidos);
-        return ResponseEntity.ok(pedidos);
+    public List<Pedido> listAll(){
+        return action.findAll();
     }
 
-    public ResponseEntity<PedidoListagemDTO> listById(Integer id){
-        Optional<Pedido> pedido = action.findById(id);
-        if(pedido.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedido.get());
-        return ResponseEntity.ok(pedidoDTO);
+    public Pedido listById(Integer id){
+        return action.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Não encontrado")
+        );
     }
 
-    public ResponseEntity<PedidoListagemDTO> create(PedidoCriacaoDTO novoPedido){
-
+    public Pedido create(PedidoCriacaoDTO novoPedido){
         Pedido pedido = PedidoMapper.toEntity(novoPedido);
-        Pedido pedidoSalvo = action.save(pedido);
-        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoSalvo);
-        return ResponseEntity.created(null).body(pedidoDTO);
-
+        return action.save(pedido);
     }
 
-    public ResponseEntity<PedidoListagemDTO> statusChange(Integer id, PedidoPatchDTO change){
+    public Pedido statusChange(Integer id, PedidoPatchDTO change){
 
         Optional<Pedido> pedido = action.findById(id);
         if(pedido.isEmpty()){
-            return ResponseEntity.notFound().build();
+            throw new IllegalArgumentException("Não encontrado");
         }
 
         pedido.get().setStatusPedido(change.getStatusChange());
-        Pedido pedidoAtualizado = action.save(pedido.get());
-        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoAtualizado);
-        return ResponseEntity.created(null).body(pedidoDTO);
+        return action.save(pedido.get());
 
     }
 

@@ -13,7 +13,6 @@ public class CaixaMapper {
         caixa.setDataCriacao(dto.getDataCriacao());
         caixa.setFaixaEtaria(dto.getFaixaEtaria());
         caixa.setUrl(dto.getUrl());
-        caixa.setIdPedido(dto.getIdPedido());
         caixa.setDataEntrega(null);
 
         return caixa;
@@ -29,7 +28,6 @@ public class CaixaMapper {
         dto.setDataCriacao(caixa.getDataCriacao());
         dto.setDataEntrega(caixa.getDataEntrega());
         dto.setFaixaEtaria(caixa.getFaixaEtaria());
-        dto.setIdPedido(caixa.getIdPedido());
 
         return dto;
     }

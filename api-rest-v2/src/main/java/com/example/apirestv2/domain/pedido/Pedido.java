@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -25,7 +27,7 @@ public class Pedido {
 
     @Column(name = "data_pedido")
     @CreationTimestamp
-    private LocalDateTime dataPedido;
+    private LocalDate dataPedido;
 
     @Column(name = "fk_status_pedido")
     private int statusPedido;
@@ -33,7 +35,7 @@ public class Pedido {
     @Column(name = "fk_doador")
     private int idDoador;
 
-    @OneToMany(mappedBy = "idPedido",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pedido")
     private List<Caixa> caixas;
 
 }

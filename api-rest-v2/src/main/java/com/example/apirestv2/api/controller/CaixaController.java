@@ -6,6 +6,8 @@ import com.example.apirestv2.service.caixa.CaixaService;
 import com.example.apirestv2.service.caixa.dto.CaixaCriacaoDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaUpdateDTO;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +44,6 @@ public class CaixaController {
             @ApiResponse(responseCode = "200", description = "Listando os produtos da caixa"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
-    public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(@PathVariable Integer id) {
-
-    public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
-
     public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
         return service.listByIdItemsCaixa(id);
     }
@@ -60,13 +58,6 @@ public class CaixaController {
     ){
         return service.create(novaCaixa);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<CaixaListagemDTO> update(
-            @PathVariable Integer id,
-            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
-    ) {
-        return service.update(id, caixaAtualixada);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<CaixaListagemDTO> update(
@@ -75,4 +66,5 @@ public class CaixaController {
     ) {
         return service.update(id, caixaAtualixada);
     }
+
 }
