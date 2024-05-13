@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ItemCaixaRepository extends JpaRepository<ItemCaixa, Integer> {
 
-    List<ItemCaixa> findByIdCaixaEquals(Integer id);
+//    List<ItemCaixa> findByIdCaixaEquals(Integer id);
 }

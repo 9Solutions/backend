@@ -8,6 +8,8 @@ import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
 import com.example.apirestv2.service.doador.dto.DoadorCriacaoDTO;
 import com.example.apirestv2.service.doador.dto.DoadorListagemDTO;
 import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -5,7 +5,10 @@ import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.service.caixa.CaixaService;
 import com.example.apirestv2.service.caixa.dto.CaixaCriacaoDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
+import com.example.apirestv2.service.caixa.dto.CaixaMapper;
 import com.example.apirestv2.service.caixa.dto.CaixaUpdateDTO;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,30 +28,27 @@ public class CaixaController {
             @ApiResponse(responseCode = "204", description = "Nenhuma caixa cadastrada"),
     })
     public ResponseEntity<List<CaixaListagemDTO>> listAll(){
-        return service.listAll();
+        List<Caixa> caixas = service.listAll();
+        if(caixas.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<CaixaListagemDTO> caixasDTO = CaixaMapper.toDTO(caixas);
+        return ResponseEntity.ok(caixasDTO);
     }
+
 
     @GetMapping("/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listando a caixa"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
-    public ResponseEntity<CaixaListagemDTO> listByID(@PathVariable Integer id) {
-        return service.listByID(id);
+    public ResponseEntity<CaixaListagemDTO> listByID(
+            @PathVariable Integer id
+    ) {
+        Caixa caixaPorID = service.listByID(id);
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaPorID);
+        return ResponseEntity.ok(caixaDTO);
     }
 
-    @GetMapping("/{id}/items-caixa")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listando os produtos da caixa"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
-    })
-    public ResponseEntity<List<ItemCaixa>> listByIdItemsCaixa(@PathVariable Integer id) {
-
-    public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
-
-    public ResponseEntity<Caixa> listByIdItemsCaixa(@PathVariable Integer id) {
-        return service.listByIdItemsCaixa(id);
-    }
 
     @PostMapping
     @ApiResponses(value = {
@@ -58,21 +58,21 @@ public class CaixaController {
     public ResponseEntity<CaixaListagemDTO> create(
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
     ){
-        return service.create(novaCaixa);
+        Caixa caixa = CaixaMapper.toEntity(novaCaixa);
+        Caixa caixaSalva = service.create(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido());
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaSalva);
+        return ResponseEntity.ok(caixaDTO);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<CaixaListagemDTO> update(
-            @PathVariable Integer id,
-            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
-    ) {
-        return service.update(id, caixaAtualixada);
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<CaixaListagemDTO> update(
             @PathVariable Integer id,
-            @RequestBody @Valid CaixaUpdateDTO caixaAtualixada
+            @RequestBody @Valid CaixaUpdateDTO novosDados
     ) {
-        return service.update(id, caixaAtualixada);
+        Caixa caixaAtualizada = service.update(id, novosDados);
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaAtualizada);
+        return ResponseEntity.ok(caixaDTO);
     }
+
 }

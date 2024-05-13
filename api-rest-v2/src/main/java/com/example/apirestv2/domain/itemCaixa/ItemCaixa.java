@@ -22,10 +22,12 @@ public class ItemCaixa {
     @Column(name = "id_produto_caixa")
     private Integer id;
 
-    @Column(name = "fk_caixa")
-    private int idCaixa;
+    @ManyToOne
+    @JoinColumn(name = "fk_produto")
+    private Produto produto;
 
-    @Column(name = "fk_produto")
-    private Integer idProduto;
+    @ManyToOne
+    @JoinColumn(name = "fk_caixa")
+    private Caixa caixa;
 
 }

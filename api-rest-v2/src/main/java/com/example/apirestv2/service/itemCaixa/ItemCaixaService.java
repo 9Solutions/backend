@@ -1,9 +1,13 @@
 package com.example.apirestv2.service.itemCaixa;
 
+import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.itemCaixa.repository.ItemCaixaRepository;
+import com.example.apirestv2.domain.produto.Produto;
 import com.example.apirestv2.service.itemCaixa.dto.ItemCaixaMapper;
 import com.example.apirestv2.service.itemCaixa.dto.ItemsCaixaDTO;
+import com.example.apirestv2.service.pedido.PedidoService;
+import com.example.apirestv2.service.produto.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,22 +21,19 @@ public class ItemCaixaService {
     @Autowired
     private ItemCaixaRepository action;
 
-    public List<ItemCaixa> listByIdItemsCaixa(Integer id){
-        List<ItemCaixa> lista = action.findByIdCaixaEquals(id);
-        return lista;
-    }
+    @Autowired
+    private ProdutoService produtoService;
 
 
-    public boolean insertItems(int idCaixa, int[] itemsCaixa){
+    public List<ItemCaixa> insertItems(Caixa caixa, int[] itemsCaixa){
 
-      List<ItemCaixa> listaItemsCaixa = this.transformArrayToListEntity(idCaixa, itemsCaixa);
+      List<ItemCaixa> listaItemsCaixa = this.transformArrayToListEntity(caixa, itemsCaixa);
 
       if(!listaItemsCaixa.isEmpty()){
           boolean madeInsertion = insertIntoDatabase(0, listaItemsCaixa);
-          return madeInsertion ? true : false;
       }
 
-      return false;
+      return listaItemsCaixa;
     }
 
     // Insere de forma recursiva os items no banco de dados
@@ -48,14 +49,17 @@ public class ItemCaixaService {
 
     // Tranformar o array recebido em uma lista de entidades do tipo ItemCaixa
     private List<ItemCaixa> transformArrayToListEntity(
-            int idCaixa, int[] itemsCaixa
+            Caixa caixa, int[] itemsCaixa
     ) {
         List<ItemCaixa> listaItemsCaixa = new ArrayList<>();
 
         for(int idProduto : itemsCaixa){
+
+            Produto produto = produtoService.listById(idProduto);
+
             ItemCaixa novoItem = new ItemCaixa();
-            novoItem.setIdCaixa(idCaixa);
-            novoItem.setIdProduto(idProduto);
+            novoItem.setCaixa(caixa);
+            novoItem.setProduto(produto);
             listaItemsCaixa.add(novoItem);
         }
         return listaItemsCaixa;

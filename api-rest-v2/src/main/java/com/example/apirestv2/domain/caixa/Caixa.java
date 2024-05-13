@@ -1,6 +1,7 @@
 package com.example.apirestv2.domain.caixa;
 
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
+import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.service.produto.enums.EnumGenero;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
+@Entity(name = "caixa")
 @Getter
 @Setter
 @Table(name = "caixa", schema = "db_9solutions")
@@ -44,11 +45,11 @@ public class Caixa {
     @Column(name = "fk_faixa_etaria")
     private int faixaEtaria;
 
-    @Column(name = "fk_pedido")
-    private int idPedido;
+    @ManyToOne
+    @JoinColumn(name = "fk_pedido", insertable = true)
+    private Pedido pedido;
 
-    @OneToMany
-    @JoinColumn(name = "fk_caixa", insertable = false, updatable = false)
+    @OneToMany(mappedBy = "caixa", fetch = FetchType.LAZY)
     private List<ItemCaixa> itens;
 
 }
