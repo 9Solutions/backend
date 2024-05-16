@@ -7,8 +7,11 @@ import com.example.apirestv2.service.categoria.dto.CategoriaListagemDTO;
 import com.example.apirestv2.service.categoria.dto.CategoriaMapper;
 import com.example.apirestv2.service.categoria.dto.CategoriaUpdateDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,59 +19,35 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CategoriaService {
-    private final CategoriaRepository categoriaRepository;
 
-    public ResponseEntity<List<CategoriaListagemDTO>> listAll(){
-        List<Categoria> categorias = categoriaRepository.findAll();
+    @Autowired
+    private CategoriaRepository action;
 
-        if(categorias.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
+    public List<Categoria> listAll(){ return action.findAll(); }
 
-        List<CategoriaListagemDTO> dto = CategoriaMapper.toDTO(categorias);
-        return ResponseEntity.ok().body(dto);
+    public Categoria findById(Integer id){
+        return action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
     }
 
-    public ResponseEntity<CategoriaListagemDTO> findById(int id){
-        Optional<Categoria> categorias = categoriaRepository.findById(id);
+    public Categoria create(Categoria categoriaNova){ return action.save(categoriaNova); }
 
-        if(categorias.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
+    public Categoria update(Integer id, CategoriaUpdateDTO categoriaAtualizada){
+        Categoria categoria = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
 
-        CategoriaListagemDTO dto = CategoriaMapper.toDTO(categorias.get());
-        return ResponseEntity.ok().body(dto);
+        categoria.setNome(categoriaAtualizada.getNome());
+        return action.save(categoria);
     }
 
-    public ResponseEntity<CategoriaListagemDTO> create(CategoriaCriacaoDTO categoriaCriacaoDTO){
-        Categoria categoria = CategoriaMapper.toEntity(categoriaCriacaoDTO);
+    public Categoria delete(Integer id) {
+        Categoria categoria = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
 
-        Categoria categoriaSalva = categoriaRepository.save(categoria);
-
-        CategoriaListagemDTO dto = CategoriaMapper.toDTO(categoriaSalva);
-
-        return ResponseEntity.created(null).body(dto);
+        action.delete(categoria);
+        return categoria;
     }
-
-    public ResponseEntity<CategoriaListagemDTO> update(int id, CategoriaUpdateDTO categoriaUpdateDTO){
-        if(!categoriaRepository.existsById(id)){
-            return ResponseEntity.noContent().build();
-        }
-
-        Categoria categoria = CategoriaMapper.toEntity(categoriaUpdateDTO);
-        categoria.setId(id);
-
-        categoriaRepository.save(categoria);
-        return ResponseEntity.noContent().build();
-    }
-
-    public ResponseEntity<Void> delete(int id){
-        if(!categoriaRepository.existsById(id)) {
-            return ResponseEntity.noContent().build();
-        }
-
-        categoriaRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
 }
