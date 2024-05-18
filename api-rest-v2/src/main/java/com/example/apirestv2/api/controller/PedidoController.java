@@ -2,10 +2,7 @@ package com.example.apirestv2.api.controller;
 
 import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.service.pedido.PedidoService;
-import com.example.apirestv2.service.pedido.dto.PedidoCriacaoDTO;
-import com.example.apirestv2.service.pedido.dto.PedidoListagemDTO;
-import com.example.apirestv2.service.pedido.dto.PedidoMapper;
-import com.example.apirestv2.service.pedido.dto.PedidoPatchDTO;
+import com.example.apirestv2.service.pedido.dto.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -27,12 +24,12 @@ public class PedidoController {
             @ApiResponse(responseCode = "200", description = "Listando todos os pedidos"),
             @ApiResponse(responseCode = "204", description = "Nenhuma produto cadastrado"),
     })
-    public ResponseEntity<List<PedidoListagemDTO>> listAll(){
+    public ResponseEntity<List<PedidoListagemSimplesDTO>> listAll(){
 
         List<Pedido> pedidos = service.listAll();
         if(pedidos.isEmpty()) return ResponseEntity.noContent().build();
 
-        List<PedidoListagemDTO> pedidosDTO = PedidoMapper.toDTO(pedidos);
+        List<PedidoListagemSimplesDTO> pedidosDTO = PedidoMapper.toListagemSimplesdDTO(pedidos);
         return ResponseEntity.ok(pedidosDTO);
 
     }
@@ -43,9 +40,35 @@ public class PedidoController {
             @ApiResponse(responseCode = "200", description = "Listando o pedido"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
-    public ResponseEntity<PedidoListagemDTO> listById(@PathVariable Integer id){
+    public ResponseEntity<PedidoListagemSimplesDTO> listById(@PathVariable Integer id){
         Pedido pedido =  service.listById(id);
-        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedido);
+        PedidoListagemSimplesDTO pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedido);
+        return ResponseEntity.ok(pedidoDTO);
+    }
+
+
+    @GetMapping("/filter-status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listando o pedido"),
+            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+    })
+    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listByStatus(
+            @RequestParam Integer statusType
+    ){
+        List<Pedido> pedidos =  service.listByStatus(statusType);
+        if(pedidos.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
+        return ResponseEntity.ok(pedidosDTO);
+    }
+
+    @GetMapping("/all-details/{id}")
+    public ResponseEntity<PedidoListagemDetalhadaDTO> listAllDetailsById(
+            @PathVariable Integer id
+    ) {
+        Pedido pedidoPorId = service.listById(id);
+        PedidoListagemDetalhadaDTO pedidoDTO = PedidoMapper.toListagemDetalhadaDTO(pedidoPorId);
         return ResponseEntity.ok(pedidoDTO);
     }
 
@@ -55,12 +78,12 @@ public class PedidoController {
             @ApiResponse(responseCode = "201", description = "Pedido cadastrado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
     })
-    public ResponseEntity<PedidoListagemDTO> create(
+    public ResponseEntity<PedidoListagemSimplesDTO> create(
             @RequestBody @Valid PedidoCriacaoDTO novoPedido
     ) {
         Pedido pedido = PedidoMapper.toEntity(novoPedido);
-        Pedido pedidoCriado = service.create(pedido);
-        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoCriado);
+        Pedido pedidoCriado = service.create(pedido, novoPedido.getIdDoador());
+        PedidoListagemSimplesDTO pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedidoCriado);
         return ResponseEntity.ok(pedidoDTO);
     }
 
@@ -71,12 +94,12 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
-    public ResponseEntity<PedidoListagemDTO> statusChange(
+    public ResponseEntity<PedidoListagemSimplesDTO> statusChange(
             @PathVariable Integer id,
             @RequestBody @Valid PedidoPatchDTO statusChange
     ) {
         Pedido pedidoAtualizado = service.statusChange(id, statusChange);
-        PedidoListagemDTO pedidoDTO = PedidoMapper.toDTO(pedidoAtualizado);
+        PedidoListagemSimplesDTO pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedidoAtualizado);
         return ResponseEntity.ok(pedidoDTO);
     }
 

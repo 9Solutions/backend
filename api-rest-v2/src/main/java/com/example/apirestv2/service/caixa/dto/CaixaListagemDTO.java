@@ -1,14 +1,8 @@
 package com.example.apirestv2.service.caixa.dto;
 
-import com.example.apirestv2.domain.produto.Produto;
-import com.example.apirestv2.service.produto.enums.EnumGenero;
+import com.example.apirestv2.enums.EnumGenero;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -6,7 +6,9 @@ import lombok.Data;
 
 @Data
 public class PedidoPatchDTO {
+
     @NotNull
     @Positive
     private int statusChange;
+
 }
