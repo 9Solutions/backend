@@ -10,6 +10,7 @@ import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,4 +55,11 @@ public class DoadorService {
 
         return DoadorMapper.toTokenDto(doadorLogado, token);
     }
+
+    public Doador buscarPorId(Long id){
+        return doadorRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+    }
+
 }

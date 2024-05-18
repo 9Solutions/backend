@@ -1,11 +1,10 @@
 package com.example.apirestv2.service.caixa.dto;
 
-import com.example.apirestv2.service.produto.enums.EnumGenero;
+import com.example.apirestv2.enums.EnumGenero;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 public class CaixaCriacaoDTO {

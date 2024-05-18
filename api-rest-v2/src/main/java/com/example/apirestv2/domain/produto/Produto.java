@@ -1,6 +1,6 @@
 package com.example.apirestv2.domain.produto;
 
-import com.example.apirestv2.service.produto.enums.EnumGenero;
+import com.example.apirestv2.enums.EnumGenero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

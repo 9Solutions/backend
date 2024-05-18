@@ -1,6 +1,6 @@
 package com.example.apirestv2.service.produto.dto;
 
-import com.example.apirestv2.service.produto.enums.EnumGenero;
+import com.example.apirestv2.enums.EnumGenero;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 

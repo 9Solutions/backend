@@ -2,7 +2,7 @@ package com.example.apirestv2.domain.caixa;
 
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.pedido.Pedido;
-import com.example.apirestv2.service.produto.enums.EnumGenero;
+import com.example.apirestv2.enums.EnumGenero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
