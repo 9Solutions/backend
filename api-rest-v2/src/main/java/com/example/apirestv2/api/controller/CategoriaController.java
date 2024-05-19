@@ -4,6 +4,7 @@ import com.example.apirestv2.service.categoria.CategoriaService;
 import com.example.apirestv2.service.categoria.dto.CategoriaCriacaoDTO;
 import com.example.apirestv2.service.categoria.dto.CategoriaListagemDTO;
 import com.example.apirestv2.service.categoria.dto.CategoriaUpdateDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -17,41 +18,53 @@ import java.util.List;
 @RequestMapping("/categorias")
 @AllArgsConstructor
 public class CategoriaController {
+
     private final CategoriaService service;
 
-    @GetMapping
+    @Operation(summary = "Listar categorias ", description = "Listar todas categorias", tags = "Categorias")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listando as categorias"),
-            @ApiResponse(responseCode = "204", description = "Nenhuma categoria cadastrada"),
+            @ApiResponse(responseCode = "200", description = "Lista de categorias"),
+            @ApiResponse(responseCode = "204", description = "Lista vazia"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @GetMapping
     public ResponseEntity<List<CategoriaListagemDTO>> listar(){
         return service.listAll();
     }
 
-    @GetMapping("/{id}")
+
+    @Operation(summary = "Listar dados de uma categoria ", description = "Listar dados de uma categoria pelo ID", tags = "Categorias")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listando a categoria"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+            @ApiResponse(responseCode = "200", description = "Listar dados da categoria"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @GetMapping("/{id}")
     public ResponseEntity<CategoriaListagemDTO> buscarPId(@PathVariable int id){
         return service.findById(id);
     }
 
-    @PostMapping
+
+    @Operation(summary = "Cadastrar uma nova categoria ", description = "Método responsável por cadastrar uma nova categoria", tags = "Categorias")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Categoria cadastrada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+            @ApiResponse(responseCode = "201", description = "Categoria cadastrada"),
+            @ApiResponse(responseCode = "400", description = "Atributo inválido"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @PostMapping
     public ResponseEntity<CategoriaListagemDTO> criar(@Valid @RequestBody CategoriaCriacaoDTO categoriaCriacaoDTO){
         return service.create(categoriaCriacaoDTO);
     }
 
-    @PutMapping("/{id}")
+
+    @Operation(summary = "Atualizar dados de uma categoria ", description = "Método responsável por atualizar dados de uma categoria", tags = "Categorias")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Categoria atualizada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+            @ApiResponse(responseCode = "204", description = "Categoria atualizada"),
+            @ApiResponse(responseCode = "400", description = "Atributo inválido"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @PutMapping("/{id}")
     public ResponseEntity<CategoriaListagemDTO> update(
             @Valid @RequestBody CategoriaUpdateDTO categoriaUpdateDTO,
             @PathVariable int id
@@ -59,13 +72,17 @@ public class CategoriaController {
         return service.update(id, categoriaUpdateDTO);
     }
 
-    @DeleteMapping("/{id}")
+
+    @Operation(summary = "Deletar uma categoria ", description = "Método responsável por deletar uma categoria", tags = "Categorias")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Categoria excluida com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+            @ApiResponse(responseCode = "204", description = "Categoria excluida"),
+            @ApiResponse(responseCode = "400", description = "Atributo inválido"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id){
         return service.delete(id);
     }
+
 }

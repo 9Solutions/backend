@@ -8,6 +8,7 @@ import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
 import com.example.apirestv2.service.doador.dto.DoadorCriacaoDTO;
 import com.example.apirestv2.service.doador.dto.DoadorListagemDTO;
 import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -41,8 +42,9 @@ public class DoadorController {
     //cadastro do doador
     @PostMapping
     @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Cadastrar doador", description = "Método responsável por cadastrar um novo doador", tags = "Doadores")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Doador cadastrado com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Doador cadastrado"),
             @ApiResponse(responseCode = "204", description = "Nenhuma caixa cadastrada"),
     })
     public ResponseEntity<Void> cadastrar(@RequestBody @Valid DoadorCriacaoDTO doadorCriacaoDto) {
@@ -51,11 +53,13 @@ public class DoadorController {
     }
 
     //login do doador
-    @PostMapping("/login")@ApiResponses(value = {
+    @Operation(summary = "Login doador", description = "Método responsável realziar o LOGIN", tags = "Doadores")
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login realizado"),
             @ApiResponse(responseCode = "401", description = "Token inválido"),
             @ApiResponse(responseCode = "404", description = "Email do doador não cadastrado"),
     })
+    @PostMapping("/login")
     public ResponseEntity<DoadorTokenDTO> login(@RequestBody DoadorLoginDTO doadorLoginDTO) {
         DoadorTokenDTO doadorTokenDto = this.doadorService.login(doadorLoginDTO);
 
