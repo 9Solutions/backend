@@ -5,6 +5,7 @@ import com.example.apirestv2.domain.doador.Doador;
 import com.example.apirestv2.domain.doador.repository.DoadorRepository;
 import com.example.apirestv2.service.doador.autenticacao.dto.DoadorLoginDTO;
 import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
+import com.example.apirestv2.service.doador.dto.DoadorAlteracaoSenhaDTO;
 import com.example.apirestv2.service.doador.dto.DoadorCriacaoDTO;
 import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,7 +58,23 @@ public class DoadorService {
         return DoadorMapper.toTokenDto(doadorLogado, token);
     }
 
-    public Doador buscarPorId(Long id){
+    public void alterarSenha(String email, DoadorAlteracaoSenhaDTO alterarSenhaDTO) throws Exception {
+        Doador doador = doadorRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Doador não encontrado"));
+
+        if (!passwordEncoder.matches(alterarSenhaDTO.getSenhaAtual(), doador.getSenha())) {
+            throw new Exception("Senha atual incorreta");
+        }
+
+        if (!alterarSenhaDTO.getNovaSenha().equals(alterarSenhaDTO.getRepetirNovaSenha())) {
+            throw new Exception("A nova senha e a repetição da nova senha não são iguais");
+        }
+
+        doador.setSenha(passwordEncoder.encode(alterarSenhaDTO.getNovaSenha()));
+        doadorRepository.save(doador);
+    }
+
+    public Doador buscarPorId(Long id) {
         return doadorRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
