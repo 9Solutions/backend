@@ -39,7 +39,7 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<FaixaEtariaListagemDTO> buscarPId(@PathVariable int id){
+    public ResponseEntity<FaixaEtariaListagemDTO> buscarPorId(@PathVariable int id){
         return service.findById(id);
     }
 

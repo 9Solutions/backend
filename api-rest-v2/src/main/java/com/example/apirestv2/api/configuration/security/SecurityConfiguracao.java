@@ -42,10 +42,10 @@ public class SecurityConfiguracao {
     @Autowired
     private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
 
+    // Aqui setamos os endpoints que NÃO precisam de autenticação! (Não precisa colocar o token JWT na requisição)
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/"),
-            new AntPathRequestMatcher("/bancos-autorizados"),
-            new AntPathRequestMatcher("/bancos-autorizados/ordenado-nome"),
+            // Endpoints de SWAGGER, CONEXAO COM BD e CONFIGS
             new AntPathRequestMatcher("/swagger-ui/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),
             new AntPathRequestMatcher("/swagger-resources"),
@@ -57,10 +57,15 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/webjars/**"),
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
-            new AntPathRequestMatcher("/doadores/login/**"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/h2-console/**/**"),
-            new AntPathRequestMatcher("/error/**")
+            new AntPathRequestMatcher("/error/**"),
+            // Endpoints de DOADORES
+            new AntPathRequestMatcher("/doadores/login/**"),
+            new AntPathRequestMatcher("/doadores"),
+            // Endpoints de BANCOS AUTORIZADOS
+            new AntPathRequestMatcher("/bancos-autorizados"),
+            new AntPathRequestMatcher("/bancos-autorizados/ordenado-nome"),
     };
 
     @Bean

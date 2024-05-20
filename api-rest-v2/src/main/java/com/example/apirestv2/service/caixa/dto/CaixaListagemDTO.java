@@ -1,5 +1,6 @@
 package com.example.apirestv2.service.caixa.dto;
 
+import com.example.apirestv2.domain.categoria.Categoria;
 import com.example.apirestv2.enums.EnumGenero;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -16,10 +17,10 @@ public class CaixaListagemDTO {
     private String url;
     private Integer quantidade;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataCriacao;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataEntrega;
 
     private int faixaEtaria;
@@ -33,7 +34,7 @@ public class CaixaListagemDTO {
         private Integer id;
         private String nome;
         private Double valor;
-        private Integer categoriaProduto;
+        private Categoria categoriaProduto;
     }
 
 }

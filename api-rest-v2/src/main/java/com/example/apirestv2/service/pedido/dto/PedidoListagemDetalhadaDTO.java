@@ -1,5 +1,6 @@
 package com.example.apirestv2.service.pedido.dto;
 
+import com.example.apirestv2.domain.produto.Produto;
 import com.example.apirestv2.enums.EnumGenero;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ public class PedidoListagemDetalhadaDTO {
     private Integer id;
 
     private DoadorDTO doador;
+
     @Data
     public static class DoadorDTO {
         private Long id;
@@ -20,6 +22,7 @@ public class PedidoListagemDetalhadaDTO {
 
 
     private List<CaixaDTO> caixas;
+
     @Data
     public static class CaixaDTO {
         private Integer id;
@@ -35,7 +38,7 @@ public class PedidoListagemDetalhadaDTO {
     @Data
     public static class ItemCaixaDTO {
         private String nome;
-        private Integer categoriaProduto;
+        private Produto categoriaProduto;
     }
 
 }
