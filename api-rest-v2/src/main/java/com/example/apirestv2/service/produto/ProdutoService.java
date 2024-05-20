@@ -1,8 +1,10 @@
 package com.example.apirestv2.service.produto;
 
+import com.example.apirestv2.domain.categoria.Categoria;
 import com.example.apirestv2.domain.produto.Produto;
 import com.example.apirestv2.domain.produto.repository.ProdutoRepository;
 import com.example.apirestv2.service.produto.dto.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,86 +16,62 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ProdutoService {
 
     @Autowired
     private ProdutoRepository action;
 
     /* LISTA TODOS OS PRODUTOS */
-    public ResponseEntity<List<ProdutoListagemDTO>> listAll(){
-        List<Produto> produtos = action.findByAtivoIs(1);
-        if(!produtos.isEmpty()){
-
-            List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toListDTO(produtos);
-            return ResponseEntity.status(200).body(produtosDTO);
-
-        }
-        return ResponseEntity.status(204).build();
-    }
+    public List<Produto> listAll(){ return action.findAll();}
 
     /* LISTA UM PRODUTO POR ID */
     public Produto listById(Integer id){
-        Produto produto = action.findById(id).orElseThrow(
+        return action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
-        );
-        return produto;
-    }
+        );}
 
     /* CRIA UM PRODUTO NO BANCO DE DADOS */
-    public ResponseEntity<ProdutoListagemDTO> create(
-            ProdutoCriacaoDTO novoProduto
-    ){
-        if(!Objects.isNull(novoProduto)){
-            Produto produto = ProdutoMapper.toEntity(novoProduto);
-            ProdutoListagemDTO dto = ProdutoMapper.toDTO(action.save(produto));
-
-            return ResponseEntity.status(201).body(dto);
-        }
-        return ResponseEntity.status(400).build();
+    public Produto create(Produto novoProduto){
+        return action.save(novoProduto);
     }
 
     /* ATUALIZA UM PRODUTO NO BANCO - Todos Atributos */
-    public ResponseEntity<ProdutoListagemDTO> update(
-            Integer id,
-            ProdutoAtualizacaoDTO novosDados
-    ) {
-        Optional<Produto> produto = action.findById(id);
-        if(produto.isPresent()){
+    public Produto update(Integer id, ProdutoAtualizacaoDTO produtoAtualizado) {
+        Produto produto = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
 
-            Produto atualizandoProduto = produto.get();
-            atualizandoProduto.setNome(novosDados.getNome());
-            atualizandoProduto.setCategoriaProduto(novosDados.getCategoriaProduto());
-            atualizandoProduto.setValor(novosDados.getValor());
-            atualizandoProduto.setFaixaEtaria(novosDados.getFaixaEtaria());
-            atualizandoProduto.setGenero(novosDados.getGenero());
+        produto.setNome(produtoAtualizado.getNome());
+        produto.setGenero(produtoAtualizado.getGenero());
+        produto.setValor(produtoAtualizado.getValor());
+        produto.setCategoriaProduto(produtoAtualizado.getCategoriaProduto());
+        produto.setFaixaEtaria(produtoAtualizado.getFaixaEtaria());
 
-            ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(action.save(atualizandoProduto));
-            return ResponseEntity.status(201).body(produtoDTO);
-
-        }
-        return ResponseEntity.status(404).build();
+        return action.save(produto);
     }
 
     /* ATUALIZA UM PRODUTO NO BANCO - Apenas NOME e VALOR*/
-    public ResponseEntity<ProdutoListagemDTO> updateNameAndPrice(
+    public Produto updateNameAndPrice(
             Integer id,
             ProdutoPatchDTO novosDados
     ){
-        Optional<Produto> produto = action.findById(id);
-        if(produto.isPresent()){
+        Produto produto = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
 
-            Produto atualizacaoProduto = produto.get();
-            atualizacaoProduto.setNome(novosDados.getNome());
-            atualizacaoProduto.setValor(novosDados.getValor());
-
-            ProdutoListagemDTO dto = ProdutoMapper.toDTO(action.save(atualizacaoProduto));
-            return ResponseEntity.status(201).body(dto);
-
+        if(Objects.nonNull(novosDados.getNome())){
+            produto.setNome(novosDados.getNome());
         }
-        return ResponseEntity.status(404).build();
+
+        if(Objects.nonNull(novosDados.getValor())){
+            produto.setValor(novosDados.getValor());
+        }
+
+        return action.save(produto);
     }
 
-    public ResponseEntity<Void> disableItem(int id){
+    public ResponseEntity<Void> disableItem(Integer id){
         Optional<Produto> produto = action.findById(id);
         if(produto.isPresent()){
             produto.get().setAtivo(0);

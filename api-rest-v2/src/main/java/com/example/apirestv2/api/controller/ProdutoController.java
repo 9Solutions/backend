@@ -6,6 +6,7 @@ import com.example.apirestv2.service.produto.dto.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
+@AllArgsConstructor
 public class ProdutoController {
 
     @Autowired
@@ -26,7 +28,12 @@ public class ProdutoController {
             @ApiResponse(responseCode = "204", description = "Nenhuma produto cadastrado"),
     })
     public ResponseEntity<List<ProdutoListagemDTO>> listAll(){
-        return service.listAll();
+        List<Produto> produtos = service.listAll();
+
+        if(produtos.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toDTO(produtos);
+        return ResponseEntity.ok().body(produtosDTO);
     }
 
 
@@ -50,9 +57,12 @@ public class ProdutoController {
             @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
     })
     public ResponseEntity<ProdutoListagemDTO> create(
-            @RequestBody @Valid ProdutoCriacaoDTO novoProduto
+            @RequestBody @Valid ProdutoCriacaoDTO produtoCriacaoDTO
     ) {
-        return service.create(novoProduto);
+        Produto produto = ProdutoMapper.toEntity(produtoCriacaoDTO);
+        Produto produtoSalvo = service.create(produto);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoSalvo);
+        return ResponseEntity.status(201).body(produtoDTO);
     }
 
 
@@ -64,9 +74,11 @@ public class ProdutoController {
     })
     public ResponseEntity<ProdutoListagemDTO> update(
             @PathVariable Integer id,
-            @RequestBody @Valid ProdutoAtualizacaoDTO novosDados
+            @RequestBody @Valid ProdutoAtualizacaoDTO produtoNovo
     ) {
-        return service.update(id, novosDados);
+        Produto produtoAtualizado = service.update(id, produtoNovo);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoAtualizado);
+        return ResponseEntity.ok(produtoDTO);
     }
 
 
@@ -80,7 +92,9 @@ public class ProdutoController {
             @PathVariable Integer id,
             @RequestBody @Valid ProdutoPatchDTO novosDados
     ) {
-        return service.updateNameAndPrice(id, novosDados);
+        Produto produtoAtualizado = service.updateNameAndPrice(id, novosDados);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoAtualizado);
+        return ResponseEntity.ok(produtoDTO);
     }
 
 
@@ -89,7 +103,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "204", description = "Produto deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
     })
-    public ResponseEntity<Void> disableItem(@PathVariable int id){
+    public ResponseEntity<Void> disableItem(@PathVariable Integer id){
         return service.disableItem(id);
     }
 

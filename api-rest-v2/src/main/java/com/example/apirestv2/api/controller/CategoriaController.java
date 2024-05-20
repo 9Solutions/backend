@@ -32,7 +32,7 @@ public class CategoriaController {
     public ResponseEntity<List<CategoriaListagemDTO>> listAll (){
         List<Categoria> categorias = service.listAll();
 
-        if(categorias.isEmpty()){ return ResponseEntity.noContent().build(); }
+        if(categorias.isEmpty()) return ResponseEntity.noContent().build();
 
         List<CategoriaListagemDTO> categoriaDto = CategoriaMapper.toDTO(categorias);
         return ResponseEntity.ok().body(categoriaDto);
@@ -73,7 +73,7 @@ public class CategoriaController {
     ){
         Categoria categoriaAtualizada = service.update(id, categoriaNova);
         CategoriaListagemDTO categoriaDto = CategoriaMapper.toDTO(categoriaAtualizada);
-        return ResponseEntity.status(204).body(categoriaDto);
+        return ResponseEntity.ok(categoriaDto);
     }
 
     @DeleteMapping("/{id}")

@@ -7,8 +7,11 @@ import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaListagemDTO;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaMapper;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaUpdateDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,62 +19,35 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class FaixaEtariaService {
-    private final FaixaEtariaRepository faixaEtariaRepository;
+    @Autowired
+    private FaixaEtariaRepository action;
 
-    public ResponseEntity<List<FaixaEtariaListagemDTO>> listAll(){
-        List<FaixaEtaria> faixaEtarias = faixaEtariaRepository.findAll();
+    public List<FaixaEtaria> listAll(){ return action.findAll(); }
 
-        if(faixaEtarias.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-        List<FaixaEtariaListagemDTO> dto = FaixaEtariaMapper.toDTO(faixaEtarias);
-        return ResponseEntity.status(200).body(dto);
+    public FaixaEtaria findById(Integer id){
+           return action.findById(id).orElseThrow(
+                   () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+           );
     }
 
-    public ResponseEntity<FaixaEtariaListagemDTO> findById(int id){
-        Optional<FaixaEtaria> faixaEtarias = faixaEtariaRepository.findById(id);
+    public FaixaEtaria create(FaixaEtaria faixaEtariaNova){ return action.save(faixaEtariaNova); }
 
-        if(faixaEtarias.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
 
-        FaixaEtariaListagemDTO dto = FaixaEtariaMapper.toDTO(faixaEtarias.get());
-        return ResponseEntity.ok().body(dto);
+    public FaixaEtaria update(Integer id, FaixaEtariaUpdateDTO faixaEtariaUpdateDTO){
+        FaixaEtaria faixaEtaria = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
+
+        faixaEtaria.setFaixaNome(faixaEtariaUpdateDTO.getFaixaNome());
+        return action.save(faixaEtaria);
     }
 
-    public ResponseEntity<FaixaEtariaListagemDTO> create(FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO){
-        if(faixaEtariaCriacaoDTO.checkLimite()){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Void> delete(Integer id){
+        FaixaEtaria faixaEtaria = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
 
-        FaixaEtaria faixaEtaria = FaixaEtariaMapper.toEntity(faixaEtariaCriacaoDTO);
-
-        FaixaEtaria faixaEtariaSalva = faixaEtariaRepository.save(faixaEtaria);
-
-        FaixaEtariaListagemDTO dto = FaixaEtariaMapper.toDTO(faixaEtariaSalva);
-
-        return ResponseEntity.status(201).body(dto);
-    }
-
-    public ResponseEntity<FaixaEtariaListagemDTO> update(int id, FaixaEtariaUpdateDTO faixaEtariaUpdateDTO){
-        if(!faixaEtariaRepository.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-
-        FaixaEtaria faixaEtaria = FaixaEtariaMapper.toEntity(faixaEtariaUpdateDTO);
-        faixaEtaria.setId(id);
-
-        faixaEtariaRepository.save(faixaEtaria);
-        return ResponseEntity.noContent().build();
-    }
-
-    public ResponseEntity<Void> delete(int id){
-        if(!faixaEtariaRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        faixaEtariaRepository.deleteById(id);
+        action.delete(faixaEtaria);
         return ResponseEntity.noContent().build();
     }
 

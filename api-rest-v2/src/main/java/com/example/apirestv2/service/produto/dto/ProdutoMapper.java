@@ -30,7 +30,7 @@ public class ProdutoMapper {
         return dto;
     }
 
-    public static List<ProdutoListagemDTO> toListDTO(List<Produto> produtos){
+    public static List<ProdutoListagemDTO> toDTO(List<Produto> produtos){
         return produtos.stream()
                         .map(ProdutoMapper::toDTO)
                         .toList();
