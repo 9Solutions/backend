@@ -1,8 +1,11 @@
 package com.example.apirestv2.domain.faixaEtaria;
 
+import com.example.apirestv2.domain.produto.Produto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "faixa_etaria", schema = "db_9solutions")
@@ -13,7 +16,13 @@ public class FaixaEtaria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_faixa_etaria")
     private Integer id;
+    @Column(name = "faixa_nome")
     private String faixaNome;
+    @Column(name = "limite_inferior")
     private Integer limiteInferior;
+    @Column(name = "limite_superior")
     private Integer limiteSuperior;
+
+    @OneToMany(mappedBy = "faixaEtaria")
+    private List<Produto> produtos;
 }

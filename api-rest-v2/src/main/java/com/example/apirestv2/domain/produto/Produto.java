@@ -1,6 +1,8 @@
 package com.example.apirestv2.domain.produto;
 
-import com.example.apirestv2.service.produto.enums.EnumGenero;
+import com.example.apirestv2.domain.categoria.Categoria;
+import com.example.apirestv2.domain.faixaEtaria.FaixaEtaria;
+import com.example.apirestv2.enums.EnumGenero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,13 +28,14 @@ public class Produto {
     @Column(name = "valor")
     private Double valor;
 
-    @Column(name = "fk_categoria_produto")
-    private Integer categoriaProduto;
-
-    @Column(name = "fk_faixa_etaria")
-    private Integer faixaEtaria;
-
     @Column(name = "ativo")
     private int ativo;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_categoria_produto")
+    private Categoria categoriaProduto;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_faixa_etaria")
+    private FaixaEtaria faixaEtaria;
 }

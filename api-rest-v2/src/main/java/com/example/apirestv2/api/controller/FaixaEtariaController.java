@@ -6,6 +6,7 @@ import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaCriacaoDTO;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaListagemDTO;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaMapper;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaUpdateDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -21,11 +22,13 @@ import java.util.List;
 public class FaixaEtariaController {
     private final FaixaEtariaService service;
 
-    @GetMapping
+    @Operation(summary = "Listar faixas-etárias", description = "Listar faixas etárias", tags = "Faixa Etária")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listando as faixas etarias"),
-            @ApiResponse(responseCode = "204", description = "Nenhuma faixa etaria cadastrada"),
+            @ApiResponse(responseCode = "200", description = "Lista de faixas etarias"),
+            @ApiResponse(responseCode = "204", description = "Lista vazia"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @GetMapping
     public ResponseEntity<List<FaixaEtariaListagemDTO>> listAll(){
         List<FaixaEtaria> faixaEtarias = service.listAll();
 
@@ -37,22 +40,29 @@ public class FaixaEtariaController {
         return ResponseEntity.ok().body(faixaEtariaListagemDTO);
     }
 
-    @GetMapping("/{id}")
+
+    @Operation(summary = "Listar faixas-etária por ID", description = "Listar uam faixas etária pelo ID", tags = "Faixa Etária")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Listando a faixa etaria"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+            @ApiResponse(responseCode = "200", description = "Listar dados da faixa etaria"),
+            @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @GetMapping
     public ResponseEntity<FaixaEtariaListagemDTO> listById(@PathVariable Integer id){
         FaixaEtaria faixaEtaria = service.findById(id);
         FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtaria);
         return ResponseEntity.ok(faixaEtariaListagemDTO);
+
     }
 
-    @PostMapping
+
+    @Operation(summary = "Criar faixa-etária", description = "Método para criar uma nova fiaxa etária", tags = "Faixa Etária")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Faixa etaria cadastrada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
+            @ApiResponse(responseCode = "201", description = "Faixa etaria cadastrada"),
+            @ApiResponse(responseCode = "400", description = "Atributo inválido"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @PostMapping
     public ResponseEntity<FaixaEtariaListagemDTO> create(@Valid @RequestBody FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO){
         FaixaEtaria faixaEtaria = FaixaEtariaMapper.toEntity(faixaEtariaCriacaoDTO);
         FaixaEtaria faixaEtariaSalva = service.create(faixaEtaria);
@@ -60,12 +70,15 @@ public class FaixaEtariaController {
         return ResponseEntity.status(201).body(faixaEtariaListagemDTO);
     }
 
-    @PutMapping("/{id}")
+
+    @Operation(summary = "Atualizar dados da faixa-etária", description = "Método para atualizar dados de uma fiaxa etária", tags = "Faixa Etária")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Faixa etaria atualizada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Atributo(s) inválido(s)"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+            @ApiResponse(responseCode = "204", description = "Faixa etaria atualizada"),
+            @ApiResponse(responseCode = "400", description = "Atributo inválido"),
+            @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @PutMapping("/{id}")
     public ResponseEntity<FaixaEtariaListagemDTO> update(
             @Valid @RequestBody FaixaEtariaUpdateDTO faixaEtariaUpdateDTO,
             @PathVariable Integer id
@@ -75,13 +88,17 @@ public class FaixaEtariaController {
         return ResponseEntity.ok(faixaEtariaListagemDTO);
     }
 
-    @DeleteMapping("/{id}")
+
+    @Operation(summary = "Deletar uma faixa etária", description = "Método para deletar uma fiaxa etária", tags = "Faixa Etária")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Faixa etaria excluida com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Não foi possivel encontrar dados"),
+            @ApiResponse(responseCode = "204", description = "Faixa etaria excluida"),
+            @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @DeleteMapping
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 }
