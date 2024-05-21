@@ -1,8 +1,10 @@
 package com.example.apirestv2.api.controller;
 
+import com.example.apirestv2.domain.faixaEtaria.FaixaEtaria;
 import com.example.apirestv2.service.faixaEtaria.FaixaEtariaService;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaCriacaoDTO;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaListagemDTO;
+import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaMapper;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaUpdateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,8 +29,15 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping
-    public ResponseEntity<List<FaixaEtariaListagemDTO>> listar(){
-        return service.listAll();
+    public ResponseEntity<List<FaixaEtariaListagemDTO>> listAll(){
+        List<FaixaEtaria> faixaEtarias = service.listAll();
+
+        if(faixaEtarias.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        List<FaixaEtariaListagemDTO> faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtarias);
+        return ResponseEntity.ok().body(faixaEtariaListagemDTO);
     }
 
 
@@ -38,9 +47,12 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<FaixaEtariaListagemDTO> buscarPorId(@PathVariable int id){
-        return service.findById(id);
+    @GetMapping
+    public ResponseEntity<FaixaEtariaListagemDTO> listById(@PathVariable Integer id){
+        FaixaEtaria faixaEtaria = service.findById(id);
+        FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtaria);
+        return ResponseEntity.ok(faixaEtariaListagemDTO);
+
     }
 
 
@@ -51,8 +63,11 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PostMapping
-    public ResponseEntity<FaixaEtariaListagemDTO> criar(@Valid @RequestBody FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO){
-        return service.create(faixaEtariaCriacaoDTO);
+    public ResponseEntity<FaixaEtariaListagemDTO> create(@Valid @RequestBody FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO){
+        FaixaEtaria faixaEtaria = FaixaEtariaMapper.toEntity(faixaEtariaCriacaoDTO);
+        FaixaEtaria faixaEtariaSalva = service.create(faixaEtaria);
+        FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtariaSalva);
+        return ResponseEntity.status(201).body(faixaEtariaListagemDTO);
     }
 
 
@@ -66,9 +81,11 @@ public class FaixaEtariaController {
     @PutMapping("/{id}")
     public ResponseEntity<FaixaEtariaListagemDTO> update(
             @Valid @RequestBody FaixaEtariaUpdateDTO faixaEtariaUpdateDTO,
-            @PathVariable int id
+            @PathVariable Integer id
     ){
-        return service.update(id, faixaEtariaUpdateDTO);
+        FaixaEtaria faixaEtariaAtualizada = service.update(id, faixaEtariaUpdateDTO);
+        FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtariaAtualizada);
+        return ResponseEntity.ok(faixaEtariaListagemDTO);
     }
 
 
@@ -78,9 +95,10 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id){
-        return service.delete(id);
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
+@AllArgsConstructor
 public class ProdutoController {
 
     @Autowired
@@ -29,7 +31,12 @@ public class ProdutoController {
     })
     @GetMapping
     public ResponseEntity<List<ProdutoListagemDTO>> listAll(){
-        return service.listAll();
+        List<Produto> produtos = service.listAll();
+
+        if(produtos.isEmpty()) return ResponseEntity.noContent().build();
+
+        List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toDTO(produtos);
+        return ResponseEntity.ok().body(produtosDTO);
     }
 
 
@@ -57,9 +64,12 @@ public class ProdutoController {
     })
     @PostMapping
     public ResponseEntity<ProdutoListagemDTO> create(
-            @RequestBody @Valid ProdutoCriacaoDTO novoProduto
+            @RequestBody @Valid ProdutoCriacaoDTO produtoCriacaoDTO
     ) {
-        return service.create(novoProduto);
+        Produto produto = ProdutoMapper.toEntity(produtoCriacaoDTO);
+        Produto produtoSalvo = service.create(produto);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoSalvo);
+        return ResponseEntity.status(201).body(produtoDTO);
     }
 
 
@@ -73,9 +83,11 @@ public class ProdutoController {
     @PutMapping("/{id}")
     public ResponseEntity<ProdutoListagemDTO> update(
             @PathVariable Integer id,
-            @RequestBody @Valid ProdutoAtualizacaoDTO novosDados
+            @RequestBody @Valid ProdutoAtualizacaoDTO produtoNovo
     ) {
-        return service.update(id, novosDados);
+        Produto produtoAtualizado = service.update(id, produtoNovo);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoAtualizado);
+        return ResponseEntity.ok(produtoDTO);
     }
 
 
@@ -91,7 +103,9 @@ public class ProdutoController {
             @PathVariable Integer id,
             @RequestBody @Valid ProdutoPatchDTO novosDados
     ) {
-        return service.updateNameAndPrice(id, novosDados);
+        Produto produtoAtualizado = service.updateNameAndPrice(id, novosDados);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoAtualizado);
+        return ResponseEntity.ok(produtoDTO);
     }
 
     @Operation(summary = "Deletar um produto", description = "Método responsável por deletar um produto", tags = "Produtos")
@@ -100,6 +114,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> disableItem(@PathVariable int id){
         return service.disableItem(id);
