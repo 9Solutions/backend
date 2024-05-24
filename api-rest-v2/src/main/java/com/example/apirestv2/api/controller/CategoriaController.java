@@ -22,7 +22,8 @@ import java.util.List;
 @RequestMapping("/categorias")
 @AllArgsConstructor
 public class CategoriaController {
-    private final CategoriaService service;
+    @Autowired
+    private CategoriaService service;
 
     @Operation(summary = "Listar categorias ", description = "Listar todas categorias", tags = "Categorias")
     @ApiResponses(value = {

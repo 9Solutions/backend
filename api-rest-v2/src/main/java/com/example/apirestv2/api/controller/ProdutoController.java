@@ -1,6 +1,12 @@
 package com.example.apirestv2.api.controller;
 
+import com.example.apirestv2.domain.categoria.Categoria;
+import com.example.apirestv2.domain.categoria.repository.CategoriaRepository;
+import com.example.apirestv2.domain.faixaEtaria.FaixaEtaria;
+import com.example.apirestv2.domain.faixaEtaria.repository.FaixaEtariaRepository;
 import com.example.apirestv2.domain.produto.Produto;
+import com.example.apirestv2.service.categoria.CategoriaService;
+import com.example.apirestv2.service.faixaEtaria.FaixaEtariaService;
 import com.example.apirestv2.service.produto.ProdutoService;
 import com.example.apirestv2.service.produto.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,8 +15,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,6 +30,12 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoService service;
+
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private FaixaEtariaService faixaEtariaService;
 
     @Operation(summary = "Listar produtos", description = "Listar todos os produtos", tags = "Produtos")
     @ApiResponses(value = {
@@ -35,7 +49,7 @@ public class ProdutoController {
 
         if(produtos.isEmpty()) return ResponseEntity.noContent().build();
 
-        List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toDTO(produtos);
+        List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toListDTO(produtos);
         return ResponseEntity.ok().body(produtosDTO);
     }
 
@@ -50,8 +64,8 @@ public class ProdutoController {
     public ResponseEntity<ProdutoListagemDTO> listById(
             @PathVariable Integer id
     ) {
-        Produto produtoPorID = service.listById(id);
-        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoPorID);
+        Produto produto = service.findById(id);
+        ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produto);
         return ResponseEntity.ok(produtoDTO);
     }
 
@@ -63,10 +77,12 @@ public class ProdutoController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
     @PostMapping
-    public ResponseEntity<ProdutoListagemDTO> create(
-            @RequestBody @Valid ProdutoCriacaoDTO produtoCriacaoDTO
-    ) {
-        Produto produto = ProdutoMapper.toEntity(produtoCriacaoDTO);
+    public ResponseEntity<ProdutoListagemDTO> create( @Valid @RequestBody ProdutoCriacaoDTO produtoCriacaoDTO) {
+        Categoria categoria = categoriaService.findById(produtoCriacaoDTO.getCategoriaProduto());
+
+        FaixaEtaria faixaEtaria = faixaEtariaService.findById(produtoCriacaoDTO.getFaixaEtaria());
+
+        Produto produto = ProdutoMapper.toEntity(produtoCriacaoDTO, categoria, faixaEtaria);
         Produto produtoSalvo = service.create(produto);
         ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoSalvo);
         return ResponseEntity.status(201).body(produtoDTO);
