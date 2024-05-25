@@ -3,6 +3,8 @@ package com.example.apirestv2.service.faixaEtaria;
 import com.example.apirestv2.domain.faixaEtaria.FaixaEtaria;
 import com.example.apirestv2.domain.faixaEtaria.repository.FaixaEtariaRepository;
 import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaListagemDTO;
+import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaMapper;
+import com.example.apirestv2.service.faixaEtaria.dto.FaixaEtariaUpdateDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,52 +83,191 @@ class FaixaEtariaServiceTest {
     @Test
     @DisplayName("No método findById quando id não existente joga uma exceção")
     void findByIdNaoExistente() {
+        // Given
+        Optional<FaixaEtaria> faixaEtaria = Optional.empty();
+        Integer id = 500;
+        // when
+        Mockito.when(repository.findById(id)).thenReturn(faixaEtaria);
+
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.findById(id));
+        assertEquals("Não encontrado",responseStatusException.getMessage());
 
     }
 
     @Test
     @DisplayName("No método findById quando id inválido retorna uma exceção")
     void findByIdInvalido() {
+        // Given
+        Optional<FaixaEtaria> faixaEtaria = Optional.empty();
+        Integer id = null;
+        // when
+        Mockito.when(repository.findById(id)).thenReturn(faixaEtaria);
+
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.findById(id));
+        assertEquals("Não encontrado",responseStatusException.getMessage());
     }
 
     @Test
-    @DisplayName("No método create quando criado com sucesso adiciona no banco")
-    void createComSucesso() {
+    @DisplayName("Deve retornar o objeto salvo")
+    void testSalvaFaixa() {
+        // GIVEN
+        FaixaEtaria faixaEtaria = new FaixaEtaria();
+        FaixaEtaria faixaEtariaNova = new FaixaEtaria();
+        // WHEN
+        Mockito.when(repository.save(faixaEtariaNova)).thenReturn(faixaEtaria);
+
+        // THEN
+        FaixaEtaria faixaEtariaSalva = service.create(faixaEtariaNova);
+
+        // ASSERT
+        assertEquals(faixaEtaria.getId(), faixaEtariaSalva.getId());
+        Mockito.verify(repository, Mockito.times(1)).save(faixaEtariaSalva);
+
     }
 
-    @Test
-    @DisplayName("No método create quando criado com valores inválidos retorna uma exceção")
-    void createValorInvalido() {
 
+    // MÉTODO UPDATE
+
+    @Test
+    @DisplayName("Atualizado com sucesos")
+    public void testUpdateSuccess() {
+        Integer id = 1;
+        FaixaEtariaUpdateDTO faixaEtariaUpdateDTO = new FaixaEtariaUpdateDTO();
+        faixaEtariaUpdateDTO.setFaixaNome("Nova Faixa");
+
+        FaixaEtaria faixaEtaria = new FaixaEtaria();
+        faixaEtaria.setId(id);
+        faixaEtaria.setFaixaNome("Antiga Faixa");
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(faixaEtaria));
+        Mockito.when(repository.save(Mockito.any(FaixaEtaria.class))).thenReturn(faixaEtaria);
+
+        FaixaEtaria updatedFaixaEtaria = service.update(id, faixaEtariaUpdateDTO);
+
+        assertEquals("Nova Faixa", updatedFaixaEtaria.getFaixaNome());
+        Mockito.verify(repository, Mockito.times(1)).findById(id);
+        Mockito.verify(repository, Mockito.times(1)).save(faixaEtaria);
     }
 
-    @Test
-    @DisplayName("No método update e o método atualiza corretamente uma FaixaEtaria existente  retorna 204.")
-    void updateAtualizaComSucesso() {
-    }
+
+//    @Test
+//    @DisplayName("id existente no banco e passei o objeto, atualiza com sucesso a Faixa Etaria")
+//    void updateAtualizaComSucesso() {
+//        // GIVEN
+//        FaixaEtaria faixaEtaria = new FaixaEtaria();
+//        faixaEtaria.setId(null);
+//        faixaEtaria.setFaixaNome("De 9 a 14");
+//        faixaEtaria.setLimiteInferior(9);
+//        faixaEtaria.setLimiteSuperior(14);
+//        faixaEtaria.setProdutos(null);
+//        FaixaEtaria faixaEtaria1 = new FaixaEtaria();
+//        Integer idInformado = 1;
+//        faixaEtaria1.setId(1);
+//        faixaEtaria1.setFaixaNome("De 9 a 14");
+//        faixaEtaria1.setLimiteInferior(9);
+//        faixaEtaria1.setLimiteSuperior(14);
+//        faixaEtaria1.setProdutos(null);
+//        FaixaEtariaUpdateDTO faixaEtariaUpdate = new FaixaEtariaUpdateDTO();
+//        faixaEtariaUpdate.setFaixaNome("De 9 a 14");
+//        faixaEtariaUpdate.setLimiteInferior(9);
+//        faixaEtariaUpdate.setLimiteSuperior(14);
+//
+//        // WHEN
+//        Mockito.when(repository.save(faixaEtaria)).thenReturn(faixaEtaria1);
+//        Mockito.when(repository.existsById(idInformado)).thenReturn(Boolean.TRUE);
+//
+//        // THEN
+////        Produto resposta = service.update(idInformado,produto);
+//        FaixaEtaria resposta = service.update(idInformado, faixaEtariaUpdate);
+//
+//        // ASSERT
+//        assertEquals(idInformado, resposta.getId());
+//        assertEquals(faixaEtaria.getFaixaNome(),resposta.getFaixaNome());
+//
+//        Mockito.verify(repository,Mockito.times(1)).existsById(idInformado);
+//        Mockito.verify(repository,Mockito.times(1)).save(Mockito.any());
+//    }
 
     @Test
-    @DisplayName("No método update e o método não encontra o id e retorna 404.")
+    @DisplayName("No método update e o método não encontra o id e retorna uma exceção.")
     void updateNaoEncontraId() {
+//        // Given
+//        Optional<FaixaEtaria> faixaEtaria = Optional.empty();
+//        Integer id = 900;
+//        // when
+//        Mockito.when(repository.findById(id)).thenReturn(faixaEtaria);
+//
+//        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.findById(id));
+//        assertEquals("Não encontrado",responseStatusException.getMessage());
+
+        Integer id = 1;
+        FaixaEtariaUpdateDTO faixaEtariaUpdateDTO = new FaixaEtariaUpdateDTO();
+        faixaEtariaUpdateDTO.setFaixaNome("Nova Faixa");
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            service.update(id, faixaEtariaUpdateDTO);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        Mockito.verify(repository, Mockito.times(1)).findById(id);
+        Mockito.verify(repository, Mockito.times(0)).save(Mockito.any(FaixaEtaria.class));
+
     }
 
     @Test
-    @DisplayName("No método update, o id é inválido e retorna 400.")
+    @DisplayName("No método update, o id é inválido e retorna uma exceção.")
     void updateIdInvalido() {
+        // Given
+        Optional<FaixaEtaria> faixaEtaria = Optional.empty();
+        Integer id = null;
+        // when
+        Mockito.when(repository.findById(id)).thenReturn(faixaEtaria);
+
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.findById(id));
+        assertEquals("Não encontrado",responseStatusException.getMessage());
+    }
+
+
+    // MÈTODO DELETE
+
+    @Test
+    @DisplayName("Dado que id é válido, é deletado com sucesso")
+    public void testDeleteSuccess() {
+        Integer id = 1;
+        FaixaEtaria faixaEtaria = new FaixaEtaria();
+        faixaEtaria.setId(id);
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(faixaEtaria));
+
+        ResponseEntity<Void> response = service.delete(id);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        Mockito.verify(repository, Mockito.times(1)).delete(faixaEtaria);
     }
 
     @Test
-    @DisplayName("No método delete, o id não foi encontrado e retorna 404")
-    void deleteIdNaoEncontrado() {
+    @DisplayName("Dado que o id não é encontrado no método delete, lance uma exceção")
+    public void testDeleteNotFound() {
+        Integer id = 100;
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            service.delete(id);
+        });
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        Mockito.verify(repository, Mockito.times(0)).delete(Mockito.any(FaixaEtaria.class));
     }
 
-    @Test
-    @DisplayName("No método delete, a exclusão é bem sucedida e retorna 204")
-    void deleteExclusaoBemSucedida() {
-    }
-
-    @Test
-    @DisplayName("No método delete, o id de exclusão é inválido e retornar 400")
-    void deleteIdInvalido() {
-    }
+//    @Test
+//    @DisplayName("No método delete, a exclusão é bem sucedida e retorna 204")
+//    }
+//
+//    @Test
+//    @DisplayName("No método delete, o id de exclusão é inválido e retornar 400")
+//    void deleteIdInvalido() {
+//    }
 }

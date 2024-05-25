@@ -1,9 +1,9 @@
 package com.example.apirestv2.service.produto.dto;
 
 
-import com.example.apirestv2.domain.categoria.Categoria;
-import com.example.apirestv2.domain.faixaEtaria.FaixaEtaria;
 import com.example.apirestv2.enums.EnumGenero;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -30,102 +30,71 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProdutoService {
 
-    private final ProdutoRepository action;
-    private final FaixaEtariaRepository faixaEtariaRepository;
-    private final CategoriaRepository categoriaRepository;
+    @Autowired
+    private ProdutoRepository action;
 
-    /* LISTA TODOS OS PRODUTOS */
+    @Autowired
+    private FaixaEtariaRepository faixaEtariaRepository;
 
-    public ResponseEntity<List<ProdutoListagemDTO>> listAll() {
-        List<Produto> produtos = action.findByAtivoIs(1);
-        if (!produtos.isEmpty()) {
-            List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toListDTO(produtos);
-            return ResponseEntity.status(200).body(produtosDTO);
-        }
-        return ResponseEntity.status(204).build();
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    public List<Produto> listAll() {
+        return action.findAll();
     }
 
-    /* LISTA UM PRODUTO POR ID */
-    public Produto listById(Integer id) {
-        Produto produto = action.findById(id).orElseThrow(
+    public Produto findById(Integer id) {
+        return action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
-        );}
-
-    public ResponseEntity<ProdutoListagemDTO> create(ProdutoCriacaoDTO novoProduto) {
-        if (!Objects.isNull(novoProduto)) {
-            Optional<FaixaEtaria> faixaEtaria = faixaEtariaRepository.findById(novoProduto.getFaixaEtaria());
-            Optional<Categoria> categoria = categoriaRepository.findById(novoProduto.getCategoriaProduto());
-
-            if (faixaEtaria.isEmpty() || categoria.isEmpty()) {
-                return ResponseEntity.status(400).build();
-            }
-
-            Produto produto = ProdutoMapper.toEntity(novoProduto, categoria.get(), faixaEtaria.get());
-            ProdutoListagemDTO dto = ProdutoMapper.toDTO(action.save(produto));
-
-            return ResponseEntity.status(201).body(dto);
-        }
-        return ResponseEntity.status(400).build();
+        );
     }
 
-    /* ATUALIZA UM PRODUTO NO BANCO - Todos Atributos */
-    public ResponseEntity<ProdutoListagemDTO> update(
-            Integer id,
-            ProdutoAtualizacaoDTO novosDados
-    ) {
-        Optional<Produto> produto = action.findById(id);
-        if (produto.isPresent()) {
+    public Produto create(Produto novoProduto) {
+        return action.save(novoProduto);
+    }
+
+    public Produto update(Integer id, ProdutoAtualizacaoDTO novosDados) {
+        Optional<Produto> produtoOptional = action.findById(id);
+
+        if (produtoOptional.isPresent()) {
 
             Optional<FaixaEtaria> faixaEtaria = faixaEtariaRepository.findById(novosDados.getFaixaEtaria());
             Optional<Categoria> categoria = categoriaRepository.findById(novosDados.getCategoriaProduto());
 
             if (faixaEtaria.isEmpty() || categoria.isEmpty()) {
-                return ResponseEntity.status(400).build();
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria ou faixa etária não encontrada");
             }
 
-            Produto atualizandoProduto = produto.get();
+            Produto atualizandoProduto = produtoOptional.get();
             atualizandoProduto.setNome(novosDados.getNome());
             atualizandoProduto.setCategoriaProduto(categoria.get());
             atualizandoProduto.setValor(novosDados.getValor());
             atualizandoProduto.setFaixaEtaria(faixaEtaria.get());
             atualizandoProduto.setGenero(novosDados.getGenero());
 
-        produto.setNome(produtoAtualizado.getNome());
-        produto.setGenero(produtoAtualizado.getGenero());
-        produto.setValor(produtoAtualizado.getValor());
-        produto.setCategoriaProduto(produtoAtualizado.getCategoriaProduto());
-        produto.setFaixaEtaria(produtoAtualizado.getFaixaEtaria());
-
-        return action.save(produto);
+            return action.save(atualizandoProduto);
+        }
+        return null;
     }
 
-    /* ATUALIZA UM PRODUTO NO BANCO - Apenas NOME e VALOR*/
-    public Produto updateNameAndPrice(
-            Integer id,
-            ProdutoPatchDTO novosDados
 
-    ) {
-        Optional<Produto> produto = action.findById(id);
-        if (produto.isPresent()) {
+    public Produto updateNameAndPrice(Integer id, ProdutoPatchDTO novosDados) {
+        Optional<Produto> produtoOptional = action.findById(id);
+        if (produtoOptional.isPresent()) {
 
-            Produto atualizacaoProduto = produto.get();
+            Produto atualizacaoProduto = produtoOptional.get();
             atualizacaoProduto.setNome(novosDados.getNome());
             atualizacaoProduto.setValor(novosDados.getValor());
 
-        if(Objects.nonNull(novosDados.getNome())){
-            produto.setNome(novosDados.getNome());
+            return action.save(atualizacaoProduto);
         }
-
-        if(Objects.nonNull(novosDados.getValor())){
-            produto.setValor(novosDados.getValor());
-        }
-
-        return action.save(produto);
+        return null;
     }
 
 
-    public ResponseEntity<Void> disableItem(int id) {
+    public ResponseEntity<Void> disableItem (Integer id){
         Optional<Produto> produto = action.findById(id);
+
         if (produto.isPresent()) {
             produto.get().setAtivo(0);
             action.save(produto.get());
@@ -134,7 +103,7 @@ public class ProdutoService {
         return ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<Void> enableItem(int id) {
+    public ResponseEntity<Void> enableItem ( int id){
         Optional<Produto> produto = action.findById(id);
         if (produto.isPresent()) {
             produto.get().setAtivo(1);
@@ -145,3 +114,4 @@ public class ProdutoService {
     }
 
 }
+
