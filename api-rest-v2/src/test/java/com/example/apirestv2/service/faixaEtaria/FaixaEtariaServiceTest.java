@@ -31,8 +31,10 @@ class FaixaEtariaServiceTest {
     @Mock
     private FaixaEtariaRepository repository;
 
+
+    // MÈTODO LISTAR
     @Test
-    @DisplayName("Método listar retorna uma lista com 3 valores ao inserir 3")
+    @DisplayName("Listar: retorna uma lista com 3 valores ao inserir 3")
     void listar3produtos() {
         List<FaixaEtaria> lista = List.of(new FaixaEtaria(), new FaixaEtaria(), new FaixaEtaria());
         // when
@@ -52,7 +54,7 @@ class FaixaEtariaServiceTest {
 
 
     @Test
-    @DisplayName("Método listar retorna lista vazia se a lista está vazia")
+    @DisplayName("Listar: retorna lista vazia se a lista está vazia")
     void listarVazio() {
         // Given
         List<FaixaEtaria> lista = Collections.emptyList();
@@ -65,8 +67,10 @@ class FaixaEtariaServiceTest {
         assertTrue(faixaEtarias.isEmpty());
     }
 
+    // FindById
+
     @Test
-    @DisplayName("No método findById quando id válido retorna faixaEtaria do id")
+    @DisplayName("findById: quando id válido retorna faixaEtaria do id")
     void findByIdVálido() {
         // Given
         Optional<FaixaEtaria> faixaEtaria = Optional.of(new FaixaEtaria());
@@ -81,7 +85,7 @@ class FaixaEtariaServiceTest {
     }
 
     @Test
-    @DisplayName("No método findById quando id não existente joga uma exceção")
+    @DisplayName("findById: quando id não existente joga uma exceção")
     void findByIdNaoExistente() {
         // Given
         Optional<FaixaEtaria> faixaEtaria = Optional.empty();
@@ -95,7 +99,7 @@ class FaixaEtariaServiceTest {
     }
 
     @Test
-    @DisplayName("No método findById quando id inválido retorna uma exceção")
+    @DisplayName("findById: quando id inválido retorna uma exceção")
     void findByIdInvalido() {
         // Given
         Optional<FaixaEtaria> faixaEtaria = Optional.empty();
@@ -107,8 +111,10 @@ class FaixaEtariaServiceTest {
         assertEquals("Não encontrado",responseStatusException.getMessage());
     }
 
+    // Create
+
     @Test
-    @DisplayName("Deve retornar o objeto salvo")
+    @DisplayName("Create: deve retornar o objeto salvo")
     void testSalvaFaixa() {
         // GIVEN
         FaixaEtaria faixaEtaria = new FaixaEtaria();
@@ -129,7 +135,7 @@ class FaixaEtariaServiceTest {
     // MÉTODO UPDATE
 
     @Test
-    @DisplayName("Atualizado com sucesos")
+    @DisplayName("Update: atualizado com sucesos")
     public void testUpdateSuccess() {
         Integer id = 1;
         FaixaEtariaUpdateDTO faixaEtariaUpdateDTO = new FaixaEtariaUpdateDTO();
@@ -189,7 +195,7 @@ class FaixaEtariaServiceTest {
 //    }
 
     @Test
-    @DisplayName("No método update e o método não encontra o id e retorna uma exceção.")
+    @DisplayName("Update: método não encontra o id e retorna uma exceção.")
     void updateNaoEncontraId() {
 //        // Given
 //        Optional<FaixaEtaria> faixaEtaria = Optional.empty();
@@ -217,7 +223,7 @@ class FaixaEtariaServiceTest {
     }
 
     @Test
-    @DisplayName("No método update, o id é inválido e retorna uma exceção.")
+    @DisplayName("Update: o id é inválido e retorna uma exceção.")
     void updateIdInvalido() {
         // Given
         Optional<FaixaEtaria> faixaEtaria = Optional.empty();
@@ -233,7 +239,7 @@ class FaixaEtariaServiceTest {
     // MÈTODO DELETE
 
     @Test
-    @DisplayName("Dado que id é válido, é deletado com sucesso")
+    @DisplayName("Delete: dado que id é válido, é deletado com sucesso")
     public void testDeleteSuccess() {
         Integer id = 1;
         FaixaEtaria faixaEtaria = new FaixaEtaria();
@@ -248,7 +254,7 @@ class FaixaEtariaServiceTest {
     }
 
     @Test
-    @DisplayName("Dado que o id não é encontrado no método delete, lance uma exceção")
+    @DisplayName("Delete: dado que o id não é encontrado, lance uma exceção")
     public void testDeleteNotFound() {
         Integer id = 100;
 
@@ -262,12 +268,4 @@ class FaixaEtariaServiceTest {
         Mockito.verify(repository, Mockito.times(0)).delete(Mockito.any(FaixaEtaria.class));
     }
 
-//    @Test
-//    @DisplayName("No método delete, a exclusão é bem sucedida e retorna 204")
-//    }
-//
-//    @Test
-//    @DisplayName("No método delete, o id de exclusão é inválido e retornar 400")
-//    void deleteIdInvalido() {
-//    }
 }
