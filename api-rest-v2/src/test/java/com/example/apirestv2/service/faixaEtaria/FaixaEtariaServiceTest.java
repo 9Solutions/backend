@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
@@ -152,7 +153,7 @@ class FaixaEtariaServiceTest {
 
     @Test
     @DisplayName("Update: atualizado com sucesso")
-    public void testUpdateSuccess() {
+    public void StestUpdateSuccess() {
         Integer id = 1;
         FaixaEtariaUpdateDTO faixaEtariaUpdateDTO = new FaixaEtariaUpdateDTO();
         faixaEtariaUpdateDTO.setFaixaNome("Nova Faixa");
@@ -257,12 +258,9 @@ class FaixaEtariaServiceTest {
         Integer id = 1;
         FaixaEtaria faixaEtaria = new FaixaEtaria();
         faixaEtaria.setId(id);
-
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(faixaEtaria));
-
-        ResponseEntity<Void> response = service.delete(id);
-
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        service.delete(id);
+        Mockito.verify(repository, Mockito.times(1)).findById(id);
         Mockito.verify(repository, Mockito.times(1)).delete(faixaEtaria);
     }
 
@@ -270,14 +268,9 @@ class FaixaEtariaServiceTest {
     @DisplayName("Delete: dado que o id não é encontrado, lance uma exceção")
     public void testDeleteNotFound() {
         Integer id = 100;
-
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            service.delete(id);
-        });
-
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.delete(id));
+        assertEquals(HttpStatus.NOT_FOUND,responseStatusException.getStatusCode());
         Mockito.verify(repository, Mockito.times(0)).delete(Mockito.any(FaixaEtaria.class));
     }
 
