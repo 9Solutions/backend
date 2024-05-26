@@ -27,24 +27,24 @@ public class ItemCaixaService {
 
     public List<ItemCaixa> insertItems(Caixa caixa, int[] itemsCaixa){
 
-      List<ItemCaixa> listaItemsCaixa = this.transformArrayToListEntity(caixa, itemsCaixa);
+        List<ItemCaixa> listaItemsCaixa = this.transformArrayToListEntity(caixa, itemsCaixa);
 
-      if(!listaItemsCaixa.isEmpty()){
-          boolean madeInsertion = insertIntoDatabase(0, listaItemsCaixa);
-      }
+        if(!listaItemsCaixa.isEmpty()){
+            boolean madeInsertion = insertIntoDatabase(0, listaItemsCaixa);
+        }
 
-      return listaItemsCaixa;
+        return listaItemsCaixa;
     }
 
     // Insere de forma recursiva os items no banco de dados
     private boolean insertIntoDatabase(
             int i, List<ItemCaixa> items
     ) {
-       if(i < items.size()){
-           action.save(items.get(i));
-           insertIntoDatabase(i + 1, items);
-       }
-       return true;
+        if(i < items.size()){
+            action.save(items.get(i));
+            insertIntoDatabase(i + 1, items);
+        }
+        return true;
     }
 
     // Tranformar o array recebido em uma lista de entidades do tipo ItemCaixa
@@ -55,7 +55,7 @@ public class ItemCaixaService {
 
         for(int idProduto : itemsCaixa){
 
-            Produto produto = produtoService.listById(idProduto);
+            Produto produto = produtoService.findById(idProduto);
 
             ItemCaixa novoItem = new ItemCaixa();
             novoItem.setCaixa(caixa);

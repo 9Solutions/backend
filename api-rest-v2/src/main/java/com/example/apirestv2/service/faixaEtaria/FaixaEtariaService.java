@@ -25,13 +25,14 @@ public class FaixaEtariaService {
     public List<FaixaEtaria> listAll(){ return action.findAll(); }
 
     public FaixaEtaria findById(Integer id){
-           return action.findById(id).orElseThrow(
-                   () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
-           );
+        return action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
     }
 
-    public FaixaEtaria create(FaixaEtaria faixaEtariaNova){ return action.save(faixaEtariaNova); }
-
+    public FaixaEtaria create(FaixaEtaria faixaEtariaNova){
+        return action.save(faixaEtariaNova);
+    }
 
     public FaixaEtaria update(Integer id, FaixaEtariaUpdateDTO faixaEtariaUpdateDTO){
         FaixaEtaria faixaEtaria = action.findById(id).orElseThrow(
