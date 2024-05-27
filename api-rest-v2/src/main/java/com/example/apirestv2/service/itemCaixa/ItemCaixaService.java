@@ -55,7 +55,7 @@ public class ItemCaixaService {
 
         for(int idProduto : itemsCaixa){
 
-            Produto produto = produtoService.listById(idProduto);
+            Produto produto = produtoService.findById(idProduto);
 
             ItemCaixa novoItem = new ItemCaixa();
             novoItem.setCaixa(caixa);
