@@ -9,6 +9,7 @@ import com.example.apirestv2.domain.faixaEtaria.FaixaEtaria;
 import com.example.apirestv2.domain.faixaEtaria.repository.FaixaEtariaRepository;
 import com.example.apirestv2.domain.produto.Produto;
 import com.example.apirestv2.domain.produto.repository.ProdutoRepository;
+import com.example.apirestv2.enums.EnumGenero;
 import com.example.apirestv2.service.produto.dto.ProdutoAtualizacaoDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,27 +39,39 @@ public class ProdutoServiceUpdateTest {
     @Test
     @DisplayName("Deve atualizar um produto com dados válidos")
     void testAtualizaProdutoComDadosValidos() {
+        Integer id = 1;
         Produto produto = new Produto();
-        produto.setId(1);
-        when(produtoRepository.findById(1)).thenReturn(Optional.of(produto));
-
-        FaixaEtaria faixaEtaria = new FaixaEtaria();
-        when(faixaEtariaRepository.findById(1)).thenReturn(Optional.of(faixaEtaria));
-
-        Categoria categoria = new Categoria();
-        when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoria));
+        produto.setId(id);
 
         ProdutoAtualizacaoDTO novosDados = new ProdutoAtualizacaoDTO();
-        novosDados.setNome("Novo Nome");
-        novosDados.setValor(200.0);
+        novosDados.setNome("Nome Atualizado");
+        novosDados.setValor(100.0);
         novosDados.setFaixaEtaria(1);
         novosDados.setCategoriaProduto(1);
+        novosDados.setGenero(EnumGenero.F);
 
-        Produto result = produtoService.update(1, novosDados);
+        FaixaEtaria faixaEtaria = new FaixaEtaria();
+        faixaEtaria.setId(1);
+
+        Categoria categoria = new Categoria();
+        categoria.setId(1);
+
+        when(produtoRepository.findById(id)).thenReturn(Optional.of(produto));
+        when(faixaEtariaRepository.findById(1)).thenReturn(Optional.of(faixaEtaria));
+        when(categoriaRepository.findById(1)).thenReturn(Optional.of(categoria));
+        when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
+
+        Produto result = produtoService.update(id, novosDados);
 
         assertNotNull(result);
-        assertEquals("Novo Nome", result.getNome());
-        assertEquals(200, result.getValor());
+        assertEquals("Nome Atualizado", result.getNome());
+        assertEquals(100.0, result.getValor());
+        assertEquals(faixaEtaria, result.getFaixaEtaria());
+        assertEquals(categoria, result.getCategoriaProduto());
+        assertEquals(EnumGenero.F, result.getGenero());
+        verify(produtoRepository, times(1)).findById(id);
+        verify(faixaEtariaRepository, times(1)).findById(1);
+        verify(categoriaRepository, times(1)).findById(1);
         verify(produtoRepository, times(1)).save(produto);
     }
 
