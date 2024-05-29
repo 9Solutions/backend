@@ -1,4 +1,4 @@
-package com.example.apirestv2.service.views;
+package com.example.apirestv2.service.vwCaixasAtrasadas;
 
 import com.example.apirestv2.domain.vwCaixasAtrasadas.VwCaixasAtrasadas;
 import com.example.apirestv2.domain.vwCaixasAtrasadas.repository.VwCaixasAtrasadasRepository;

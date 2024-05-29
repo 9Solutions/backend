@@ -1,4 +1,4 @@
-package com.example.apirestv2.service.views;
+package com.example.apirestv2.service.vwQtdDoacoesPorMes;
 
 import com.example.apirestv2.domain.vwQtdDoacoesPorMes.repository.VwQtdDoacoesPorMesRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.apirestv2.service.views;
+package com.example.apirestv2.service.vwQtdPedidosPorFaixaEtaria;
 
 import com.example.apirestv2.domain.vwQtdPedidosPorFaixaEtaria.repository.VwQtdPedidosPorFaixaEtariaRepository;
 import lombok.RequiredArgsConstructor;
