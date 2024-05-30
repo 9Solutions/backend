@@ -38,7 +38,6 @@ public class PedidoListagemDetalhadaDTO {
     @Data
     public static class ItemCaixaDTO {
         private String nome;
-        private Produto categoriaProduto;
     }
 
 }

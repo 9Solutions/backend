@@ -66,21 +66,31 @@ public class PedidoMapper {
         caixaDto.setFaixaEtaria(caixa.getFaixaEtaria());
         caixaDto.setGenero(caixa.getGenero());
         caixaDto.setItens(
-                toItensCaixaDTO(caixa.getItens())
+                toItensDaCaixaDTO(caixa.getItens())
         );
         return caixaDto;
     }
 
-    public static List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> toItensCaixaDTO(List<ItemCaixa> itens) {
-        List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> itensDTO = new ArrayList<>();
-        for (ItemCaixa itemDaVez : itens) {
-            PedidoListagemDetalhadaDTO.ItemCaixaDTO item = new PedidoListagemDetalhadaDTO.ItemCaixaDTO();
-            item.setNome(itemDaVez.getProduto().getNome());
-            item.setCategoriaProduto(itemDaVez.getProduto());
-            itensDTO.add(item);
-        }
-        return itensDTO;
+    public static List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> toItensDaCaixaDTO(List<ItemCaixa> itens) {
+        return itens.stream().map(PedidoMapper::toItensDaCaixaDTO).toList();
     }
+
+    public static PedidoListagemDetalhadaDTO.ItemCaixaDTO toItensDaCaixaDTO(ItemCaixa item){
+        PedidoListagemDetalhadaDTO.ItemCaixaDTO itens = new PedidoListagemDetalhadaDTO.ItemCaixaDTO();
+        itens.setNome(item.getProduto().getNome());
+        return itens;
+    }
+
+//    public static List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> toItensCaixaDTO(List<ItemCaixa> itens) {
+//        List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> itensDTO = new ArrayList<>();
+//        for (ItemCaixa itemDaVez : itens) {
+//            PedidoListagemDetalhadaDTO.ItemCaixaDTO item = new PedidoListagemDetalhadaDTO.ItemCaixaDTO();
+//            item.setNome(itemDaVez.getProduto().getNome());
+//            item.setCategoriaProduto(itemDaVez.getProduto());
+//            itensDTO.add(item);
+//        }
+//        return itensDTO;
+//    }
 
     public static Pedido toEntity(PedidoCriacaoDTO dto) {
         Pedido pedido = new Pedido();
