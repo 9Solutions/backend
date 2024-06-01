@@ -1,6 +1,7 @@
 package com.example.apirestv2.service.caixa.dto;
 
 import com.example.apirestv2.domain.caixa.Caixa;
+import com.example.apirestv2.domain.caixa.EtapaCaixa;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class CaixaMapper {
         caixa.setFaixaEtaria(dto.getFaixaEtaria());
         caixa.setUrl(dto.getUrl());
         caixa.setDataEntrega(null);
+        caixa.setEtapas(new ArrayList<>());
         return caixa;
     }
 
@@ -32,6 +34,7 @@ public class CaixaMapper {
         dto.setFaixaEtaria(caixa.getFaixaEtaria());
         dto.setIdPedido(caixa.getPedido().getId());
         dto.setItens(toListItensDTO(caixa.getItens()));
+        dto.setEtapas(toListEtapasDTO(caixa.getEtapas()));
         return dto;
     }
 
@@ -42,7 +45,6 @@ public class CaixaMapper {
             itemDto.setId(itemDaVez.getProduto().getId());
             itemDto.setNome(itemDaVez.getProduto().getNome());
             itemDto.setValor(itemDaVez.getProduto().getValor());
-            itemDto.setCategoriaProduto(itemDaVez.getProduto().getCategoriaProduto());
             itensDTO.add(itemDto);
         }
         return itensDTO;
@@ -53,5 +55,17 @@ public class CaixaMapper {
                 .map(CaixaMapper::toDTO)
                 .toList();
     }
+
+    public static List<CaixaListagemDTO.EtapaCaixaDTO> toListEtapasDTO(List<EtapaCaixa> etapas) {
+        List<CaixaListagemDTO.EtapaCaixaDTO> etapasDTO = new ArrayList<>();
+        for (EtapaCaixa etapaDaVez : etapas) {
+            CaixaListagemDTO.EtapaCaixaDTO etapaDTO = new CaixaListagemDTO.EtapaCaixaDTO();
+            etapaDTO.setStatus(etapaDaVez.getStatus());
+            etapaDTO.setUpdate(etapaDaVez.getUpdateAt());
+            etapasDTO.add(etapaDTO);
+        }
+        return etapasDTO;
+    }
+
 
 }

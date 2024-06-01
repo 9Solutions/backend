@@ -90,4 +90,13 @@ public class CaixaController {
         return ResponseEntity.ok(caixaDTO);
     }
 
+    @PatchMapping
+    public ResponseEntity<Void> statusChange(
+            @RequestParam Integer idCaixa,
+            @RequestParam Integer status
+    ) {
+        service.statusChange(idCaixa, status);
+        return ResponseEntity.ok(null);
+    }
+
 }
