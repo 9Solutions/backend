@@ -4,13 +4,16 @@ import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.caixa.EtapaCaixa;
 import com.example.apirestv2.domain.caixa.repository.CaixaRepository;
 import com.example.apirestv2.domain.caixa.repository.EtapaCaixaRepository;
+import com.example.apirestv2.domain.doador.Doador;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.service.caixa.dto.CaixaCriacaoDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
 import com.example.apirestv2.service.caixa.dto.CaixaMapper;
 import com.example.apirestv2.service.caixa.dto.CaixaUpdateDTO;
+import com.example.apirestv2.service.doador.DoadorService;
 import com.example.apirestv2.service.interfaces.ChangeListener;
+import com.example.apirestv2.service.interfaces.PublisherChange;
 import com.example.apirestv2.service.itemCaixa.ItemCaixaService;
 import com.example.apirestv2.service.itemCaixa.dto.ItemCaixaMapper;
 import com.example.apirestv2.service.itemCaixa.dto.ItemsCaixaDTO;
@@ -31,12 +34,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CaixaService implements ChangeListener {
+public class CaixaService implements PublisherChange {
 
     private final CaixaRepository action;
     private final ItemCaixaService itemCaixaService;
     private final PedidoService pedidoService;
     private final EtapaCaixaService etapaService;
+    private final DoadorService doadorService;
 
     public Caixa create(
             Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
@@ -93,11 +97,12 @@ public class CaixaService implements ChangeListener {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
         );
         etapaService.mudarEtapaCaixa(caixa, status);
-        updateListener(caixa.getPedido().getDoador().getEmail(), "Caixa");
+        notifyChange(caixa.getPedido().getDoador());
     }
 
     @Override
-    public void updateListener(String email, String eventType) {
-        System.out.println(String.format("Enviado para: %s | Atualização: O(a) %s teve o status alterado", email, eventType));
+    public void notifyChange(Doador entity) {
+        doadorService.updateListener(entity.getEmail(), "Caixa");
     }
+
 }

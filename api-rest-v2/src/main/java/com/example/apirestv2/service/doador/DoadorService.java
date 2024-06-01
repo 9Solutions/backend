@@ -8,6 +8,7 @@ import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
 import com.example.apirestv2.service.doador.dto.DoadorAlteracaoSenhaDTO;
 import com.example.apirestv2.service.doador.dto.DoadorCriacaoDTO;
 import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
+import com.example.apirestv2.service.emailService.EmailService;
 import com.example.apirestv2.service.interfaces.ChangeListener;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -32,6 +33,7 @@ public class DoadorService implements ChangeListener {
     private final PasswordEncoder passwordEncoder;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
     public void cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
         System.out.println(doadorCriacaoDto);
@@ -83,7 +85,8 @@ public class DoadorService implements ChangeListener {
 
     @Override
     public void updateListener(String email, String eventType) {
-        System.out.println(String.format("Enviado para: %s | Atualização: O(a) %s teve o status alterado", email, eventType));
+        String mensagem = String.format("Atualização: O(a) %s teve o status alterado", eventType);
+        emailService.sendMail(email, "Status alterado", mensagem);
     }
 
 }
