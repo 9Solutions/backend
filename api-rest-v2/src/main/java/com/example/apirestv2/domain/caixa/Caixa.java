@@ -52,4 +52,7 @@ public class Caixa {
     @OneToMany(mappedBy = "caixa", fetch = FetchType.LAZY)
     private List<ItemCaixa> itens;
 
+    @OneToMany(mappedBy = "caixa", fetch = FetchType.LAZY)
+    private List<EtapaCaixa> etapas;
+
 }

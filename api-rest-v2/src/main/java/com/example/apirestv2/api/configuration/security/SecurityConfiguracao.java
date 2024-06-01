@@ -56,13 +56,12 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/api/public/authenticate"),
             new AntPathRequestMatcher("/webjars/**"),
             new AntPathRequestMatcher("/v3/api-docs/**"),
-            new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/h2-console/**/**"),
             new AntPathRequestMatcher("/error/**"),
             // Endpoints de DOADORES
             new AntPathRequestMatcher("/doadores/login/**"),
-            new AntPathRequestMatcher("/doadores"),
+            new AntPathRequestMatcher("/doadores/**"),
             // Endpoints de BANCOS AUTORIZADOS
             new AntPathRequestMatcher("/bancos-autorizados"),
             new AntPathRequestMatcher("/bancos-autorizados/ordenado-nome"),

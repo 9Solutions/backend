@@ -1,8 +1,10 @@
 package com.example.apirestv2.service.pedido.dto;
 
 import com.example.apirestv2.domain.caixa.Caixa;
+import com.example.apirestv2.domain.caixa.EtapaCaixa;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.pedido.Pedido;
+import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,20 +68,31 @@ public class PedidoMapper {
         caixaDto.setFaixaEtaria(caixa.getFaixaEtaria());
         caixaDto.setGenero(caixa.getGenero());
         caixaDto.setItens(
-                toItensCaixaDTO(caixa.getItens())
+                toItensDaCaixaDTO(caixa.getItens())
         );
+        caixaDto.setEtapas(toListEtapasDTO(caixa.getEtapas()));
         return caixaDto;
     }
 
-    public static List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> toItensCaixaDTO(List<ItemCaixa> itens) {
-        List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> itensDTO = new ArrayList<>();
-        for (ItemCaixa itemDaVez : itens) {
-            PedidoListagemDetalhadaDTO.ItemCaixaDTO item = new PedidoListagemDetalhadaDTO.ItemCaixaDTO();
-            item.setNome(itemDaVez.getProduto().getNome());
-            item.setCategoriaProduto(itemDaVez.getProduto());
-            itensDTO.add(item);
+    public static List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> toItensDaCaixaDTO(List<ItemCaixa> itens) {
+        return itens.stream().map(PedidoMapper::toItensDaCaixaDTO).toList();
+    }
+
+    public static PedidoListagemDetalhadaDTO.ItemCaixaDTO toItensDaCaixaDTO(ItemCaixa item){
+        PedidoListagemDetalhadaDTO.ItemCaixaDTO itens = new PedidoListagemDetalhadaDTO.ItemCaixaDTO();
+        itens.setNome(item.getProduto().getNome());
+        return itens;
+    }
+
+    public static List<PedidoListagemDetalhadaDTO.EtapaCaixaDTO> toListEtapasDTO(List<EtapaCaixa> etapas) {
+        List<PedidoListagemDetalhadaDTO.EtapaCaixaDTO> etapasDTO = new ArrayList<>();
+        for (EtapaCaixa etapaDaVez : etapas) {
+            PedidoListagemDetalhadaDTO.EtapaCaixaDTO etapaDTO = new PedidoListagemDetalhadaDTO.EtapaCaixaDTO();
+            etapaDTO.setStatus(etapaDaVez.getStatus());
+            etapaDTO.setUpdate(etapaDaVez.getUpdateAt());
+            etapasDTO.add(etapaDTO);
         }
-        return itensDTO;
+        return etapasDTO;
     }
 
     public static Pedido toEntity(PedidoCriacaoDTO dto) {

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -20,7 +21,6 @@ public class CaixaListagemDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataCriacao;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataEntrega;
 
     private int faixaEtaria;
@@ -28,13 +28,21 @@ public class CaixaListagemDTO {
 
     private List<ItemCaixaDTO> itens;
 
+    private List<EtapaCaixaDTO> etapas;
+
     // Nested class
     @Data
     public static class ItemCaixaDTO {
         private Integer id;
         private String nome;
         private Double valor;
-        private Categoria categoriaProduto;
+    }
+
+    @Data
+    public static class EtapaCaixaDTO {
+        private Integer status;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDateTime update;
     }
 
 }
