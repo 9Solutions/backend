@@ -1,5 +1,6 @@
 package com.example.apirestv2.service.pedido.dto;
 
+import com.example.apirestv2.domain.statusPedido.StatusPedido;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -12,7 +13,7 @@ public class PedidoCriacaoDTO {
     @PositiveOrZero
     private Double valorTotal;
 
-    private int statusPedido;
+    private StatusPedido statusPedido;
 
     @NotNull
     @Positive
