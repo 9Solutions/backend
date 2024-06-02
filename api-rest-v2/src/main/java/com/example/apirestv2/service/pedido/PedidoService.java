@@ -4,19 +4,15 @@ import com.example.apirestv2.domain.doador.Doador;
 import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.domain.pedido.repository.PedidoRepository;
 import com.example.apirestv2.service.doador.DoadorService;
-import com.example.apirestv2.service.interfaces.ChangeListener;
 import com.example.apirestv2.service.interfaces.PublisherChange;
-import com.example.apirestv2.service.pedido.dto.PedidoCriacaoDTO;
-import com.example.apirestv2.service.pedido.dto.PedidoMapper;
 import com.example.apirestv2.service.pedido.dto.PedidoPatchDTO;
+import com.example.apirestv2.service.statusPedido.StatusPedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +20,7 @@ public class PedidoService implements PublisherChange {
 
     private final PedidoRepository action;
     private final DoadorService doadorService;
+    private final StatusPedidoService statusPedidoService;
 
     public List<Pedido> listAll(){
         return action.findAll();
@@ -36,7 +33,7 @@ public class PedidoService implements PublisherChange {
     }
 
     public List<Pedido> listByStatus(Integer status){
-        return action.findByStatusPedidoEquals(status);
+        return action.buscarPorStatusPedido(status);
     }
 
     public Pedido create(Pedido novoPedido, Long idDoador){
@@ -52,7 +49,7 @@ public class PedidoService implements PublisherChange {
 
         this.notifyChange(pedido.getDoador());
 
-        pedido.setStatusPedido(change.getStatusChange());
+        pedido.setStatusPedido(statusPedidoService.findById(change.getStatusChange()));
         return action.save(pedido);
     }
 

@@ -105,7 +105,7 @@ public class PedidoServiceTest {
         );
         Integer status = 1;
 
-        Mockito.when(repository.findByStatusPedidoEquals(status)).thenReturn(pedidos);
+        Mockito.when(repository.buscarPorStatusPedido(status)).thenReturn(pedidos);
 
         List<Pedido> pedidosRetorno = service.listByStatus(status);
 
@@ -114,7 +114,7 @@ public class PedidoServiceTest {
         assertFalse(pedidosRetorno.isEmpty());
         assertEquals(pedidos.get(0).getId(), pedidosRetorno.get(0).getId());
 
-        Mockito.verify(repository, Mockito.times(1)).findByStatusPedidoEquals(status);
+        Mockito.verify(repository, Mockito.times(1)).buscarPorStatusPedido(status);
     }
 
     @Test

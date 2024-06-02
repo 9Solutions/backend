@@ -2,6 +2,8 @@ package com.example.apirestv2.domain.pedido;
 
 import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.doador.Doador;
+import com.example.apirestv2.domain.statusPedido.StatusPedido;
+import com.example.apirestv2.service.statusPedido.dto.StatusPedidoListagem;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,8 +30,9 @@ public class Pedido {
     @CreationTimestamp
     private LocalDate dataPedido;
 
-    @Column(name = "fk_status_pedido")
-    private int statusPedido;
+    @ManyToOne
+    @JoinColumn(name = "fk_status_pedido", insertable = true)
+    private StatusPedido statusPedido;
 
     @ManyToOne
     @JoinColumn(name = "fk_doador", insertable = true)
