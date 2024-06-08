@@ -1,7 +1,9 @@
 package com.example.apirestv2.service.pedido;
 
 import com.example.apirestv2.domain.doador.Doador;
+import com.example.apirestv2.domain.pedido.FiltroPedidos;
 import com.example.apirestv2.domain.pedido.Pedido;
+import com.example.apirestv2.domain.pedido.repository.FiltrosPedidosRepository;
 import com.example.apirestv2.domain.pedido.repository.PedidoRepository;
 import com.example.apirestv2.service.doador.DoadorService;
 import com.example.apirestv2.service.interfaces.PublisherChange;
@@ -22,6 +24,8 @@ public class PedidoService implements PublisherChange {
     private final DoadorService doadorService;
     private final StatusPedidoService statusPedidoService;
 
+    private final FiltrosPedidosRepository actionFiltro;
+
     public List<Pedido> listAll(){
         return action.findAll();
     }
@@ -32,8 +36,15 @@ public class PedidoService implements PublisherChange {
         );
     }
 
-    public List<Pedido> listByStatus(Integer status){
-        return action.buscarPorStatusPedido(status);
+    public List<FiltroPedidos> listByStatus(String status, String data, String idPedido){
+        if(status == null || status.isBlank()) status = "%";
+        if(data == null || data.isBlank()){
+            data = "%";
+        } else{
+            data = data + " 00:00:00";
+        }
+        if(idPedido == null || idPedido.isBlank()) idPedido = "%";
+        return actionFiltro.buscaFiltros(idPedido, data, status);
     }
 
     public Pedido create(Pedido novoPedido, Long idDoador){

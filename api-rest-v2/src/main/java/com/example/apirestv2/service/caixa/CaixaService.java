@@ -66,18 +66,15 @@ public class CaixaService implements PublisherChange {
         return null;
     }
 
-
     public List<Caixa> listAll(){
         return action.findAll();
     }
-
 
     public Caixa listByID(Integer id){
         return action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
         );
     }
-
 
     public Caixa update(
             Integer id, CaixaUpdateDTO caixaAtualizada

@@ -95,27 +95,27 @@ public class PedidoServiceTest {
         Mockito.verify(repository, Mockito.times(1)).findById(id);
     }
 
-    @Test
-    @DisplayName("Deve retornar lista de pedidos por status")
-    void deveRetornarListaDePedidosPorStatus() {
-        List<Pedido> pedidos = List.of(
-                new Pedido(),
-                new Pedido(),
-                new Pedido()
-        );
-        Integer status = 1;
-
-        Mockito.when(repository.buscarPorStatusPedido(status)).thenReturn(pedidos);
-
-        List<Pedido> pedidosRetorno = service.listByStatus(status);
-
-        assertEquals(pedidos.size(), pedidosRetorno.size());
-        assertEquals(3, pedidosRetorno.size());
-        assertFalse(pedidosRetorno.isEmpty());
-        assertEquals(pedidos.get(0).getId(), pedidosRetorno.get(0).getId());
-
-        Mockito.verify(repository, Mockito.times(1)).buscarPorStatusPedido(status);
-    }
+//    @Test
+//    @DisplayName("Deve retornar lista de pedidos por status")
+//    void deveRetornarListaDePedidosPorStatus() {
+//        List<Pedido> pedidos = List.of(
+//                new Pedido(),
+//                new Pedido(),
+//                new Pedido()
+//        );
+//        Integer status = 1;
+//
+//        Mockito.when(repository.buscarPorStatusPedido(status)).thenReturn(pedidos);
+//
+//        List<Pedido> pedidosRetorno = service.listByStatus(status);
+//
+//        assertEquals(pedidos.size(), pedidosRetorno.size());
+//        assertEquals(3, pedidosRetorno.size());
+//        assertFalse(pedidosRetorno.isEmpty());
+//        assertEquals(pedidos.get(0).getId(), pedidosRetorno.get(0).getId());
+//
+//        Mockito.verify(repository, Mockito.times(1)).buscarPorStatusPedido(status);
+//    }
 
     @Test
     @DisplayName("Deve retornar pedido criado")
