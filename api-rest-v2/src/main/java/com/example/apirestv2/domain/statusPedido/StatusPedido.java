@@ -14,5 +14,7 @@ public class StatusPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_status_pedido")
     private Integer id;
+
+    @Column(name = "status")
     private String status;
 }

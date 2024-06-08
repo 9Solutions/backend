@@ -10,9 +10,4 @@ import java.util.List;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("SELECT p FROM Pedido p WHERE p.statusPedido.id = :id")
-    List<Pedido> buscarPorStatusPedido(Integer id);
-
 }
