@@ -67,9 +67,8 @@ public class CaixaController {
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
     ){
         Caixa caixa = CaixaMapper.toEntity(novaCaixa);
-        Caixa caixaSalva = service.create(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido());
-        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaSalva);
-        return ResponseEntity.ok(caixaDTO);
+        service.insertQueue(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido());
+        return ResponseEntity.created(null).build();
     }
 
 

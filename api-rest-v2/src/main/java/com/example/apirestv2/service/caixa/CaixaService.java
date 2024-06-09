@@ -18,6 +18,8 @@ import com.example.apirestv2.service.itemCaixa.ItemCaixaService;
 import com.example.apirestv2.service.itemCaixa.dto.ItemCaixaMapper;
 import com.example.apirestv2.service.itemCaixa.dto.ItemsCaixaDTO;
 import com.example.apirestv2.service.pedido.PedidoService;
+import com.example.apirestv2.service.rotina.NovaCaixa;
+import com.example.apirestv2.service.rotina.RotinaCaixa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,30 +43,35 @@ public class CaixaService implements PublisherChange {
     private final PedidoService pedidoService;
     private final EtapaCaixaService etapaService;
     private final DoadorService doadorService;
+    private final RotinaCaixa rotina;
 
-    public Caixa create(
-            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
-    ) {
-        if(!Objects.isNull(novaCaixa)){
-            Pedido pedido = pedidoService.listById(idPedido);
-            novaCaixa.setPedido(pedido);
-            Caixa caixaSalva = action.save(novaCaixa);
-
-            List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(
-                    caixaSalva, listIdsProdutos
-            );
-
-            etapaService.mudarEtapaCaixa(caixaSalva, 1);
-
-            if(madeInsertion.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Itens não cadastrados");
-            } else {
-                caixaSalva.setItens(madeInsertion);
-                return caixaSalva;
-            }
-        }
-        return null;
+    public void insertQueue(Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido) {
+        rotina.colocarNaFila(novaCaixa, listIdsProdutos, idPedido);
     }
+
+//    public Caixa save(
+//            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
+//    ) {
+//        if(!Objects.isNull(novaCaixa)){
+//            Pedido pedido = pedidoService.listById(idPedido);
+//            novaCaixa.setPedido(pedido);
+//            Caixa caixaSalva = action.save(novaCaixa);
+//
+//            List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(
+//                    caixaSalva, listIdsProdutos
+//            );
+//
+//            etapaService.mudarEtapaCaixa(caixaSalva, 1);
+//
+//            if(madeInsertion.isEmpty()){
+//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Itens não cadastrados");
+//            } else {
+//                caixaSalva.setItens(madeInsertion);
+//                return caixaSalva;
+//            }
+//        }
+//        return null;
+//    }
 
     public List<Caixa> listAll(){
         return action.findAll();
