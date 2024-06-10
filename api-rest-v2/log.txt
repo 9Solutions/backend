@@ -284,3 +284,93 @@
 [2024-06-09T21:12:10.428267800] Endpoint: http://127.0.0.1:8080/pedidos/filter Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
 [2024-06-09T21:12:15.505223200] Endpoint: http://127.0.0.1:8080/pedidos/filter Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
 [2024-06-09T21:12:15.550104] Endpoint: http://127.0.0.1:8080/pedidos/filter Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:29:20.515982] Endpoint: http://127.0.0.1:8080/doadores/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:29:25.936537800] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:29:25.992388700] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:29:54.761967800] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:02.834746200] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:12.407768100] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:12.450654] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:19.969465400] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:20.014346] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:47.010678600] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:54.774027400] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:30:59.712252800] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:31:19.284420500] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:32:25.418647800] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:32:42.897340700] Endpoint: http://localhost:8080/pedidos/all-details/2 Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: Não encontrado
+[2024-06-10T17:32:42.934237600] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T17:32:50.196674200] Endpoint: http://localhost:8080/pedidos/all-details/5 Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: JDBC exception executing SQL [select e1_0.fk_id_caixa,e1_0.id_etapa_caixa,e1_0.fk_status,e1_0.update_at from etapa_caixa e1_0 where e1_0.fk_id_caixa=?] [Table 'db_9solutions.etapa_caixa' doesn't exist] [n/a]
+[2024-06-10T17:32:50.204655500] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T17:33:06.875435700] Endpoint: http://localhost:8080/caixas Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: JDBC exception executing SQL [select e1_0.fk_id_caixa,e1_0.id_etapa_caixa,e1_0.fk_status,e1_0.update_at from etapa_caixa e1_0 where e1_0.fk_id_caixa=?] [Table 'db_9solutions.etapa_caixa' doesn't exist] [n/a]
+[2024-06-10T17:33:06.884412400] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T17:50:45.745316300] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T17:51:00.755425800] Endpoint: http://localhost:8080/doadores/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: Usuário inexistente ou senha inválida
+[2024-06-10T17:51:00.761408400] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 401 Exception: 
+[2024-06-10T17:51:06.533319800] Endpoint: http://localhost:8080/doadores Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-10T17:51:08.803738900] Endpoint: http://localhost:8080/doadores/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T17:51:29.981527600] Endpoint: http://localhost:8080/pedidos/all-details/5 Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: Não encontrado
+[2024-06-10T17:51:29.987498300] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T17:51:50.083551800] Endpoint: http://localhost:8080/produtos Método HTTP: POST Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T17:51:50.087503300] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T17:52:00.618407900] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T17:52:04.098392300] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T17:52:51.111288600] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:52:51.114281300] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:52:57.000748500] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:52:57.004736900] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:53:13.207419] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:53:13.219391300] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:53:25.313706500] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:53:25.317696900] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:53:49.052258200] Endpoint: http://localhost:8080/produtos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T17:53:54.036981600] Endpoint: http://localhost:8080/produtos Método HTTP: POST Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T17:53:54.039975500] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T17:54:49.395089500] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T17:57:15.483328300] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T17:57:16.777579400] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T17:57:30.601600100] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:57:30.606584100] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:57:33.757371200] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:57:33.760361800] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T17:57:41.076750200] Endpoint: http://localhost:8080/produtos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T18:08:11.885729300] Endpoint: http://localhost:8080/doadores Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-10T18:08:14.568257200] Endpoint: http://localhost:8080/doadores/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T18:08:25.421638100] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:08:29.506024200] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:08:29.522978900] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:10:54.721511200] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:10:54.735474400] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:11:06.639640700] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:11:06.644623600] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:12:05.858129700] Endpoint: http://localhost:8080/faixa-etaria Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T18:12:10.170435] Endpoint: http://localhost:8080/categorias Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T18:12:15.650299] Endpoint: http://localhost:8080/produtos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-10T18:12:32.830708900] Endpoint: http://localhost:8080/caixas Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:12:36.183239400] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:12:36.186231300] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:12:53.863134700] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:12:53.867124800] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:13:02.929372500] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-10T18:13:07.424546900] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:13:07.427539300] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 400 Exception: 
+[2024-06-10T18:13:22.687726200] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-10T18:13:25.698967900] Endpoint: http://localhost:8080/caixas Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:13:48.126708900] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-10T18:13:51.595855100] Endpoint: http://localhost:8080/caixas Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:13:58.614960100] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 401 Exception: 
+[2024-06-10T18:14:11.251477] Endpoint: http://localhost:8080/caixas Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-10T18:14:16.042130800] Endpoint: http://localhost:8080/caixas Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:14:24.655584200] Endpoint: http://localhost:8080/caixas Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:14:36.367239300] Endpoint: http://localhost:8080/caixas/14 Método HTTP: GET Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T18:14:36.370229500] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T18:14:40.652722200] Endpoint: http://localhost:8080/caixas/1 Método HTTP: GET Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T18:14:40.655678200] Endpoint: http://localhost:8080/error Método HTTP: GET Ip: 127.0.0.1 Status: 404 Exception: 
+[2024-06-10T18:14:51.132008800] Endpoint: http://localhost:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 204 Exception: 
+[2024-06-10T18:22:44.463138800] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: Cannot invoke "com.example.apirestv2.domain.statusPedido.StatusPedido.getId()" because the return value of "com.example.apirestv2.domain.pedido.Pedido.getStatusPedido()" is null
+[2024-06-10T18:22:44.530958100] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T18:24:34.714738500] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: Cannot invoke "com.example.apirestv2.domain.statusPedido.StatusPedido.getId()" because the return value of "com.example.apirestv2.domain.pedido.Pedido.getStatusPedido()" is null
+[2024-06-10T18:24:34.784552700] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T18:27:17.350182600] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: Cannot invoke "com.example.apirestv2.domain.statusPedido.StatusPedido.getId()" because the return value of "com.example.apirestv2.domain.pedido.Pedido.getStatusPedido()" is null
+[2024-06-10T18:27:17.361151800] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-10T18:27:51.702904900] Endpoint: http://localhost:8080/pedidos Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: 
