@@ -12,12 +12,7 @@ import java.util.List;
 public class VwQtdPedidosPorFaixaEtariaService {
     private final VwQtdPedidosPorFaixaEtariaRepository vwQtdPedidosPorFaixaEtariaRepository;
 
-    public List<VwQtdPedidosPorFaixaEtaria> findA ll() {
-        return vwQtdPedidosPorFaixaEtariaRepository.findAll();
-    }
-
-    // Recebe um Integer "Ano" e executa a query com esse ano
-    public List<VwQtdPedidosPorFaixaEtaria> findByAno(Integer ano) {
+    public List<VwQtdPedidosPorFaixaEtaria> findByAnoAndMes(Integer ano) {
         return vwQtdPedidosPorFaixaEtariaRepository.findByAno(ano);
     }
 }

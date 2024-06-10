@@ -12,7 +12,7 @@ import java.util.List;
 public class VwQtdDoacoesPorMesService {
     private final VwQtdDoacoesPorMesRepository vwQtdDoacoesPorMesRepository;
 
-    public List<VwQtdDoacoesPorMes> findAll() {
-        return vwQtdDoacoesPorMesRepository.findAll();
+    public List<VwQtdDoacoesPorMes> findByAnoAndMes(Integer ano, Integer mes) {
+        return vwQtdDoacoesPorMesRepository.findByAnoAndMes(ano, mes);
     }
 }
