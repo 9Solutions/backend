@@ -22,24 +22,6 @@ import java.util.List;
 public class FaixaEtariaController {
     private final FaixaEtariaService service;
 
-    @Operation(summary = "Listar faixas-etárias", description = "Listar faixas etárias", tags = "Faixa Etária")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de faixas etarias"),
-            @ApiResponse(responseCode = "204", description = "Lista vazia"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
-    })
-    @GetMapping
-    public ResponseEntity<List<FaixaEtariaListagemDTO>> listAll(){
-        List<FaixaEtaria> faixaEtarias = service.listAll();
-
-        if(faixaEtarias.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-        List<FaixaEtariaListagemDTO> faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtarias);
-        return ResponseEntity.ok().body(faixaEtariaListagemDTO);
-    }
-
 
     @Operation(summary = "Listar faixas-etária por ID", description = "Listar uam faixas etária pelo ID", tags = "Faixa Etária")
     @ApiResponses(value = {
@@ -48,7 +30,7 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping
-    public ResponseEntity<FaixaEtariaListagemDTO> listById(@PathVariable Integer id){
+    public ResponseEntity<FaixaEtariaListagemDTO> listById(@PathVariable Integer id) {
         FaixaEtaria faixaEtaria = service.findById(id);
         FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtaria);
         return ResponseEntity.ok(faixaEtariaListagemDTO);
@@ -63,7 +45,7 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PostMapping
-    public ResponseEntity<FaixaEtariaListagemDTO> create(@Valid @RequestBody FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO){
+    public ResponseEntity<FaixaEtariaListagemDTO> create(@Valid @RequestBody FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO) {
         FaixaEtaria faixaEtaria = FaixaEtariaMapper.toEntity(faixaEtariaCriacaoDTO);
         FaixaEtaria faixaEtariaSalva = service.create(faixaEtaria);
         FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtariaSalva);
@@ -82,7 +64,7 @@ public class FaixaEtariaController {
     public ResponseEntity<FaixaEtariaListagemDTO> update(
             @Valid @RequestBody FaixaEtariaUpdateDTO faixaEtariaUpdateDTO,
             @PathVariable Integer id
-    ){
+    ) {
         FaixaEtaria faixaEtariaAtualizada = service.update(id, faixaEtariaUpdateDTO);
         FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtariaAtualizada);
         return ResponseEntity.ok(faixaEtariaListagemDTO);
@@ -96,7 +78,7 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @DeleteMapping
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

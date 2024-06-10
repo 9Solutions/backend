@@ -1,9 +1,6 @@
 package com.example.apirestv2.domain.vwCaixasParaEntregar;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -11,7 +8,6 @@ import lombok.Data;
 @Table(name = "vw_caixas_para_entregar", schema = "db_9solutions")
 public class VwCaixasParaEntregar {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "quantidade_caixas_para_entregar")
     private Integer qtdCaixasParaEntregar;
 }
