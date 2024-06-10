@@ -1,10 +1,9 @@
-package com.example.apirestv2.service;
+package com.example.apirestv2.service.caixa;
 
 import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.caixa.repository.CaixaRepository;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.pedido.Pedido;
-import com.example.apirestv2.service.caixa.CaixaService;
 import com.example.apirestv2.service.itemCaixa.ItemCaixaService;
 import com.example.apirestv2.service.pedido.PedidoService;
 import org.junit.jupiter.api.DisplayName;
@@ -14,14 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CaixaServiceTest {
@@ -84,7 +83,7 @@ public class CaixaServiceTest {
 
     @Test
     @DisplayName("Retorna lista vazia")
-    void deveRetornarListaVazia() {
+    void retornaListaDeCaixasVazia() {
         List<Caixa> caixas = List.of();
 
         Mockito.when(service.listAll()).thenReturn(caixas);

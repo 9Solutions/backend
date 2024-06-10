@@ -1,5 +1,6 @@
 package com.example.apirestv2.api.controller;
 
+import com.example.apirestv2.domain.pedido.FiltroPedidos;
 import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.service.pedido.PedidoService;
 import com.example.apirestv2.service.pedido.dto.*;
@@ -52,22 +53,26 @@ public class PedidoController {
     }
 
 
-    @Operation(summary = "Listar por STATUS do pedido", description = "Método que retorna os dados dos pedidos de forma detalhada", tags = "Pedidos")
+    @Operation(summary = "Listar os dados por filtros", description = "Método que retorna os dados dos pedidos aplicando os filtros", tags = "Pedidos")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de pedidos detalhada"),
+            @ApiResponse(responseCode = "200", description = "Lista de pedidos"),
             @ApiResponse(responseCode = "204", description = "Lista vazia"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
-    @GetMapping("/filter-status")
-    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listByStatus(
-            @RequestParam Integer statusType
+    @GetMapping("/filter")
+    public ResponseEntity<List<PedidoListagemSimplesDTO>> listByStatus(
+            @RequestParam String status,
+            @RequestParam String data,
+            @RequestParam String idPedido
     ){
-        List<Pedido> pedidos =  service.listByStatus(statusType);
+        List<Pedido> pedidos =  service.listByStatus(status, data, idPedido);
         if(pedidos.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
-        return ResponseEntity.ok(pedidosDTO);
+
+        List<PedidoListagemSimplesDTO> pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedidos);
+
+        return ResponseEntity.ok(pedidoDTO);
     }
 
 
@@ -77,13 +82,11 @@ public class PedidoController {
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
-    @GetMapping("/all-details/{id}")
-    public ResponseEntity<PedidoListagemDetalhadaDTO> listAllDetailsById(
-            @PathVariable Integer id
-    ) {
-        Pedido pedidoPorId = service.listById(id);
-        PedidoListagemDetalhadaDTO pedidoDTO = PedidoMapper.toListagemDetalhadaDTO(pedidoPorId);
-        return ResponseEntity.ok(pedidoDTO);
+    @GetMapping("/all-details")
+    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetails() {
+        List<Pedido> pedidos = service.listAll();
+        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
+        return ResponseEntity.ok(pedidosDTO);
     }
 
 

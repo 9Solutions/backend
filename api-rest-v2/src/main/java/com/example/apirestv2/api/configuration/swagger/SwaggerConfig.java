@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Configuration
 public class SwaggerConfig {
 
-    @GetMapping("/")
-    public void redirectSwagger(
-            HttpServletRequest request, HttpServletResponse response
-    ) {
-        String url = "swagger-ui/index.html#/";
-        response.setHeader("Location", url);
-        response.setStatus(302);
-    }
+//    @GetMapping("/")
+//    public void redirectSwagger(
+//            HttpServletRequest request, HttpServletResponse response
+//    ) {
+//        String url = "swagger-ui/index.html#/";
+//        response.setHeader("Location", url);
+//        response.setStatus(302);
+//    }
 
     @Bean
     public OpenAPI customAPI() {

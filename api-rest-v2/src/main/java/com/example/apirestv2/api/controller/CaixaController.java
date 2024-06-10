@@ -67,9 +67,8 @@ public class CaixaController {
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
     ){
         Caixa caixa = CaixaMapper.toEntity(novaCaixa);
-        Caixa caixaSalva = service.create(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido());
-        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaSalva);
-        return ResponseEntity.ok(caixaDTO);
+        service.insertQueue(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido());
+        return ResponseEntity.created(null).build();
     }
 
 
@@ -88,6 +87,15 @@ public class CaixaController {
         Caixa caixaAtualizada = service.update(id, novosDados);
         CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaAtualizada);
         return ResponseEntity.ok(caixaDTO);
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> statusChange(
+            @RequestParam Integer idCaixa,
+            @RequestParam Integer status
+    ) {
+        service.statusChange(idCaixa, status);
+        return ResponseEntity.ok(null);
     }
 
 }

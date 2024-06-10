@@ -6,10 +6,14 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
-    @Query("SELECT p FROM Pedido p WHERE concat(p.id, '') LIKE :idPedido AND concat(p.dataPedido, '') LIKE :dataPedido AND p.statusPedido.status LIKE :status")
-    List<Pedido> buscaFiltros(String idPedido, String dataPedido, String status);
+@Repository
+public interface FiltrosPedidosRepository extends JpaRepository<FiltroPedidos, Integer> {
+
+    @Query("SELECT f FROM FiltroPedidos f WHERE f.idPedido LIKE :idPedido AND f.dataPedido LIKE :dataPedido AND f.statusPedido.status LIKE :status")
+    List<FiltroPedidos> buscaFiltros(String idPedido, String dataPedido, String status);
+
 }
