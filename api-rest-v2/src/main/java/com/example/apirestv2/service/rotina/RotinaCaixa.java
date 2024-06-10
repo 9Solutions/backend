@@ -40,6 +40,7 @@ public class RotinaCaixa {
     @Scheduled(cron = "1 * * * * *")
     public void saveInDatabase() {
         NovaCaixa caixaDaVez = filaDeCaixas.poll();
+        if (Objects.isNull(caixaDaVez)) return;
         this.save(caixaDaVez.getCaixas(), caixaDaVez.getItens(), caixaDaVez.getIdsPedidos());
     }
 

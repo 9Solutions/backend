@@ -36,15 +36,15 @@ public class PedidoService implements PublisherChange {
         );
     }
 
-    public List<FiltroPedidos> listByStatus(String status, String data, String idPedido){
+    public List<Pedido> listByStatus(String status, String data, String idPedido){
         if(status == null || status.isBlank()) status = "%";
         if(data == null || data.isBlank()){
             data = "%";
         } else{
-            data = data + " 00:00:00";
+            data = data + "%";
         }
         if(idPedido == null || idPedido.isBlank()) idPedido = "%";
-        return actionFiltro.buscaFiltros(idPedido, data, status);
+        return action.buscaFiltros(idPedido, data, status);
     }
 
     public Pedido create(Pedido novoPedido, Long idDoador){

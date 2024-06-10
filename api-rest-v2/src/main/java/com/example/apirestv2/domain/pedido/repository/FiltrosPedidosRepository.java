@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface FiltrosPedidosRepository extends JpaRepository<FiltroPedidos, Integer> {
 
-    @Query("SELECT f FROM FiltroPedidos f WHERE f.idPedido LIKE :idPedido AND f.dataPedido LIKE :dataPedido AND f.status LIKE :status")
+    @Query("SELECT f FROM FiltroPedidos f WHERE f.idPedido LIKE :idPedido AND f.dataPedido LIKE :dataPedido AND f.statusPedido.status LIKE :status")
     List<FiltroPedidos> buscaFiltros(String idPedido, String dataPedido, String status);
 
 }

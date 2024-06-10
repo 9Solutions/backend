@@ -29,25 +29,12 @@ public class FiltroPedidos {
     @Column(name = "valor_total")
     private String valorPedido;
 
-    @Column(name = "fk_doador")
-    private String fkDoador;
+    @ManyToOne
+    @JoinColumn(name = "id_status_pedido", insertable = true)
+    private StatusPedido statusPedido;
 
-    @Column(name = "id_status_pedido")
-    private String idStatusPedido;
-
-    @Column(name = "id_doador")
-    private String idDoador;
-
-    @Column(name = "nome_completo")
-    private String nomeDoador;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "telefone")
-    private String telefone;
-
-    @Column(name="status")
-    private String status;
+    @ManyToOne
+    @JoinColumn(name = "fk_doador", insertable = true)
+    private Doador doador;
 
 }

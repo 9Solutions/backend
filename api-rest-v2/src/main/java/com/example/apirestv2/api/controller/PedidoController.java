@@ -60,16 +60,19 @@ public class PedidoController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
     @GetMapping("/filter")
-    public ResponseEntity<List<FiltroPedidos>> listByStatus(
+    public ResponseEntity<List<PedidoListagemSimplesDTO>> listByStatus(
             @RequestParam String status,
             @RequestParam String data,
             @RequestParam String idPedido
     ){
-        List<FiltroPedidos> pedidos =  service.listByStatus(status, data, idPedido);
+        List<Pedido> pedidos =  service.listByStatus(status, data, idPedido);
         if(pedidos.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(pedidos);
+
+        List<PedidoListagemSimplesDTO> pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedidos);
+
+        return ResponseEntity.ok(pedidoDTO);
     }
 
 
