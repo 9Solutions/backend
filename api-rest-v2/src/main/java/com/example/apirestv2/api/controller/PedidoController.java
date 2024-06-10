@@ -82,13 +82,11 @@ public class PedidoController {
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
-    @GetMapping("/all-details/{id}")
-    public ResponseEntity<PedidoListagemDetalhadaDTO> listAllDetailsById(
-            @PathVariable Integer id
-    ) {
-        Pedido pedidoPorId = service.listById(id);
-        PedidoListagemDetalhadaDTO pedidoDTO = PedidoMapper.toListagemDetalhadaDTO(pedidoPorId);
-        return ResponseEntity.ok(pedidoDTO);
+    @GetMapping("/all-details")
+    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetails() {
+        List<Pedido> pedidos = service.listAll();
+        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
+        return ResponseEntity.ok(pedidosDTO);
     }
 
 
