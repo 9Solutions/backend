@@ -5,6 +5,7 @@ import com.example.apirestv2.domain.pedido.FiltroPedidos;
 import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.domain.pedido.repository.FiltrosPedidosRepository;
 import com.example.apirestv2.domain.pedido.repository.PedidoRepository;
+import com.example.apirestv2.domain.statusPedido.StatusPedido;
 import com.example.apirestv2.service.doador.DoadorService;
 import com.example.apirestv2.service.interfaces.PublisherChange;
 import com.example.apirestv2.service.pedido.dto.PedidoPatchDTO;
@@ -49,7 +50,9 @@ public class PedidoService implements PublisherChange {
 
     public Pedido create(Pedido novoPedido, Long idDoador){
         Doador doador = doadorService.buscarPorId(idDoador);
+        StatusPedido statusPedido = statusPedidoService.findById(novoPedido.getStatusPedido().getId());
         novoPedido.setDoador(doador);
+        novoPedido.setStatusPedido(statusPedido);
         return action.save(novoPedido);
     }
 

@@ -13,7 +13,7 @@ public class PedidoCriacaoDTO {
     @PositiveOrZero
     private Double valorTotal;
 
-    private StatusPedido statusPedido;
+    private Integer statusPedido;
 
     @NotNull
     @Positive
