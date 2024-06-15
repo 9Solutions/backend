@@ -49,29 +49,29 @@ public class CaixaService implements PublisherChange {
         rotina.colocarNaFila(novaCaixa, listIdsProdutos, idPedido);
     }
 
-//    public Caixa save(
-//            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
-//    ) {
-//        if(!Objects.isNull(novaCaixa)){
-//            Pedido pedido = pedidoService.listById(idPedido);
-//            novaCaixa.setPedido(pedido);
-//            Caixa caixaSalva = action.save(novaCaixa);
-//
-//            List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(
-//                    caixaSalva, listIdsProdutos
-//            );
-//
-//            etapaService.mudarEtapaCaixa(caixaSalva, 1);
-//
-//            if(madeInsertion.isEmpty()){
-//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Itens não cadastrados");
-//            } else {
-//                caixaSalva.setItens(madeInsertion);
-//                return caixaSalva;
-//            }
-//        }
-//        return null;
-//    }
+    public Caixa save(
+            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
+    ) {
+        if(!Objects.isNull(novaCaixa)){
+            Pedido pedido = pedidoService.listById(idPedido);
+            novaCaixa.setPedido(pedido);
+            Caixa caixaSalva = action.save(novaCaixa);
+
+            List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(
+                    caixaSalva, listIdsProdutos
+            );
+
+            etapaService.mudarEtapaCaixa(caixaSalva, 1);
+
+            if(madeInsertion.isEmpty()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Itens não cadastrados");
+            } else {
+                caixaSalva.setItens(madeInsertion);
+                return caixaSalva;
+            }
+        }
+        return null;
+    }
 
     public List<Caixa> listAll(){
         return action.findAll();

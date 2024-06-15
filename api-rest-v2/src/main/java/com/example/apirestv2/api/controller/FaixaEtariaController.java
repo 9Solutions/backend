@@ -95,7 +95,7 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();

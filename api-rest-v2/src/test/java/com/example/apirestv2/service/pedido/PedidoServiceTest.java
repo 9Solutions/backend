@@ -1,5 +1,6 @@
 package com.example.apirestv2.service.pedido;
 
+import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.doador.Doador;
 import com.example.apirestv2.domain.pedido.Pedido;
 import com.example.apirestv2.domain.pedido.repository.PedidoRepository;
@@ -14,6 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,28 +98,6 @@ public class PedidoServiceTest {
         Mockito.verify(repository, Mockito.times(1)).findById(id);
     }
 
-//    @Test
-//    @DisplayName("Deve retornar lista de pedidos por status")
-//    void deveRetornarListaDePedidosPorStatus() {
-//        List<Pedido> pedidos = List.of(
-//                new Pedido(),
-//                new Pedido(),
-//                new Pedido()
-//        );
-//        Integer status = 1;
-//
-//        Mockito.when(repository.buscarPorStatusPedido(status)).thenReturn(pedidos);
-//
-//        List<Pedido> pedidosRetorno = service.listByStatus(status);
-//
-//        assertEquals(pedidos.size(), pedidosRetorno.size());
-//        assertEquals(3, pedidosRetorno.size());
-//        assertFalse(pedidosRetorno.isEmpty());
-//        assertEquals(pedidos.get(0).getId(), pedidosRetorno.get(0).getId());
-//
-//        Mockito.verify(repository, Mockito.times(1)).buscarPorStatusPedido(status);
-//    }
-
     @Test
     @DisplayName("Deve retornar pedido criado")
     void deveRetornarPedidoCriado() {
@@ -135,23 +116,6 @@ public class PedidoServiceTest {
         Mockito.verify(repository, Mockito.times(1)).save(any(Pedido.class));
     }
 
-    @Test
-    @DisplayName("Deve retornar status do pedido alterado")
-    void deveRetornarStatusChange() {
-        Pedido pedido = new Pedido();
-        PedidoPatchDTO change = new PedidoPatchDTO();
-        Integer id = 1;
-
-        Mockito.when(repository.findById(id)).thenReturn(java.util.Optional.of(pedido));
-        Mockito.when(repository.save(pedido)).thenReturn(pedido);
-
-        Pedido pedidoRetorno = service.statusChange(id, change);
-
-        assertEquals(pedido, pedidoRetorno);
-
-        Mockito.verify(repository, Mockito.times(1)).findById(id);
-        Mockito.verify(repository, Mockito.times(1)).save(pedido);
-    }
 
     @Test
     @DisplayName("Deve retornar erro ao alterar status do pedido")

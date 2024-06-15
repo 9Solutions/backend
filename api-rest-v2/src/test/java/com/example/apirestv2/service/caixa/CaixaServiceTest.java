@@ -37,6 +37,10 @@ public class CaixaServiceTest {
     @Mock
     private PedidoService pedidoService;
 
+    @Mock
+    private EtapaCaixaService etapaService;
+
+
     @Test
     @DisplayName("Deve retornar a caixa criada")
     void deveRetornarCaixaCriada() {
@@ -49,10 +53,12 @@ public class CaixaServiceTest {
 
         Mockito.when(repository.save(any(Caixa.class))).thenReturn(caixa);
 
+        Mockito.when(etapaService.mudarEtapaCaixa(any(Caixa.class), any(Integer.class))).thenReturn(null);
+
         List<ItemCaixa> items = Arrays.asList(new ItemCaixa(), new ItemCaixa(), new ItemCaixa());
         Mockito.when(itemCaixaService.insertItems(any(Caixa.class), any(int[].class))).thenReturn(items);
 
-        Caixa caixaRetorno = service.create(caixa, listIdsProdutos, idPedido);
+        Caixa caixaRetorno = service.save(caixa, listIdsProdutos, idPedido);
 
         assertEquals(caixa.getId(), caixaRetorno.getId());
 
@@ -128,7 +134,9 @@ public class CaixaServiceTest {
         List<ItemCaixa> items = Arrays.asList(new ItemCaixa(), new ItemCaixa(), new ItemCaixa());
         Mockito.when(itemCaixaService.insertItems(any(Caixa.class), any(int[].class))).thenReturn(items);
 
-        Caixa caixaRetorno = service.create(caixaNova, listIdsProdutos, idPedido);
+        Mockito.when(etapaService.mudarEtapaCaixa(any(Caixa.class), any(Integer.class))).thenReturn(null);
+
+        Caixa caixaRetorno = service.save(caixaNova, listIdsProdutos, idPedido);
 
         assertEquals(caixa.getId(), caixaRetorno.getId());
         Mockito.verify(repository, Mockito.times(1)).save(any(Caixa.class));
