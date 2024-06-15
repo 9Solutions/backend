@@ -1,9 +1,6 @@
-package com.example.apirestv2.api.configuration.security;
+package com.example.apirestv2.api.configuration.securityDoadores;
 
-import com.example.apirestv2.api.configuration.security.AutenticacaoEntryPoint;
-import com.example.apirestv2.api.configuration.security.AutenticacaoFilter;
-import com.example.apirestv2.api.configuration.security.AutenticacaoProvider;
-import com.example.apirestv2.api.configuration.security.jwt.GerenciadorTokenJwt;
+import com.example.apirestv2.api.configuration.securityDoadores.jwt.GerenciadorTokenJwt;
 import com.example.apirestv2.service.doador.autenticacao.AutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -62,6 +59,9 @@ public class SecurityConfiguracao {
             // Endpoints de DOADORES
             new AntPathRequestMatcher("/doadores/login/**"),
             new AntPathRequestMatcher("/doadores/**"),
+            // Endpoints de dashUsers
+            new AntPathRequestMatcher("/dashUsers/login/**"),
+            new AntPathRequestMatcher("/dashUsers/**"),
             // Endpoints de BANCOS AUTORIZADOS
             new AntPathRequestMatcher("/bancos-autorizados"),
             new AntPathRequestMatcher("/bancos-autorizados/ordenado-nome"),
