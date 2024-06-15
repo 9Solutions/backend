@@ -83,10 +83,10 @@ public class PedidoController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
     @GetMapping("/all-details")
-    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetails() {
+    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetailsById() {
         List<Pedido> pedidos = service.listAll();
-        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
-        return ResponseEntity.ok(pedidosDTO);
+        List<PedidoListagemDetalhadaDTO> pedidoDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
+        return ResponseEntity.ok(pedidoDTO);
     }
 
 

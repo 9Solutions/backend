@@ -172,54 +172,11 @@ class FaixaEtariaServiceTest {
         Mockito.verify(repository, Mockito.times(1)).save(faixaEtaria);
     }
 
-//    @Test
-//    @DisplayName("Update: id existente no banco e passei o objeto, atualiza com sucesso a Faixa Etaria")
-//    void updateAtualizaComSucesso() {
-//        // GIVEN
-//        Integer idInformado = 1;
-//
-//        FaixaEtariaUpdateDTO faixaEtariaUpdate = new FaixaEtariaUpdateDTO();
-//        faixaEtariaUpdate.setFaixaNome("De 9 a 14");
-//        faixaEtariaUpdate.setLimiteInferior(9);
-//        faixaEtariaUpdate.setLimiteSuperior(14);
-//
-//        FaixaEtaria faixaEtariaAtualizada = new FaixaEtaria();
-//        faixaEtariaAtualizada.setId(idInformado);
-//        faixaEtariaAtualizada.setFaixaNome(faixaEtariaUpdate.getFaixaNome());
-//        faixaEtariaAtualizada.setLimiteInferior(faixaEtariaUpdate.getLimiteInferior());
-//        faixaEtariaAtualizada.setLimiteSuperior(faixaEtariaUpdate.getLimiteSuperior());
-//
-//        // WHEN
-//        Mockito.when(repository.existsById(idInformado)).thenReturn(true);
-//        Mockito.when(repository.save(Mockito.any(FaixaEtaria.class))).thenReturn(faixaEtariaAtualizada);
-//
-//        // THEN
-//        FaixaEtaria resposta = service.update(idInformado, faixaEtariaUpdate);
-//
-//        // ASSERT
-//        assertEquals(idInformado, resposta.getId());
-//        assertEquals(faixaEtariaUpdate.getFaixaNome(), resposta.getFaixaNome());
-//        assertEquals(faixaEtariaUpdate.getLimiteInferior(), resposta.getLimiteInferior());
-//        assertEquals(faixaEtariaUpdate.getLimiteSuperior(), resposta.getLimiteSuperior());
-//
-//        Mockito.verify(repository, Mockito.times(1)).existsById(idInformado);
-//        Mockito.verify(repository, Mockito.times(1)).save(Mockito.any(FaixaEtaria.class));
-//    }
-
 
 
     @Test
     @DisplayName("Update: método não encontra o id e retorna uma exceção.")
     void updateNaoEncontraId() {
-//        // Given
-//        Optional<FaixaEtaria> faixaEtaria = Optional.empty();
-//        Integer id = 900;
-//        // when
-//        Mockito.when(repository.findById(id)).thenReturn(faixaEtaria);
-//
-//        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class, () -> service.findById(id));
-//        assertEquals("Não encontrado",responseStatusException.getMessage());
-
         Integer id = 1;
         FaixaEtariaUpdateDTO faixaEtariaUpdateDTO = new FaixaEtariaUpdateDTO();
         faixaEtariaUpdateDTO.setFaixaNome("Nova Faixa");

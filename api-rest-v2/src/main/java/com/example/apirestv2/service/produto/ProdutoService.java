@@ -40,7 +40,7 @@ public class ProdutoService {
     private CategoriaRepository categoriaRepository;
 
     public List<Produto> listAll() {
-        return action.findAll();
+        return action.produtosAtivos();
     }
 
     public Produto findById(Integer id) {
