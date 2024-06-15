@@ -4,6 +4,7 @@ import com.example.apirestv2.domain.caixa.Caixa;
 import com.example.apirestv2.domain.caixa.EtapaCaixa;
 import com.example.apirestv2.domain.itemCaixa.ItemCaixa;
 import com.example.apirestv2.domain.pedido.Pedido;
+import com.example.apirestv2.domain.statusPedido.StatusPedido;
 import com.example.apirestv2.service.caixa.dto.CaixaListagemDTO;
 
 import java.util.ArrayList;
@@ -101,9 +102,12 @@ public class PedidoMapper {
 
     public static Pedido toEntity(PedidoCriacaoDTO dto) {
         Pedido pedido = new Pedido();
-        pedido.setStatusPedido(dto.getStatusPedido());
         pedido.setValorTotal(dto.getValorTotal());
         pedido.setCaixas(new ArrayList<>());
+
+        StatusPedido statusPedido = new StatusPedido();
+        statusPedido.setId(dto.getStatusPedido());
+        pedido.setStatusPedido(statusPedido);
         return pedido;
     }
 
