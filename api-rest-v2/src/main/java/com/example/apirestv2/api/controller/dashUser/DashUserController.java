@@ -1,5 +1,10 @@
 package com.example.apirestv2.api.controller.dashUser;
 
+import com.example.apirestv2.service.dashUser.DashUserService;
+import com.example.apirestv2.service.dashUser.autenticacao.dto.DashUserLoginDTO;
+import com.example.apirestv2.service.dashUser.autenticacao.dto.DashUserTokenDTO;
+import com.example.apirestv2.service.dashUser.dto.DashUserAlteracaoSenhaDTO;
+import com.example.apirestv2.service.dashUser.dto.DashUserCriacaoDTO;
 import com.example.apirestv2.service.doador.DoadorService;
 import com.example.apirestv2.service.doador.autenticacao.dto.DoadorLoginDTO;
 import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
@@ -27,7 +32,7 @@ public class DashUserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuário da Dashboard cadastrado"),
     })
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid DoadorCriacaoDTO doadorCriacaoDto) {
+    public ResponseEntity<Void> cadastrar(@RequestBody @Valid DashUserCriacaoDTO doadorCriacaoDto) {
         this.dashUserService.cadastrar(doadorCriacaoDto);
         return ResponseEntity.status(201).build();
     }
@@ -40,8 +45,8 @@ public class DashUserController {
             @ApiResponse(responseCode = "404", description = "Email do usuário não cadastrado"),
     })
     @PostMapping("/login")
-    public ResponseEntity<DoadorTokenDTO> login(@RequestBody DoadorLoginDTO doadorLoginDTO) {
-        DoadorTokenDTO doadorTokenDto = this.dashUserService.login(doadorLoginDTO);
+    public ResponseEntity<DashUserTokenDTO> login(@RequestBody DashUserLoginDTO doadorLoginDTO) {
+        DashUserTokenDTO doadorTokenDto = this.dashUserService.login(doadorLoginDTO);
 
         return ResponseEntity.status(200).body(doadorTokenDto);
     }
@@ -54,7 +59,7 @@ public class DashUserController {
             @ApiResponse(responseCode = "401", description = "Token inválido"),
             @ApiResponse(responseCode = "404", description = "Email do usuário não cadastrado"),
     })
-    public ResponseEntity<String> alterarSenha(@RequestBody DoadorAlteracaoSenhaDTO alterarSenhaDTO, Principal principal) {
+    public ResponseEntity<String> alterarSenha(@RequestBody DashUserAlteracaoSenhaDTO alterarSenhaDTO, Principal principal) {
         try {
             String email = principal.getName();
             dashUserService.alterarSenha(email, alterarSenhaDTO);

@@ -1,4 +1,4 @@
-package com.example.apirestv2.api.configuration.security;
+package com.example.apirestv2.api.configuration.securityDash;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class AutenticacaoEntryPoint implements AuthenticationEntryPoint {
+public class DashAutenticacaoEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         if (authException.getClass().equals(BadCredentialsException.class) ||

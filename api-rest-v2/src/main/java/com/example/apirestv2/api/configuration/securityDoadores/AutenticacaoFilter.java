@@ -1,6 +1,6 @@
-package com.example.apirestv2.api.configuration.security;
+package com.example.apirestv2.api.configuration.securityDoadores;
 
-import com.example.apirestv2.api.configuration.security.jwt.GerenciadorTokenJwt;
+import com.example.apirestv2.api.configuration.securityDoadores.jwt.GerenciadorTokenJwt;
 import com.example.apirestv2.service.doador.autenticacao.AutenticacaoService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

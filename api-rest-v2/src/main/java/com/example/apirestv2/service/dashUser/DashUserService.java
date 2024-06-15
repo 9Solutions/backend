@@ -1,13 +1,13 @@
-package com.example.apirestv2.service.doador;
+package com.example.apirestv2.service.dashUser;
 
 import com.example.apirestv2.api.configuration.securityDoadores.jwt.GerenciadorTokenJwt;
-import com.example.apirestv2.domain.doador.Doador;
-import com.example.apirestv2.domain.doador.repository.DoadorRepository;
-import com.example.apirestv2.service.doador.autenticacao.dto.DoadorLoginDTO;
-import com.example.apirestv2.service.doador.autenticacao.dto.DoadorTokenDTO;
-import com.example.apirestv2.service.doador.dto.DoadorAlteracaoSenhaDTO;
-import com.example.apirestv2.service.doador.dto.DoadorCriacaoDTO;
-import com.example.apirestv2.service.doador.dto.mapper.DoadorMapper;
+import com.example.apirestv2.domain.dashUser.DashUser;
+import com.example.apirestv2.domain.dashUser.repository.DashUserRepository;
+import com.example.apirestv2.service.dashUser.autenticacao.dto.DashUserLoginDTO;
+import com.example.apirestv2.service.dashUser.autenticacao.dto.DashUserTokenDTO;
+import com.example.apirestv2.service.dashUser.dto.DashUserAlteracaoSenhaDTO;
+import com.example.apirestv2.service.dashUser.dto.DashUserCriacaoDTO;
+import com.example.apirestv2.service.dashUser.dto.mapper.DashUserMapper;
 import com.example.apirestv2.service.emailService.EmailService;
 import com.example.apirestv2.service.interfaces.ChangeListener;
 import lombok.RequiredArgsConstructor;
@@ -23,42 +23,41 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
-public class DoadorService implements ChangeListener {
-
-    private final DoadorRepository doadorRepository;
+public class DashUserService implements ChangeListener {
+    private final DashUserRepository dashUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
-    public void cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
+    public void cadastrar(DashUserCriacaoDTO doadorCriacaoDto) {
         System.out.println(doadorCriacaoDto);
-        final Doador novoDoador = DoadorMapper.toEntity(doadorCriacaoDto);
+        final DashUser novoDoador = DashUserMapper.toEntity(doadorCriacaoDto);
 
         String senhaCriptografada = passwordEncoder.encode(novoDoador.getSenha());
         novoDoador.setSenha(senhaCriptografada);
 
-        this.doadorRepository.save(novoDoador);
+        this.dashUserRepository.save(novoDoador);
     }
 
-    public DoadorTokenDTO login(DoadorLoginDTO doadorLoginDto) {
+    public DashUserTokenDTO login(DashUserLoginDTO dashUserLoginDto) {
 
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
-                doadorLoginDto.getEmail(), doadorLoginDto.getSenha());
+                dashUserLoginDto.getEmail(), dashUserLoginDto.getSenha());
 
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-        Doador doadorLogado = doadorRepository.findByEmail(doadorLoginDto.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Email do doador não cadastrado", null));
+        DashUser doadorLogado = dashUserRepository.findByEmail(dashUserLoginDto.getEmail()).orElseThrow(() -> new ResponseStatusException(404, "Email do usuário não cadastrado", null));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         final String token = gerenciadorTokenJwt.generateToken(authentication);
 
-        return DoadorMapper.toTokenDto(doadorLogado, token);
+        return DashUserMapper.toTokenDto(doadorLogado, token);
     }
 
-    public void alterarSenha(String email, DoadorAlteracaoSenhaDTO alterarSenhaDTO) throws Exception {
-        Doador doador = doadorRepository.findByEmail(email)
+    public void alterarSenha(String email, DashUserAlteracaoSenhaDTO alterarSenhaDTO) throws Exception {
+        DashUser doador = dashUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Doador não encontrado"));
 
         if (!passwordEncoder.matches(alterarSenhaDTO.getSenhaAtual(), doador.getSenha())) {
@@ -70,11 +69,11 @@ public class DoadorService implements ChangeListener {
         }
 
         doador.setSenha(passwordEncoder.encode(alterarSenhaDTO.getNovaSenha()));
-        doadorRepository.save(doador);
+        dashUserRepository.save(doador);
     }
 
-    public Doador buscarPorId(Long id) {
-        return doadorRepository.findById(id).orElseThrow(
+    public DashUser buscarPorId(Long id) {
+        return dashUserRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
     }
@@ -84,5 +83,4 @@ public class DoadorService implements ChangeListener {
         String mensagem = String.format("Atualização: O(a) %s teve o status alterado", eventType);
         emailService.sendMail(email, "Status alterado", mensagem);
     }
-
 }

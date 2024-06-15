@@ -457,3 +457,14 @@
 [2024-06-10T20:28:51.758481] Endpoint: http://127.0.0.1:8080/pedidos/all-details Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
 [2024-06-10T20:28:53.757775600] Endpoint: http://127.0.0.1:8080/pedidos Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
 [2024-06-10T20:28:53.772733500] Endpoint: http://127.0.0.1:8080/pedidos/all-details Método HTTP: GET Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-15T18:13:48.832034500] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 401 Exception: 
+[2024-06-15T18:14:12.472244200] Endpoint: http://localhost:8080/doadores/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: 
+[2024-06-15T18:14:27.388318800] Endpoint: http://localhost:8080/dashUsers Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: could not execute statement [Table 'db_9solutions.dash_user' doesn't exist] [insert into dash_user (email,senha) values (?,?)]; SQL [insert into dash_user (email,senha) values (?,?)]
+[2024-06-15T18:14:27.415301300] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-15T18:18:43.551205100] Endpoint: http://localhost:8080/dashUsers Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-15T18:24:56.826184700] Endpoint: http://localhost:8080/dashUsers/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: JDBC exception executing SQL [select du1_0.id_dash_user,du1_0.email,du1_0.senha from dash_user du1_0 where du1_0.email=?] [Unknown column 'du1_0.id_dash_user' in 'field list'] [n/a]; SQL [n/a]
+[2024-06-15T18:24:56.941117500] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-15T18:25:45.654105500] Endpoint: http://localhost:8080/dashUsers/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: JDBC exception executing SQL [select du1_0.id_dash_user,du1_0.email,du1_0.senha from dash_user du1_0 where du1_0.email=?] [Unknown column 'du1_0.id_dash_user' in 'field list'] [n/a]; SQL [n/a]
+[2024-06-15T18:25:45.666101400] Endpoint: http://localhost:8080/error Método HTTP: POST Ip: 127.0.0.1 Status: 500 Exception: 
+[2024-06-15T18:31:08.788649] Endpoint: http://localhost:8080/dashUsers Método HTTP: POST Ip: 127.0.0.1 Status: 201 Exception: 
+[2024-06-15T18:31:14.054285700] Endpoint: http://localhost:8080/dashUsers/login Método HTTP: POST Ip: 127.0.0.1 Status: 200 Exception: 

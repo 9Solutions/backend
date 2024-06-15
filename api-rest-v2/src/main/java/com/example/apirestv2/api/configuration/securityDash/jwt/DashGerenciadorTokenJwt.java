@@ -1,6 +1,5 @@
-package com.example.apirestv2.api.configuration.security.jwt;
+package com.example.apirestv2.api.configuration.securityDash.jwt;
 
-import com.sun.jdi.PrimitiveValue;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +14,7 @@ import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class GerenciadorTokenJwt {
+public class DashGerenciadorTokenJwt {
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.validity}")
