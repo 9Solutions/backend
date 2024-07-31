@@ -11,6 +11,7 @@ import lombok.Setter;
 @Table(name = "produto", schema = "db_9solutions")
 public class Produto {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_produto")
     private Integer id;

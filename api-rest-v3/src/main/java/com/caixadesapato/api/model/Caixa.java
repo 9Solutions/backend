@@ -1,5 +1,6 @@
 package com.caixadesapato.api.model;
 
+import com.caixadesapato.api.utils.enums.Genero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,13 +15,14 @@ import java.util.List;
 @Table(name = "caixa", schema = "db_9solutions")
 public class Caixa {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_caixa")
     private Integer id;
 
     @Column(name = "genero")
     @Enumerated(EnumType.STRING)
-    private EnumGenero genero;
+    private Genero genero;
 
     @Column(name = "carta")
     private String carta;
