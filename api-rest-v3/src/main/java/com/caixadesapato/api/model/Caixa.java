@@ -40,8 +40,9 @@ public class Caixa {
     @Column(name = "dt_entrega")
     private LocalDate dataEntrega;
 
-    @Column(name = "fk_faixa_etaria")
-    private int faixaEtaria;
+    @ManyToOne
+    @JoinColumn(name = "fk_faixa_etaria", insertable = true)
+    private FaixaEtaria faixaEtaria;
 
     @ManyToOne
     @JoinColumn(name = "fk_pedido", insertable = true)
