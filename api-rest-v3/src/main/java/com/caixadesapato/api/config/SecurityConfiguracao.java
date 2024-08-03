@@ -60,11 +60,14 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/doadores/login/**"),
             new AntPathRequestMatcher("/doadores/**"),
             // Endpoints de dashUsers
-            new AntPathRequestMatcher("/dashUsers/login/**"),
-            new AntPathRequestMatcher("/dashUsers/**"),
-            // Endpoints de BANCOS AUTORIZADOS
-            new AntPathRequestMatcher("/bancos-autorizados"),
-            new AntPathRequestMatcher("/bancos-autorizados/ordenado-nome"),
+            new AntPathRequestMatcher("/dashboard/login"),
+            new AntPathRequestMatcher("/dashboard/**"),
+            new AntPathRequestMatcher("/categorias"),
+            new AntPathRequestMatcher("/categorias/{id}"),
+            new AntPathRequestMatcher("/faixa-etaria"),
+            new AntPathRequestMatcher("/faixa-etaria/{id}"),
+            new AntPathRequestMatcher("/produtos"),
+            new AntPathRequestMatcher("/produtos/{id}"),
     };
 
     @Bean
