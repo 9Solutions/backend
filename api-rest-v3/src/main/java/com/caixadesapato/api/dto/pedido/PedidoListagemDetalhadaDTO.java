@@ -31,7 +31,7 @@ public class PedidoListagemDetalhadaDTO {
         private String url;
         private Integer quantidade;
         private Genero genero;
-        private FaixaEtaria faixaEtaria;
+        private String faixaEtaria;
 
         private List<ItemCaixaDTO> itens;
 
@@ -45,7 +45,7 @@ public class PedidoListagemDetalhadaDTO {
 
     @Data
     public static class EtapaCaixaDTO {
-        private Integer status;
+        private String status;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDateTime update;
     }

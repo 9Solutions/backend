@@ -1,10 +1,7 @@
 package com.caixadesapato.api.service;
 
 import com.caixadesapato.api.dto.caixa.CaixaUpdateDTO;
-import com.caixadesapato.api.model.Caixa;
-import com.caixadesapato.api.model.Doador;
-import com.caixadesapato.api.model.ItemCaixa;
-import com.caixadesapato.api.model.Pedido;
+import com.caixadesapato.api.model.*;
 import com.caixadesapato.api.repository.CaixaRepository;
 import com.caixadesapato.api.utils.interfaces.PublisherChange;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +21,18 @@ public class CaixaService implements PublisherChange {
     private final PedidoService pedidoService;
     private final EtapaCaixaService etapaService;
     private final DoadorService doadorService;
+    private final FaixaEtariaService faixaEtariaService;
 
     public Caixa save(
-            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido
+            Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido, Integer idFaixaEtaria
     ) {
         if(!Objects.isNull(novaCaixa)){
             Pedido pedido = pedidoService.listById(idPedido);
             novaCaixa.setPedido(pedido);
+
+            FaixaEtaria faixaEtaria = faixaEtariaService.findById(idFaixaEtaria);
+            novaCaixa.setFaixaEtaria(faixaEtaria);
+
             Caixa caixaSalva = action.save(novaCaixa);
 
             List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(

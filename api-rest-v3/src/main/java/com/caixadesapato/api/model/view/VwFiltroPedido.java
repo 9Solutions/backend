@@ -14,20 +14,30 @@ public class VwFiltroPedido {
 
     @Id
     @Column(name = "idpedido")
-    private String idPedido;
+    private Integer idPedido;
 
     @Column(name = "data_pedido")
     private String dataPedido;
 
     @Column(name = "valor_total")
-    private String valorPedido;
+    private Integer valorPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "id_status_pedido", insertable = true)
-    private StatusPedido statusPedido;
+    @Column(name = "fk_doador")
+    private Integer fkDoador;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_doador", insertable = true)
-    private Doador doador;
+    @Column(name = "id_status_pedido")
+    private Integer idStatusPedido;
+
+    @Column(name = "id_doador")
+    private Integer idDoador;
+
+    @Column(name = "nome_completo")
+    private String nomeDoador;
+
+    @Column(name = "telefone")
+    private String telefone;
+
+    @Column(name="status")
+    private String status;
 
 }

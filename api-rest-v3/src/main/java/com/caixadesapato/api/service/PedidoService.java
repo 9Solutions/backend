@@ -4,6 +4,7 @@ import com.caixadesapato.api.dto.pedido.PedidoPatchDTO;
 import com.caixadesapato.api.model.Doador;
 import com.caixadesapato.api.model.Pedido;
 import com.caixadesapato.api.model.StatusPedido;
+import com.caixadesapato.api.model.view.VwFiltroPedido;
 import com.caixadesapato.api.repository.PedidoRepository;
 import com.caixadesapato.api.repository.view.VwFiltrosPedidosRepository;
 import com.caixadesapato.api.utils.interfaces.PublisherChange;
@@ -33,7 +34,7 @@ public class PedidoService implements PublisherChange {
         );
     }
 
-    public List<Pedido> listByStatus(String status, String data, String idPedido){
+    public List<VwFiltroPedido> listByStatus(String status, String data, String idPedido){
         if(status == null || status.isBlank()) status = "%";
         if(data == null || data.isBlank()){
             data = "%";
@@ -41,7 +42,7 @@ public class PedidoService implements PublisherChange {
             data = data + "%";
         }
         if(idPedido == null || idPedido.isBlank()) idPedido = "%";
-        return action.buscaFiltros(idPedido, data, status);
+        return actionFiltro.buscaFiltros(idPedido, data, status);
     }
 
     public Pedido create(Pedido novoPedido, Long idDoador){

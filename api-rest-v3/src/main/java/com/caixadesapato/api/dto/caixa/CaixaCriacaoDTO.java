@@ -27,7 +27,7 @@ public class CaixaCriacaoDTO {
     private LocalDate dataCriacao;
 
     @Positive
-    private FaixaEtaria faixaEtaria;
+    private Integer idFaixaEtaria;
 
     @NotEmpty
     private int[] itensCaixa = new int[8];

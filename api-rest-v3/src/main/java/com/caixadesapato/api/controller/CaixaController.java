@@ -68,7 +68,7 @@ public class CaixaController {
     ){
         Caixa caixa = CaixaMapper.toEntity(novaCaixa);
         return ResponseEntity.created(null).body(
-                CaixaMapper.toDTO(service.save(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido()))
+                CaixaMapper.toDTO(service.save(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido(), novaCaixa.getIdFaixaEtaria()))
         );
     }
 

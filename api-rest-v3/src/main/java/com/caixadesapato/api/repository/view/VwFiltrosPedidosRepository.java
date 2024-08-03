@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface VwFiltrosPedidosRepository extends JpaRepository<VwFiltroPedido, Integer> {
-    @Query("SELECT f FROM VwFiltroPedido f WHERE f.idPedido LIKE :idPedido AND f.dataPedido LIKE :dataPedido AND f.statusPedido.status LIKE :status")
+    @Query("SELECT f FROM VwFiltroPedido f WHERE concat(f.idPedido, '') LIKE :idPedido AND concat(f.dataPedido, '') LIKE :dataPedido AND concat(f.idStatusPedido, '') LIKE :status")
     List<VwFiltroPedido> buscaFiltros(String idPedido, String dataPedido, String status);
 }

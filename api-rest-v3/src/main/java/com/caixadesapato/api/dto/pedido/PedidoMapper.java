@@ -65,7 +65,7 @@ public class PedidoMapper {
         caixaDto.setCarta(caixa.getCarta());
         caixaDto.setUrl(caixa.getUrl());
         caixaDto.setQuantidade(caixa.getQuantidade());
-        caixaDto.setFaixaEtaria(caixa.getFaixaEtaria());
+        caixaDto.setFaixaEtaria(caixa.getFaixaEtaria().getFaixaNome());
         caixaDto.setGenero(caixa.getGenero());
         caixaDto.setItens(
                 toItensDaCaixaDTO(caixa.getItens())
@@ -88,7 +88,7 @@ public class PedidoMapper {
         List<PedidoListagemDetalhadaDTO.EtapaCaixaDTO> etapasDTO = new ArrayList<>();
         for (EtapaCaixa etapaDaVez : etapas) {
             PedidoListagemDetalhadaDTO.EtapaCaixaDTO etapaDTO = new PedidoListagemDetalhadaDTO.EtapaCaixaDTO();
-            etapaDTO.setStatus(etapaDaVez.getStatus());
+            etapaDTO.setStatus(etapaDaVez.getStatus().getStatus());
             etapaDTO.setUpdate(etapaDaVez.getUpdateAt());
             etapasDTO.add(etapaDTO);
         }

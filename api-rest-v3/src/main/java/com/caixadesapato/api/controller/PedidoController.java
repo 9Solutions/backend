@@ -2,6 +2,7 @@ package com.caixadesapato.api.controller;
 
 import com.caixadesapato.api.dto.pedido.*;
 import com.caixadesapato.api.model.Pedido;
+import com.caixadesapato.api.model.view.VwFiltroPedido;
 import com.caixadesapato.api.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,31 +59,31 @@ public class PedidoController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
     @GetMapping("/filter")
-    public ResponseEntity<List<PedidoListagemSimplesDTO>> listByStatus(
+    public ResponseEntity<List<VwFiltroPedido>> listByStatus(
             @RequestParam String status,
             @RequestParam String data,
             @RequestParam String idPedido
     ){
-        List<Pedido> pedidos =  service.listByStatus(status, data, idPedido);
+        List<VwFiltroPedido> pedidos =  service.listByStatus(status, data, idPedido);
         if(pedidos.isEmpty()){
             return ResponseEntity.noContent().build();
         }
 
-        List<PedidoListagemSimplesDTO> pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedidos);
-
-        return ResponseEntity.ok(pedidoDTO);
+        return ResponseEntity.ok(pedidos);
     }
 
     @Operation(summary = "Listar detalhes do pedido", description = "Método que retorna os dados de um pedido de forma detalhada", tags = "Pedidos")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lsita dados do pedido"),
+            @ApiResponse(responseCode = "200", description = "Lista dados do pedido"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
-    @GetMapping("/all-details")
-    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetailsById() {
-        List<Pedido> pedidos = service.listAll();
-        List<PedidoListagemDetalhadaDTO> pedidoDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
+    @GetMapping("/all-details/{id}")
+    public ResponseEntity<PedidoListagemDetalhadaDTO> listAllDetailsById(
+            @PathVariable Integer id
+    ) {
+        Pedido pedido = service.listById(id);
+        PedidoListagemDetalhadaDTO pedidoDTO = PedidoMapper.toListagemDetalhadaDTO(pedido);
         return ResponseEntity.ok(pedidoDTO);
     }
 

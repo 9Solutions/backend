@@ -18,8 +18,9 @@ public class EtapaCaixa {
     @Column(name = "id_etapa_caixa")
     private Integer id;
 
-    @Column(name = "fk_status")
-    private Integer status;
+    @ManyToOne
+    @JoinColumn(name = "fk_status")
+    private StatusCaixa status;
 
     @ManyToOne
     @JoinColumn(name = "fk_id_caixa")
