@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class CategoriaListagemDTO {
     private Integer id;
     private String nome;
+    private int qtdeProdutos;
+    private int estagio;
+    private int condicao;
 }

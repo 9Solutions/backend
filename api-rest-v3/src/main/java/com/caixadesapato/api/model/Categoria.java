@@ -19,6 +19,15 @@ public class Categoria {
     @Column(name = "nome")
     private String nome;
 
+    @Column(name = "condicao")
+    private int condicao;
+
+    @Column(name = "qtde_produtos")
+    private int qtdeProdutos;
+
+    @Column(name = "estagio")
+    private int estagio;
+
 //    @OneToMany(mappedBy = "categoriaProduto")
 //    private List<Produto> produtos;
 

@@ -22,6 +22,9 @@ public class CategoriaMapper {
         return CategoriaListagemDTO.builder()
                 .id(categoria.getId())
                 .nome(categoria.getNome())
+                .qtdeProdutos(categoria.getQtdeProdutos())
+                .estagio(categoria.getEstagio())
+                .condicao(categoria.getCondicao())
                 .build();
     }
 
