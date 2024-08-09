@@ -1,14 +1,17 @@
 package com.caixadesapato.api.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 
 @Entity
 @Table(name = "categoria_produto", schema = "db_9solutions")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Categoria {
 
     @Id
@@ -27,8 +30,5 @@ public class Categoria {
 
     @Column(name = "estagio")
     private int estagio;
-
-//    @OneToMany(mappedBy = "categoriaProduto")
-//    private List<Produto> produtos;
 
 }

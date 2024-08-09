@@ -1,6 +1,6 @@
-package com.caixadesapato.api.config.dash;
+package com.caixadesapato.api.config.auth;
 
-import com.caixadesapato.api.service.DashAutenticacaoService;
+import com.caixadesapato.api.service.AutenticacaoService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,15 +17,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Objects;
 
-public class DashAutenticacaoFilter extends OncePerRequestFilter {
+public class AutenticacaoFilter extends OncePerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DashAutenticacaoFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AutenticacaoFilter.class);
 
-    private final DashAutenticacaoService autenticacaoService;
+    private final AutenticacaoService autenticacaoService;
 
-    private final DashGerenciadorTokenJwt jwtTokenManager;
+    private final GerenciadorTokenJwt jwtTokenManager;
 
-    public DashAutenticacaoFilter(DashAutenticacaoService autenticacaoService, DashGerenciadorTokenJwt jwtTokenManager) {
+    public AutenticacaoFilter(AutenticacaoService autenticacaoService, GerenciadorTokenJwt jwtTokenManager) {
         this.autenticacaoService = autenticacaoService;
         this.jwtTokenManager = jwtTokenManager;
     }
@@ -76,5 +76,6 @@ public class DashAutenticacaoFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
     }
+
 
 }

@@ -1,6 +1,5 @@
 package com.caixadesapato.api.controller;
 
-
 import com.caixadesapato.api.dto.categoria.CategoriaCriacaoDTO;
 import com.caixadesapato.api.dto.categoria.CategoriaListagemDTO;
 import com.caixadesapato.api.dto.categoria.CategoriaMapper;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +23,7 @@ public class CategoriaController {
 
     private final CategoriaService service;
 
-    @Operation(summary = "Listar categorias ", description = "Listar todas categorias", tags = "Categorias")
+    @Operation(summary = "Listar categorias ", description = "Listar todas as categorias", tags = "Categorias")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de categorias"),
             @ApiResponse(responseCode = "204", description = "Lista vazia"),
@@ -34,22 +32,44 @@ public class CategoriaController {
     @GetMapping
     public ResponseEntity<List<CategoriaListagemDTO>> listAll (){
         List<Categoria> categorias = service.listAll();
-
-        if(categorias.isEmpty()) return ResponseEntity.noContent().build();
-
+        if(categorias.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         List<CategoriaListagemDTO> categoriaDto = CategoriaMapper.toDTO(categorias);
         return ResponseEntity.ok().body(categoriaDto);
     }
 
 
-    @Operation(summary = "Listar dados de uma categoria ", description = "Listar dados de uma categoria pelo ID", tags = "Categorias")
+    @Operation(summary = "Listar categorias por filtros", description = "Listar categorias com parâmetros de consulta", tags = "Categorias")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de categorias"),
+            @ApiResponse(responseCode = "204", description = "Lista vazia"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @GetMapping("/filter")
+    public ResponseEntity<List<CategoriaListagemDTO>> listByParams(
+            @RequestParam(required = false) Integer estagio,
+            @RequestParam Integer condicao
+    ){
+        List<Categoria> categorias = service.findByParams(estagio, condicao);
+        if(categorias.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        List<CategoriaListagemDTO> categoriaDto = CategoriaMapper.toDTO(categorias);
+        return ResponseEntity.ok().body(categoriaDto);
+    }
+
+
+    @Operation(summary = "Listar dados de 1(uma) categoria ", description = "Listar dados de uma categoria pelo ID", tags = "Categorias")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listar dados da categoria"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaListagemDTO> listById (@PathVariable Integer id){
+    public ResponseEntity<CategoriaListagemDTO> listById (
+            @PathVariable Integer id
+    ) {
         Categoria categoria = service.findById(id);
         CategoriaListagemDTO categoriaDto = CategoriaMapper.toDTO(categoria);
         return ResponseEntity.ok(categoriaDto);
@@ -63,7 +83,9 @@ public class CategoriaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PostMapping
-    public ResponseEntity<CategoriaListagemDTO> create(@Valid @RequestBody CategoriaCriacaoDTO categoriaCriacaoDTO){
+    public ResponseEntity<CategoriaListagemDTO> create(
+            @Valid @RequestBody CategoriaCriacaoDTO categoriaCriacaoDTO
+    ) {
         Categoria categoria = CategoriaMapper.toEntity(categoriaCriacaoDTO);
         Categoria categoriaSalva = service.create(categoria);
         CategoriaListagemDTO categoriaDto = CategoriaMapper.toDTO(categoriaSalva);
@@ -89,18 +111,22 @@ public class CategoriaController {
     }
 
 
-    @Operation(summary = "Deletar uma categoria ", description = "Método responsável por deletar uma categoria", tags = "Categorias")
+    @Operation(summary = "Ativar ou desativar uma categoria", description = "Método responsável por ativar/desativar uma categoria", tags = "Categorias")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Categoria excluida"),
+            @ApiResponse(responseCode = "201", description = "Status alterado"),
             @ApiResponse(responseCode = "400", description = "Atributo inválido"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
-        service.delete(id);
-        return ResponseEntity.status(204).build();
+    @PatchMapping("/{id}")
+    public ResponseEntity<CategoriaListagemDTO> changeStatus(
+            @PathVariable Integer id,
+            @RequestParam Integer condicao
+    ){
+        Categoria categoriaStatusAtualizado = service.changeStatus(id, condicao);
+        return ResponseEntity.status(200).body(
+                CategoriaMapper.toDTO(categoriaStatusAtualizado)
+        );
     }
-
 
 }

@@ -1,6 +1,5 @@
-package com.caixadesapato.api.config;
+package com.caixadesapato.api.config.auth;
 
-import com.caixadesapato.api.config.doador.GerenciadorTokenJwt;
 import com.caixadesapato.api.service.AutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -64,10 +63,11 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/dashboard/**"),
             new AntPathRequestMatcher("/categorias"),
             new AntPathRequestMatcher("/categorias/{id}"),
+            new AntPathRequestMatcher("/categorias/filter"),
             new AntPathRequestMatcher("/faixa-etaria"),
             new AntPathRequestMatcher("/faixa-etaria/{id}"),
             new AntPathRequestMatcher("/produtos"),
-            new AntPathRequestMatcher("/produtos/{id}"),
+            new AntPathRequestMatcher("/produtos/{id}")
     };
 
     @Bean
@@ -142,5 +142,4 @@ public class SecurityConfiguracao {
 
         return origem;
     }
-
 }

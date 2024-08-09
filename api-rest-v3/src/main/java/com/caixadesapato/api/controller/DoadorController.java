@@ -45,6 +45,7 @@ public class DoadorController {
     @PostMapping("/login")
     public ResponseEntity<DoadorTokenDTO> login(@RequestBody DoadorLoginDTO doadorLoginDTO) {
         DoadorTokenDTO doadorTokenDto = this.doadorService.login(doadorLoginDTO);
+        System.out.println(doadorTokenDto.getEmail());
 
         return ResponseEntity.status(200).body(doadorTokenDto);
     }

@@ -1,4 +1,4 @@
-package com.caixadesapato.api.config;
+package com.caixadesapato.api.config.auth;
 
 import com.caixadesapato.api.service.AutenticacaoService;
 import org.springframework.security.authentication.AuthenticationProvider;

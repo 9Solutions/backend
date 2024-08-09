@@ -1,6 +1,6 @@
 package com.caixadesapato.api.service;
 
-import com.caixadesapato.api.config.doador.GerenciadorTokenJwt;
+import com.caixadesapato.api.config.auth.GerenciadorTokenJwt;
 import com.caixadesapato.api.dto.doador.*;
 import com.caixadesapato.api.model.Doador;
 import com.caixadesapato.api.repository.DoadorRepository;

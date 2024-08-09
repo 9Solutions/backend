@@ -7,15 +7,12 @@ import java.util.List;
 public class CategoriaMapper {
 
     public static Categoria toEntity(CategoriaCriacaoDTO categoriaCriacaoDTO){
-        Categoria categoria = new Categoria();
-        categoria.setNome(categoriaCriacaoDTO.getNome());
-        return categoria;
-    }
-
-    public static Categoria toEntity(CategoriaUpdateDTO categoriaUpdateDTO){
-        Categoria categoria = new Categoria();
-        categoria.setNome(categoriaUpdateDTO.getNome());
-        return categoria;
+        return Categoria.builder()
+                .nome(categoriaCriacaoDTO.getNome())
+                .qtdeProdutos(categoriaCriacaoDTO.getQtdeProdutos())
+                .estagio(categoriaCriacaoDTO.getEstagio())
+                .condicao(1)
+                .build();
     }
 
     public static CategoriaListagemDTO toDTO(Categoria categoria){

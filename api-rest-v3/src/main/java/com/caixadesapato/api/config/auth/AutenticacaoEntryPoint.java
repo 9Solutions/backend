@@ -1,4 +1,4 @@
-package com.caixadesapato.api.config;
+package com.caixadesapato.api.config.auth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

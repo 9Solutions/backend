@@ -32,5 +32,7 @@ public class Doador {
     private String telefone;
 
     private String senha;
+    
+    private String permissao;
 
 }

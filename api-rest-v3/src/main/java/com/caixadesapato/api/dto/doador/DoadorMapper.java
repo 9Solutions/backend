@@ -22,7 +22,6 @@ public class DoadorMapper {
 
     public static Doador toEntity(DoadorCriacaoDTO entity) {
         if (entity == null) return null;
-
         Doador novoDoador = new Doador();
 
         novoDoador.setNomeCompleto(entity.getNomeCompleto());
@@ -30,6 +29,7 @@ public class DoadorMapper {
         novoDoador.setIdentificador(entity.getIdentificador());
         novoDoador.setSenha(entity.getSenha());
         novoDoador.setTelefone(entity.getTelefone());
+        novoDoador.setPermissao(entity.getPermissao());
 
         return novoDoador;
     }
