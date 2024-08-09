@@ -7,19 +7,20 @@ import java.util.List;
 public class FaixaEtariaMapper {
 
     public static FaixaEtaria toEntity(FaixaEtariaCriacaoDTO faixaEtariaCriacaoDTO) {
-        FaixaEtaria faixaEtaria = new FaixaEtaria();
-        faixaEtaria.setFaixaNome(faixaEtariaCriacaoDTO.getFaixaNome());
-        faixaEtaria.setLimiteInferior(faixaEtariaCriacaoDTO.getLimiteInferior());
-        faixaEtaria.setLimiteSuperior(faixaEtariaCriacaoDTO.getLimiteSuperior());
-        return faixaEtaria;
+        return FaixaEtaria.builder()
+                .faixaNome(faixaEtariaCriacaoDTO.getFaixaNome())
+                .limiteInferior(faixaEtariaCriacaoDTO.getLimiteInferior())
+                .limiteSuperior(faixaEtariaCriacaoDTO.getLimiteSuperior())
+                .condicao(1)
+                .build();
     }
 
     public static FaixaEtaria toEntity(FaixaEtariaUpdateDTO faixaEtariaUpdateDTO) {
-        FaixaEtaria faixaEtaria = new FaixaEtaria();
-        faixaEtaria.setFaixaNome(faixaEtariaUpdateDTO.getFaixaNome());
-        faixaEtaria.setLimiteInferior(faixaEtariaUpdateDTO.getLimiteInferior());
-        faixaEtaria.setLimiteSuperior(faixaEtariaUpdateDTO.getLimiteSuperior());
-        return faixaEtaria;
+        return FaixaEtaria.builder()
+                .faixaNome(faixaEtariaUpdateDTO.getFaixaNome())
+                .limiteInferior(faixaEtariaUpdateDTO.getLimiteInferior())
+                .limiteSuperior(faixaEtariaUpdateDTO.getLimiteSuperior())
+                .build();
     }
 
     public static FaixaEtariaListagemDTO toDTO(FaixaEtaria faixaEtaria) {
@@ -28,6 +29,7 @@ public class FaixaEtariaMapper {
                 .faixaNome(faixaEtaria.getFaixaNome())
                 .limiteInferior(faixaEtaria.getLimiteInferior())
                 .limiteSuperior(faixaEtaria.getLimiteSuperior())
+                .condicao(faixaEtaria.getCondicao())
                 .build();
     }
 

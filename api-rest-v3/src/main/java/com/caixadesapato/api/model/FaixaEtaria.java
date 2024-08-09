@@ -1,8 +1,7 @@
 package com.caixadesapato.api.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -10,6 +9,9 @@ import java.util.List;
 @Table(name = "faixa_etaria", schema = "db_9solutions")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class FaixaEtaria {
 
     @Id
@@ -25,6 +27,9 @@ public class FaixaEtaria {
 
     @Column(name = "limite_superior")
     private Integer limiteSuperior;
+
+    @Column(name = "condicao")
+    private Integer condicao;
 
     @OneToMany(mappedBy = "faixaEtaria")
     private List<Produto> produtos;

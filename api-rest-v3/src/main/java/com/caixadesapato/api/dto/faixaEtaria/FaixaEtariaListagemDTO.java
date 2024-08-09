@@ -14,4 +14,5 @@ public class FaixaEtariaListagemDTO {
     private String faixaNome;
     private Integer limiteInferior;
     private Integer limiteSuperior;
+    private Integer condicao;
 }

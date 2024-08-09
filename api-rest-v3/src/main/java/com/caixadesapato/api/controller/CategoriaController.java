@@ -118,9 +118,9 @@ public class CategoriaController {
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @PatchMapping("/{id}")
+    @PatchMapping
     public ResponseEntity<CategoriaListagemDTO> changeStatus(
-            @PathVariable Integer id,
+            @RequestParam Integer id,
             @RequestParam Integer condicao
     ){
         Categoria categoriaStatusAtualizado = service.changeStatus(id, condicao);

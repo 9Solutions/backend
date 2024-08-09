@@ -36,6 +36,25 @@ public class FaixaEtariaController {
     }
 
 
+    @Operation(summary = "Listar faixas-etária por condição", description = "Listar uam faixas etária por condição", tags = "Faixa Etária")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listar dados da faixa etaria"),
+            @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @GetMapping("/filter")
+    public ResponseEntity<List<FaixaEtariaListagemDTO>> listByParams(
+            @RequestParam Integer condicao
+    ) {
+        List<FaixaEtaria> faixaEtaria = service.listByParams(condicao);
+        if(faixaEtaria.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        List<FaixaEtariaListagemDTO> faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtaria);
+        return ResponseEntity.ok(faixaEtariaListagemDTO);
+    }
+
+
     @Operation(summary = "Listar faixas-etária por ID", description = "Listar uam faixas etária pelo ID", tags = "Faixa Etária")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listar dados da faixa etaria"),
@@ -80,6 +99,17 @@ public class FaixaEtariaController {
         FaixaEtaria faixaEtariaAtualizada = service.update(id, faixaEtariaUpdateDTO);
         FaixaEtariaListagemDTO faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtariaAtualizada);
         return ResponseEntity.ok(faixaEtariaListagemDTO);
+    }
+
+    @PatchMapping
+    public ResponseEntity<FaixaEtariaListagemDTO> changeStatus(
+            @RequestParam Integer id,
+            @RequestParam Integer condicao
+    ) {
+        FaixaEtaria faixaEtaria = service.changeStatus(id, condicao);
+        return ResponseEntity.ok(
+                FaixaEtariaMapper.toDTO(faixaEtaria)
+        );
     }
 
 }

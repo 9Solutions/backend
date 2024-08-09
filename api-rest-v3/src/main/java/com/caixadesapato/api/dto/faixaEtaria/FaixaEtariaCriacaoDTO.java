@@ -1,6 +1,7 @@
 package com.caixadesapato.api.dto.faixaEtaria;
 
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,10 @@ public class FaixaEtariaCriacaoDTO {
 
     @Min(0)
     private Integer limiteSuperior;
+
+    @Min(0)
+    @Max(1)
+    private Integer condicao;
 
     @AssertTrue(message = "O limite inferior deve ser menor que o limite superior")
     public boolean checkLimite() {

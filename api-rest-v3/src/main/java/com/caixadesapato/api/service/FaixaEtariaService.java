@@ -20,6 +20,10 @@ public class FaixaEtariaService {
         return action.findAll();
     }
 
+    public List<FaixaEtaria> listByParams(Integer condicao) {
+        return action.findByCondicaoEquals(condicao);
+    }
+
     public FaixaEtaria findById(Integer id) {
         return action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
@@ -36,6 +40,14 @@ public class FaixaEtariaService {
         );
 
         faixaEtaria.setFaixaNome(faixaEtariaUpdateDTO.getFaixaNome());
+        return action.save(faixaEtaria);
+    }
+
+    public FaixaEtaria changeStatus(Integer id, Integer condicao) {
+        FaixaEtaria faixaEtaria = action.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
+        faixaEtaria.setCondicao(condicao);
         return action.save(faixaEtaria);
     }
 
