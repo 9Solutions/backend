@@ -17,12 +17,15 @@ public class ProdutoCriacaoDTO {
     @PositiveOrZero
     private Double valor;
 
+    @NotBlank
+    private String urlImagem;
+
     @NotNull
     @Positive
-    private Integer categoriaProduto;
+    private Integer idCategoriaProduto;
 
     @Positive
     @NotNull
-    private Integer faixaEtaria;
+    private Integer idFaixaEtaria;
 
 }

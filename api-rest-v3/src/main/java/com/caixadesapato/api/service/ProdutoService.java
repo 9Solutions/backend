@@ -23,13 +23,14 @@ import java.util.Optional;
 public class ProdutoService {
 
     private final ProdutoRepository action;
-
-    private final FaixaEtariaRepository faixaEtariaRepository;
-
-    private final CategoriaRepository categoriaRepository;
+    private final FaixaEtariaService faixaEtariaService;
+    private final CategoriaService categoriaService;
 
     public List<Produto> listAllByCondition(Integer status) {
-        return action.getByCondition(status);
+        if(status != null) {
+            return action.findByCondicaoEquals(status);
+        }
+        return action.findAll();
     }
 
     public Produto findById(Integer id) {
@@ -38,7 +39,11 @@ public class ProdutoService {
         );
     }
 
-    public Produto create(Produto novoProduto) {
+    public Produto create(Produto novoProduto, Integer idCategoria, Integer idFaixaEtaria) {
+        Categoria categoria = categoriaService.findById(idCategoria);
+        FaixaEtaria faixaEtaria = faixaEtariaService.findById(idFaixaEtaria);
+        novoProduto.setCategoriaProduto(categoria);
+        novoProduto.setFaixaEtaria(faixaEtaria);
         return action.save(novoProduto);
     }
 
@@ -47,19 +52,16 @@ public class ProdutoService {
 
         if (produtoOptional.isPresent()) {
 
-            Optional<FaixaEtaria> faixaEtaria = faixaEtariaRepository.findById(novosDados.getFaixaEtaria());
-            Optional<Categoria> categoria = categoriaRepository.findById(novosDados.getCategoriaProduto());
-
-            if (faixaEtaria.isEmpty() || categoria.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria ou faixa etária não encontrada");
-            }
+            FaixaEtaria faixaEtaria = faixaEtariaService.findById(novosDados.getIdFaixaEtaria());
+            Categoria categoria = categoriaService.findById(novosDados.getIdCategoriaProduto());
 
             Produto atualizandoProduto = produtoOptional.get();
             atualizandoProduto.setNome(novosDados.getNome());
-            atualizandoProduto.setCategoriaProduto(categoria.get());
             atualizandoProduto.setValor(novosDados.getValor());
-            atualizandoProduto.setFaixaEtaria(faixaEtaria.get());
             atualizandoProduto.setGenero(novosDados.getGenero());
+            atualizandoProduto.setUrlImagem(novosDados.getUrlImagem());
+            atualizandoProduto.setFaixaEtaria(faixaEtaria);
+            atualizandoProduto.setCategoriaProduto(categoria);
 
             return action.save(atualizandoProduto);
         }
@@ -67,39 +69,32 @@ public class ProdutoService {
         throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Produto não encontrado"
         );
-
     }
 
     public Produto updateNameAndPrice(Integer id, ProdutoPatchDTO novosDados) {
         Optional<Produto> produtoOptional = action.findById(id);
         if (produtoOptional.isPresent()) {
-
             Produto atualizacaoProduto = produtoOptional.get();
             atualizacaoProduto.setNome(novosDados.getNome());
             atualizacaoProduto.setValor(novosDados.getValor());
-
             return action.save(atualizacaoProduto);
         }
 
         throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Produto não encontrado"
         );
-
     }
 
-    public Produto changeCondition (Integer id, Condition status){
+    public Produto changeCondition (Integer id, Integer condition){
         Optional<Produto> produto = action.findById(id);
-
         if (produto.isPresent()) {
-            System.out.println(status.getCondition());
-            produto.get().setAtivo(status.getCondition());
+            produto.get().setCondicao(condition);
             return action.save(produto.get());
         }
 
         throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Produto não encontrado"
         );
-
     }
 
 }

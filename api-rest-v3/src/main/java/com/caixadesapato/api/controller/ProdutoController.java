@@ -35,14 +35,14 @@ public class ProdutoController {
             @ApiResponse(responseCode = "204", description = "Lista vazia"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<ProdutoListagemDTO>> listAll(
-            @RequestParam Integer status
-    ){
-        List<Produto> produtos = service.listAllByCondition(status);
-
-        if(produtos.isEmpty()) return ResponseEntity.noContent().build();
-
+            @RequestParam(required = false) Integer condicao
+    ) {
+        List<Produto> produtos = service.listAllByCondition(condicao);
+        if(produtos.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         List<ProdutoListagemDTO> produtosDTO = ProdutoMapper.toListDTO(produtos);
         return ResponseEntity.ok().body(produtosDTO);
     }
@@ -72,12 +72,10 @@ public class ProdutoController {
     })
     @PostMapping
     public ResponseEntity<ProdutoListagemDTO> create( @Valid @RequestBody ProdutoCriacaoDTO produtoCriacaoDTO) {
-        Categoria categoria = categoriaService.findById(produtoCriacaoDTO.getCategoriaProduto());
-
-        FaixaEtaria faixaEtaria = faixaEtariaService.findById(produtoCriacaoDTO.getFaixaEtaria());
-
-        Produto produto = ProdutoMapper.toEntity(produtoCriacaoDTO, categoria, faixaEtaria);
-        Produto produtoSalvo = service.create(produto);
+        Produto produto = ProdutoMapper.toEntity(produtoCriacaoDTO);
+        Produto produtoSalvo = service.create(
+                produto, produtoCriacaoDTO.getIdCategoriaProduto(), produtoCriacaoDTO.getIdFaixaEtaria()
+        );
         ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoSalvo);
         return ResponseEntity.status(201).body(produtoDTO);
     }
@@ -128,9 +126,9 @@ public class ProdutoController {
     @PatchMapping
     public ResponseEntity<ProdutoListagemDTO> changeCondition(
             @RequestParam int id,
-            @RequestParam Condition status
+            @RequestParam int condicao
     ){
-        Produto produtoAtualizado = service.changeCondition(id, status);
+        Produto produtoAtualizado = service.changeCondition(id, condicao);
         ProdutoListagemDTO produtoDTO = ProdutoMapper.toDTO(produtoAtualizado);
         return ResponseEntity.status(201).body(produtoDTO);
     }

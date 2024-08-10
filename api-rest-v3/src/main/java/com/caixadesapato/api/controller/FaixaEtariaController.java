@@ -28,7 +28,7 @@ public class FaixaEtariaController {
             @ApiResponse(responseCode = "404", description = "Faixa Etária não encontrada"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<FaixaEtariaListagemDTO>> listAll() {
         List<FaixaEtaria> faixaEtaria = service.listAll();
         List<FaixaEtariaListagemDTO> faixaEtariaListagemDTO = FaixaEtariaMapper.toDTO(faixaEtaria);

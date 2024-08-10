@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
-    @Query("SELECT p FROM Produto p WHERE ativo = :status")
-    List<Produto> getByCondition(int status);
+    List<Produto> findByCondicaoEquals(int condicao);
 
 }

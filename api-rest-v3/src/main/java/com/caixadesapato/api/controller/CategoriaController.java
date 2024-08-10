@@ -29,7 +29,7 @@ public class CategoriaController {
             @ApiResponse(responseCode = "204", description = "Lista vazia"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<CategoriaListagemDTO>> listAll (){
         List<Categoria> categorias = service.listAll();
         if(categorias.isEmpty()) {

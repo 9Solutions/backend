@@ -26,8 +26,11 @@ public class Produto {
     @Column(name = "valor")
     private Double valor;
 
-    @Column(name = "ativo")
-    private int ativo;
+    @Column(name = "url_imagem")
+    private String urlImagem;
+
+    @Column(name = "condicao")
+    private int condicao;
 
     @ManyToOne
     @JoinColumn(name = "fk_categoria_produto")

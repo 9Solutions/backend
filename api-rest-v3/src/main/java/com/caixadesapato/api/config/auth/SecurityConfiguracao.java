@@ -61,12 +61,12 @@ public class SecurityConfiguracao {
             // Endpoints de dashUsers
             new AntPathRequestMatcher("/dashboard/login"),
             new AntPathRequestMatcher("/dashboard/**"),
-            new AntPathRequestMatcher("/categorias"),
+            new AntPathRequestMatcher("/categorias/"),
             new AntPathRequestMatcher("/categorias/{id}"),
             new AntPathRequestMatcher("/categorias/filter"),
-            new AntPathRequestMatcher("/faixa-etaria"),
+            new AntPathRequestMatcher("/faixa-etaria/"),
             new AntPathRequestMatcher("/faixa-etaria/{id}"),
-            new AntPathRequestMatcher("/produtos"),
+            new AntPathRequestMatcher("/produtos/"),
             new AntPathRequestMatcher("/produtos/{id}")
     };
 

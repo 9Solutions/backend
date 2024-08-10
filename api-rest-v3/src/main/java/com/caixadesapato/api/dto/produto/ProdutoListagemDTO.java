@@ -18,9 +18,11 @@ public class ProdutoListagemDTO {
 
     private Double valor;
 
+    private String urlImagem;
+
     private Genero genero;
 
-    private int ativo;
+    private int condicao;
 
     private CategoriaProdutoDTO categoria;
 
@@ -30,6 +32,7 @@ public class ProdutoListagemDTO {
     public static class CategoriaProdutoDTO {
         private Integer id;
         private String nome;
+        private Integer condicao;
     }
 
     @Data
@@ -38,6 +41,7 @@ public class ProdutoListagemDTO {
         private String faixaNome;
         private Integer limiteInferior;
         private Integer limiteSuperior;
+        private Integer condicao;
     }
 
 }
