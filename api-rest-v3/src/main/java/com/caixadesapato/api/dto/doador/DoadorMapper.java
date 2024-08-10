@@ -82,6 +82,7 @@ public class DoadorMapper {
         dto.setDoadorId(entity.getId());
         dto.setNome(entity.getNomeCompleto());
         dto.setEmail(entity.getEmail());
+        dto.setPermissao(entity.getPermissao());
         dto.setToken(token);
 
         return dto;
