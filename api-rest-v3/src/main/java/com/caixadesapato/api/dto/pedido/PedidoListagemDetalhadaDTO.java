@@ -12,13 +12,14 @@ import java.util.List;
 public class PedidoListagemDetalhadaDTO {
 
     private Integer id;
-
+    private String status;
     private DoadorDTO doador;
 
     @Data
     public static class DoadorDTO {
         private Long id;
         private String nome;
+        private String email;
         private String telefone;
     }
 
@@ -33,14 +34,9 @@ public class PedidoListagemDetalhadaDTO {
         private Genero genero;
         private String faixaEtaria;
 
-        private List<ItemCaixaDTO> itens;
+        private List<String> itens;
 
         private List<EtapaCaixaDTO> etapas;
-    }
-
-    @Data
-    public static class ItemCaixaDTO {
-        private String nome;
     }
 
     @Data

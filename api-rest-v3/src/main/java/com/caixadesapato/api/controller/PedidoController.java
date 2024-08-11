@@ -38,6 +38,7 @@ public class PedidoController {
 
     }
 
+
     @Operation(summary = "Listar por ID", description = "Método que retorna os dados de um pedido", tags = "Pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listar dados do pedido"),
@@ -72,7 +73,24 @@ public class PedidoController {
         return ResponseEntity.ok(pedidos);
     }
 
-    @Operation(summary = "Listar detalhes do pedido", description = "Método que retorna os dados de um pedido de forma detalhada", tags = "Pedidos")
+
+    @Operation(summary = "Listar detalhes do pedido por parametro", description = "Método que retorna os dados de um pedido de forma detalhada", tags = "Pedidos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista dados do pedido"),
+            @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
+    })
+    @GetMapping("/all-details")
+    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetailsByParams(
+            @RequestParam Integer statusPedido
+    ) {
+        List<Pedido> pedido = service.listAllDetailsByStatus(statusPedido);
+        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedido);
+        return ResponseEntity.ok(pedidosDTO);
+    }
+
+
+    @Operation(summary = "Listar detalhes do pedido por parametro", description = "Método que retorna os dados de um pedido de forma detalhada", tags = "Pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista dados do pedido"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
@@ -105,6 +123,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoDTO);
     }
 
+
     @Operation(summary = "Alterar STATUS do pedido", description = "Método responsável por alterar o STATUS de um pedido", tags = "Pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Status do pedido atualizado com sucesso"),
@@ -112,12 +131,12 @@ public class PedidoController {
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error"),
     })
-    @PatchMapping("/{id}")
+    @PatchMapping
     public ResponseEntity<PedidoListagemSimplesDTO> statusChange(
-            @PathVariable Integer id,
-            @RequestBody @Valid PedidoPatchDTO statusChange
+            @RequestParam Integer id,
+            @RequestParam Integer condicao
     ) {
-        Pedido pedidoAtualizado = service.statusChange(id, statusChange);
+        Pedido pedidoAtualizado = service.statusChange(id, condicao);
         PedidoListagemSimplesDTO pedidoDTO = PedidoMapper.toListagemSimplesdDTO(pedidoAtualizado);
         return ResponseEntity.ok(pedidoDTO);
     }

@@ -34,6 +34,10 @@ public class PedidoService implements PublisherChange {
         );
     }
 
+    public List<Pedido> listAllDetailsByStatus(Integer statusPedido){
+        return action.findByStatusPedido_IdEquals(statusPedido);
+    }
+
     public List<VwFiltroPedido> listByStatus(String status, String data, String idPedido){
         if(status == null || status.isBlank()) status = "%";
         if(data == null || data.isBlank()){
@@ -53,14 +57,15 @@ public class PedidoService implements PublisherChange {
         return action.save(novoPedido);
     }
 
-    public Pedido statusChange(Integer id, PedidoPatchDTO change){
+    public Pedido statusChange(Integer id, Integer condicao){
         Pedido pedido = action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não Encontrado")
         );
 
+        StatusPedido status = statusPedidoService.findById(condicao);
+        pedido.setStatusPedido(status);
         this.notifyChange(pedido.getDoador());
 
-        pedido.setStatusPedido(statusPedidoService.findById(change.getStatusChange()));
         return action.save(pedido);
     }
 

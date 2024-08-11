@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "filtros_pedidos")
+@Table(name = "vw_filtros_pedidos")
 public class VwFiltroPedido {
 
     @Id

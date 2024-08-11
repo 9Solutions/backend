@@ -39,10 +39,12 @@ public class PedidoMapper {
 
         PedidoListagemDetalhadaDTO pedidoListagemPDF = new PedidoListagemDetalhadaDTO();
         pedidoListagemPDF.setId(pedido.getId());
+        pedidoListagemPDF.setStatus(pedido.getStatusPedido().getStatus());
 
         PedidoListagemDetalhadaDTO.DoadorDTO doadorListagemPDF = new PedidoListagemDetalhadaDTO.DoadorDTO();
         doadorListagemPDF.setId(pedido.getDoador().getId());
         doadorListagemPDF.setNome(pedido.getDoador().getNomeCompleto());
+        doadorListagemPDF.setEmail(pedido.getDoador().getEmail());
         doadorListagemPDF.setTelefone(pedido.getDoador().getTelefone());
         pedidoListagemPDF.setDoador(doadorListagemPDF);
 
@@ -74,14 +76,10 @@ public class PedidoMapper {
         return caixaDto;
     }
 
-    public static List<PedidoListagemDetalhadaDTO.ItemCaixaDTO> toItensDaCaixaDTO(List<ItemCaixa> itens) {
-        return itens.stream().map(PedidoMapper::toItensDaCaixaDTO).toList();
-    }
-
-    public static PedidoListagemDetalhadaDTO.ItemCaixaDTO toItensDaCaixaDTO(ItemCaixa item){
-        PedidoListagemDetalhadaDTO.ItemCaixaDTO itens = new PedidoListagemDetalhadaDTO.ItemCaixaDTO();
-        itens.setNome(item.getProduto().getNome());
-        return itens;
+    public static List<String> toItensDaCaixaDTO(List<ItemCaixa> itens) {
+        return itens.stream()
+                    .map(item -> item.getProduto().getNome())
+                    .toList();
     }
 
     public static List<PedidoListagemDetalhadaDTO.EtapaCaixaDTO> toListEtapasDTO(List<EtapaCaixa> etapas) {
