@@ -23,9 +23,6 @@ public class CaixaCriacaoDTO {
     @Positive
     private Integer quantidade;
 
-    @FutureOrPresent
-    private LocalDate dataCriacao;
-
     @Positive
     private Integer idFaixaEtaria;
 

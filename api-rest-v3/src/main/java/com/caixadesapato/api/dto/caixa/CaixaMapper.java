@@ -15,10 +15,7 @@ public class CaixaMapper {
         caixa.setGenero(dto.getGenero());
         caixa.setCarta(dto.getCarta());
         caixa.setQuantidade(dto.getQuantidade());
-        caixa.setDataCriacao(dto.getDataCriacao());
         caixa.setUrl(dto.getUrl());
-        caixa.setDataEntrega(null);
-        caixa.setEtapas(new ArrayList<>());
         return caixa;
     }
 
@@ -40,16 +37,8 @@ public class CaixaMapper {
         return dto;
     }
 
-    public static List<CaixaListagemDTO.ItemCaixaDTO> toListItensDTO(List<ItemCaixa> itens) {
-        List<CaixaListagemDTO.ItemCaixaDTO> itensDTO = new ArrayList<>();
-        for (ItemCaixa itemDaVez : itens) {
-            CaixaListagemDTO.ItemCaixaDTO itemDto = new CaixaListagemDTO.ItemCaixaDTO();
-            itemDto.setId(itemDaVez.getProduto().getId());
-            itemDto.setNome(itemDaVez.getProduto().getNome());
-            itemDto.setValor(itemDaVez.getProduto().getValor());
-            itensDTO.add(itemDto);
-        }
-        return itensDTO;
+    public static List<String> toListItensDTO(List<ItemCaixa> itens) {
+        return itens.stream().map(item -> item.getProduto().getNome()).toList();
     }
 
     public static List<CaixaListagemDTO> toDTO(List<Caixa> caixas) {

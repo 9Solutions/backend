@@ -32,8 +32,9 @@ public class CaixaController {
     @GetMapping
     public ResponseEntity<List<CaixaListagemDTO>> listAll(){
         List<Caixa> caixas = service.listAll();
-        if(caixas.isEmpty()) return ResponseEntity.noContent().build();
-
+        if(caixas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         List<CaixaListagemDTO> caixasDTO = CaixaMapper.toDTO(caixas);
         return ResponseEntity.ok(caixasDTO);
     }
@@ -67,9 +68,11 @@ public class CaixaController {
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
     ){
         Caixa caixa = CaixaMapper.toEntity(novaCaixa);
-        return ResponseEntity.created(null).body(
-                CaixaMapper.toDTO(service.save(caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido(), novaCaixa.getIdFaixaEtaria()))
+        Caixa caixaSalva = service.save(
+                caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido(), novaCaixa.getIdFaixaEtaria()
         );
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaSalva);
+        return ResponseEntity.created(null).body(caixaDTO);
     }
 
 
@@ -89,7 +92,6 @@ public class CaixaController {
         CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaAtualizada);
         return ResponseEntity.ok(caixaDTO);
     }
-
 
     @PatchMapping
     public ResponseEntity<Void> statusChange(

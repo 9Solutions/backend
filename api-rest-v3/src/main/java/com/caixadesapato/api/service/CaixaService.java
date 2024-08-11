@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,29 +27,25 @@ public class CaixaService implements PublisherChange {
     public Caixa save(
             Caixa novaCaixa, int[] listIdsProdutos, Integer idPedido, Integer idFaixaEtaria
     ) {
-        if(!Objects.isNull(novaCaixa)){
-            Pedido pedido = pedidoService.listById(idPedido);
-            novaCaixa.setPedido(pedido);
-
-            FaixaEtaria faixaEtaria = faixaEtariaService.findById(idFaixaEtaria);
-            novaCaixa.setFaixaEtaria(faixaEtaria);
-
-            Caixa caixaSalva = action.save(novaCaixa);
-
-            List<ItemCaixa> madeInsertion = itemCaixaService.insertItems(
-                    caixaSalva, listIdsProdutos
-            );
-
-            etapaService.mudarEtapaCaixa(caixaSalva, 1);
-
-            if(madeInsertion.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Itens não cadastrados");
-            } else {
-                caixaSalva.setItens(madeInsertion);
-                return caixaSalva;
-            }
+        if(Objects.isNull(novaCaixa)) {
+            return null;
         }
-        return null;
+
+        Pedido pedido = pedidoService.listById(idPedido);
+        FaixaEtaria faixaEtaria = faixaEtariaService.findById(idFaixaEtaria);
+        novaCaixa.setPedido(pedido);
+        novaCaixa.setFaixaEtaria(faixaEtaria);
+        novaCaixa.setDataCriacao(LocalDate.now());
+
+        Caixa caixaRegistrada = action.save(novaCaixa);
+
+        List<ItemCaixa> itens = itemCaixaService.insertItems(caixaRegistrada, listIdsProdutos);
+        caixaRegistrada.setItens(itens);
+
+        etapaService.setEtapaCaixa(caixaRegistrada, 1);
+        List<EtapaCaixa> etapas = etapaService.etapas(caixaRegistrada.getId());
+        caixaRegistrada.setEtapas(etapas);
+        return caixaRegistrada;
     }
 
     public List<Caixa> listAll(){
@@ -78,7 +75,7 @@ public class CaixaService implements PublisherChange {
         Caixa caixa = action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
         );
-        etapaService.mudarEtapaCaixa(caixa, status);
+        etapaService.setEtapaCaixa(caixa, status);
         notifyChange(caixa.getPedido().getDoador());
     }
 

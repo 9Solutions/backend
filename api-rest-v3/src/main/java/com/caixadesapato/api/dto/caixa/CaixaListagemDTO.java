@@ -13,27 +13,21 @@ import java.util.List;
 public class CaixaListagemDTO {
 
     private Integer id;
+    private int idPedido;
+
     private Genero genero;
     private String carta;
     private String url;
     private Integer quantidade;
-    private int idPedido;
-    private LocalDate dataEntrega;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataCriacao;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataEntrega;
 
     private String faixaEtaria;
-
-    private List<ItemCaixaDTO> itens;
-
+    private List<String> itens;
     private List<EtapaCaixaDTO> etapas;
-
-    @Data
-    public static class ItemCaixaDTO {
-        private Integer id;
-        private String nome;
-        private Double valor;
-    }
 
     @Data
     public static class EtapaCaixaDTO {
