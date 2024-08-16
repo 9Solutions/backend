@@ -83,5 +83,4 @@ public class CaixaService implements PublisherChange {
     public void notifyChange(Doador entity) {
         doadorService.updateListener(entity.getEmail(), "Caixa");
     }
-
 }
