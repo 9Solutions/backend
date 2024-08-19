@@ -25,6 +25,8 @@ public class CaixaListagemDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataEntrega;
 
+    private String qrCodeToken;
+
     private String faixaEtaria;
     private List<String> itens;
     private List<EtapaCaixaDTO> etapas;

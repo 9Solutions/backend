@@ -40,6 +40,8 @@ public class Caixa {
     @Column(name = "dt_entrega")
     private LocalDate dataEntrega;
 
+    private String qrCodeToken;
+
     @ManyToOne
     @JoinColumn(name = "fk_faixa_etaria", insertable = true)
     private FaixaEtaria faixaEtaria;
