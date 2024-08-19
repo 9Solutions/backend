@@ -28,6 +28,7 @@ public class CaixaMapper {
         dto.setQuantidade(caixa.getQuantidade());
         dto.setDataCriacao(caixa.getDataCriacao());
         dto.setDataEntrega(caixa.getDataEntrega());
+        dto.setQrCodeToken(caixa.getQrCodeToken());
 
         dto.setFaixaEtaria(caixa.getFaixaEtaria().getFaixaNome());
         dto.setIdPedido(caixa.getPedido().getId());
