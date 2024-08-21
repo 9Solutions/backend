@@ -69,9 +69,14 @@ public class PedidoService implements PublisherChange {
         return action.save(pedido);
     }
 
+    public List<Pedido> listAllDetailsByDoador(Integer idDoador) {
+        return action.findByDoadorId(idDoador);
+    }
+
     @Override
     public void notifyChange(Doador entity) {
         doadorService.updateListener(entity.getEmail(), "Pedido");
     }
+
 
 }
