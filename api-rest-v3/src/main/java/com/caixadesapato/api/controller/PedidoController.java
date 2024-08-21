@@ -52,7 +52,6 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoDTO);
     }
 
-
     @Operation(summary = "Listar os dados por filtros", description = "Método que retorna os dados dos pedidos aplicando os filtros", tags = "Pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de pedidos"),
@@ -88,6 +87,25 @@ public class PedidoController {
         List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedido);
         return ResponseEntity.ok(pedidosDTO);
     }
+
+    @Operation(summary = "Listar detalhes do pedido por parametro", description = "Método que retorna os dados de um pedido de forma detalhada", tags = "Pedidos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista dados do pedido"),
+            @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error"),
+    })
+    @GetMapping("/all-details/buscar-doador/{idDoador}")
+    public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetailsByDoador(
+            @PathVariable Integer idDoador
+    ) {
+        List<Pedido> pedidos = service.listAllDetailsByDoador(idDoador);
+        if(pedidos.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedidos);
+        return ResponseEntity.ok(pedidosDTO);
+    }
+
 
 
     @Operation(summary = "Listar detalhes do pedido por parametro", description = "Método que retorna os dados de um pedido de forma detalhada", tags = "Pedidos")
