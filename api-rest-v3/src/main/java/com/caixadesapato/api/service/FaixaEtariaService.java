@@ -34,7 +34,7 @@ public class FaixaEtariaService {
         return action.save(faixaEtariaNova);
     }
 
-    public FaixaEtaria update(Integer id, FaixaEtariaUpdateDTO faixaEtariaUpdateDTO){
+    public FaixaEtaria update(Integer id, FaixaEtariaUpdateDTO faixaEtariaUpdateDTO) {
         FaixaEtaria faixaEtaria = action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
         );
