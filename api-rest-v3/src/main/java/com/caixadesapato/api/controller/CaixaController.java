@@ -55,7 +55,6 @@ public class CaixaController {
         return ResponseEntity.ok(caixaDTO);
     }
 
-
     @Operation(summary = "Cadastrar uma caixa ", description = "Método responsável por cadastrar uma nova caixa", tags = "Caixas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Caixa cadastrada"),
