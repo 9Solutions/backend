@@ -52,6 +52,7 @@ public class CaixaMapper {
         List<CaixaListagemDTO.EtapaCaixaDTO> etapasDTO = new ArrayList<>();
         for (EtapaCaixa etapaDaVez : etapas) {
             CaixaListagemDTO.EtapaCaixaDTO etapaDTO = new CaixaListagemDTO.EtapaCaixaDTO();
+            etapaDTO.setId(etapaDaVez.getStatus().getId());
             etapaDTO.setStatus(etapaDaVez.getStatus().getStatus());
             etapaDTO.setUpdate(etapaDaVez.getUpdateAt());
             etapasDTO.add(etapaDTO);

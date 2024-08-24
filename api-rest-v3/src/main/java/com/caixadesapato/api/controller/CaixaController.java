@@ -55,6 +55,21 @@ public class CaixaController {
         return ResponseEntity.ok(caixaDTO);
     }
 
+    @Operation(summary = "Listar dados de uma caixa ", description = "Listar dados de uma caixa pelo ID", tags = "Caixas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listar dados da caixa"),
+            @ApiResponse(responseCode = "404", description = "Caixa não encontrada"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @GetMapping("/buscar-por-qrcode/{qrCodeToken}")
+    public ResponseEntity<CaixaListagemDTO> findByQrCodeToken(
+            @PathVariable String qrCodeToken
+    ) {
+        Caixa caixaPorQrCodeToken = service.findByQrCodeToken(qrCodeToken);
+        CaixaListagemDTO caixaDTO = CaixaMapper.toDTO(caixaPorQrCodeToken);
+        return ResponseEntity.ok(caixaDTO);
+    }
+
     @Operation(summary = "Cadastrar uma caixa ", description = "Método responsável por cadastrar uma nova caixa", tags = "Caixas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Caixa cadastrada"),

@@ -33,6 +33,7 @@ public class CaixaListagemDTO {
 
     @Data
     public static class EtapaCaixaDTO {
+        private Integer id;
         private String status;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDateTime update;

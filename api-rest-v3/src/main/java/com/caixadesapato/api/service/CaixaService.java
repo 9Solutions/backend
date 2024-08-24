@@ -58,6 +58,12 @@ public class CaixaService implements PublisherChange {
         );
     }
 
+    public Caixa findByQrCodeToken(String token){
+        return action.findByQrCodeToken(token).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
+        );
+    }
+
     public Caixa update(
             Integer id, CaixaUpdateDTO caixaAtualizada
     ) {
