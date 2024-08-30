@@ -43,7 +43,7 @@ class EmailServiceTest {
 
         doNothing().when(javaMailSender).send(any(SimpleMailMessage.class));
 
-        emailService.sendMail(destinatario, assunto, mensagem);
+        emailService.sendMail(destinatario, assunto, mensagem, null);
 
         verify(javaMailSender, times(1)).send(mailMessage);
     }
@@ -56,7 +56,7 @@ class EmailServiceTest {
 
         doThrow(new RuntimeException("Erro ao enviar email")).when(javaMailSender).send(any(SimpleMailMessage.class));
 
-        emailService.sendMail(destinatario, assunto, mensagem);
+        emailService.sendMail(destinatario, assunto, mensagem, null);
 
         verify(javaMailSender, times(1)).send(any(SimpleMailMessage.class));
     }

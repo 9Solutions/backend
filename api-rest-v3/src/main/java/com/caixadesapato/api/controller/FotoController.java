@@ -1,5 +1,6 @@
 package com.caixadesapato.api.controller;
 
+import com.caixadesapato.api.service.EmailService;
 import com.caixadesapato.api.service.FotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class FotoController {
 
     private final FotoService fotoService;
+    private final EmailService emailService;
 
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("image") MultipartFile file) {
@@ -38,13 +40,12 @@ public class FotoController {
     }
 
     @PostMapping("/upload-email")
-    public ResponseEntity<String> handleFileUploadToEmail(@RequestParam("image") MultipartFile file) {
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("No file selected", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> handleFileUploadToEmail(@RequestParam("image") MultipartFile file, @RequestParam("email") String email) {
+        String assunto = "Imagem enviada";
+        String mensagem = "Veja a imagem anexada.";
 
-        // Send the image to Flask
-        //String flaskResponse = fotoService.sendToEmail(file); // Continuar aqui...
+        emailService.sendMail(email, assunto, mensagem, file);
+
         return new ResponseEntity<>("Email Enviado", HttpStatus.OK);
     }
 }
