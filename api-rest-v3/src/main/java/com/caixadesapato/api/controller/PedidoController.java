@@ -81,9 +81,14 @@ public class PedidoController {
     })
     @GetMapping("/all-details")
     public ResponseEntity<List<PedidoListagemDetalhadaDTO>> listAllDetailsByParams(
-            @RequestParam Integer statusPedido
+            @RequestParam (required = false) Integer statusPedido
     ) {
-        List<Pedido> pedido = service.listAllDetailsByStatus(statusPedido);
+            List<Pedido> pedido;
+        if (statusPedido == null){
+            pedido = service.listAll();
+        }else {
+            pedido = service.listAllDetailsByStatus(statusPedido);
+        }
         List<PedidoListagemDetalhadaDTO> pedidosDTO = PedidoMapper.toListagemDetalhadaDTO(pedido);
         return ResponseEntity.ok(pedidosDTO);
     }
