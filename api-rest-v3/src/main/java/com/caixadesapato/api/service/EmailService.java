@@ -1,5 +1,6 @@
 package com.caixadesapato.api.service;
 
+import jakarta.mail.util.ByteArrayDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,7 +30,8 @@ public class EmailService {
                 helper.setText(mensagem, true);
 
                 if (file != null && !file.isEmpty()) {
-                    helper.addAttachment(file.getOriginalFilename(), file);
+                    ByteArrayDataSource dataSource = new ByteArrayDataSource(file.getBytes(), file.getContentType());
+                    helper.addAttachment("Foto da Entrega", dataSource);
                 }
             };
             javaMailSender.send(preparator);

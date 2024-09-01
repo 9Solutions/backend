@@ -1,15 +1,14 @@
 package com.caixadesapato.api.controller;
 
+import com.caixadesapato.api.model.Pedido;
 import com.caixadesapato.api.service.EmailService;
 import com.caixadesapato.api.service.FotoService;
+import com.caixadesapato.api.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,6 +20,7 @@ public class FotoController {
 
     private final FotoService fotoService;
     private final EmailService emailService;
+    private final PedidoService pedidoService;
 
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("image") MultipartFile file) {
@@ -39,10 +39,13 @@ public class FotoController {
         }
     }
 
-    @PostMapping("/upload-email")
-    public ResponseEntity<String> handleFileUploadToEmail(@RequestParam("image") MultipartFile file, @RequestParam("email") String email) {
+    @PostMapping("/upload-email/{id}")
+    public ResponseEntity<String> handleFileUploadToEmail(@RequestParam("image") MultipartFile file, @PathVariable Integer id) {
         String assunto = "Imagem enviada";
         String mensagem = "Veja a imagem anexada.";
+
+        Pedido pedido = pedidoService.listById(id);
+        String email = pedido.getDoador().getEmail();
 
         emailService.sendMail(email, assunto, mensagem, file);
 
