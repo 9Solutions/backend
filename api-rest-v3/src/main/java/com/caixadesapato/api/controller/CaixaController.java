@@ -6,6 +6,7 @@ import com.caixadesapato.api.dto.caixa.CaixaMapper;
 import com.caixadesapato.api.dto.caixa.CaixaUpdateDTO;
 import com.caixadesapato.api.model.Caixa;
 import com.caixadesapato.api.service.CaixaService;
+import com.caixadesapato.api.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,9 +31,9 @@ public class CaixaController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @GetMapping
-    public ResponseEntity<List<CaixaListagemDTO>> listAll(){
+    public ResponseEntity<List<CaixaListagemDTO>> listAll() {
         List<Caixa> caixas = service.listAll();
-        if(caixas.isEmpty()){
+        if (caixas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         List<CaixaListagemDTO> caixasDTO = CaixaMapper.toDTO(caixas);
@@ -80,7 +81,7 @@ public class CaixaController {
     @PostMapping
     public ResponseEntity<CaixaListagemDTO> create(
             @RequestBody @Valid CaixaCriacaoDTO novaCaixa
-    ){
+    ) {
         Caixa caixa = CaixaMapper.toEntity(novaCaixa);
         Caixa caixaSalva = service.save(
                 caixa, novaCaixa.getItensCaixa(), novaCaixa.getIdPedido(), novaCaixa.getIdFaixaEtaria()
