@@ -14,6 +14,7 @@ public class PedidoListagemDetalhadaDTO {
     private Integer id;
     private String status;
     private DoadorDTO doador;
+    private Double valorTotal;
 
     @Data
     public static class DoadorDTO {

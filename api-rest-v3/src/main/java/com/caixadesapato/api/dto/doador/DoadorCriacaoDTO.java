@@ -32,7 +32,7 @@ public class DoadorCriacaoDTO {
     @NotBlank
     @Size(min = 8, max = 30)
     private String senha;
-
+    
     @NotBlank
     private String permissao;
 }

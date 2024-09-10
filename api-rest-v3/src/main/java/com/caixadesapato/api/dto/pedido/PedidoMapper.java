@@ -40,6 +40,7 @@ public class PedidoMapper {
         PedidoListagemDetalhadaDTO pedidoListagemPDF = new PedidoListagemDetalhadaDTO();
         pedidoListagemPDF.setId(pedido.getId());
         pedidoListagemPDF.setStatus(pedido.getStatusPedido().getStatus());
+        pedidoListagemPDF.setValorTotal(pedido.getValorTotal());
 
         PedidoListagemDetalhadaDTO.DoadorDTO doadorListagemPDF = new PedidoListagemDetalhadaDTO.DoadorDTO();
         doadorListagemPDF.setId(pedido.getDoador().getId());
