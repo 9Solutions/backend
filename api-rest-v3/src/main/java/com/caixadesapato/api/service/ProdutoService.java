@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +27,20 @@ public class ProdutoService {
     private final FaixaEtariaService faixaEtariaService;
     private final CategoriaService categoriaService;
 
+    private ConcurrentHashMap<Integer, Produto> tabelaProdutos = new ConcurrentHashMap<>();
+
     public List<Produto> listAllByCondition(Integer status) {
-        if(status != null) {
+        if (status != null) {
             return action.findByCondicaoEquals(status);
         }
         return action.findAll();
     }
 
     public Produto findById(Integer id) {
+        Produto produto = tabelaProdutos.get(id);
+        if (produto != null) {
+            return produto;
+        }
         return action.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado")
         );
@@ -44,14 +51,15 @@ public class ProdutoService {
         FaixaEtaria faixaEtaria = faixaEtariaService.findById(idFaixaEtaria);
         novoProduto.setCategoriaProduto(categoria);
         novoProduto.setFaixaEtaria(faixaEtaria);
-        return action.save(novoProduto);
+
+        Produto produtoSalvo = action.save(novoProduto);
+        tabelaProdutos.put(produtoSalvo.getId(), produtoSalvo);
+        return produtoSalvo;
     }
 
     public Produto update(Integer id, ProdutoAtualizacaoDTO novosDados) {
         Optional<Produto> produtoOptional = action.findById(id);
-
         if (produtoOptional.isPresent()) {
-
             FaixaEtaria faixaEtaria = faixaEtariaService.findById(novosDados.getIdFaixaEtaria());
             Categoria categoria = categoriaService.findById(novosDados.getIdCategoriaProduto());
 
@@ -63,12 +71,12 @@ public class ProdutoService {
             atualizandoProduto.setFaixaEtaria(faixaEtaria);
             atualizandoProduto.setCategoriaProduto(categoria);
 
-            return action.save(atualizandoProduto);
+            Produto produtoAtualizado = action.save(atualizandoProduto);
+            tabelaProdutos.put(produtoAtualizado.getId(), produtoAtualizado);
+            return produtoAtualizado;
         }
 
-        throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Produto não encontrado"
-        );
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não encontrado");
     }
 
     public Produto updateNameAndPrice(Integer id, ProdutoPatchDTO novosDados) {
@@ -77,24 +85,31 @@ public class ProdutoService {
             Produto atualizacaoProduto = produtoOptional.get();
             atualizacaoProduto.setNome(novosDados.getNome());
             atualizacaoProduto.setValor(novosDados.getValor());
-            return action.save(atualizacaoProduto);
+
+            Produto produtoAtualizado = action.save(atualizacaoProduto);
+            tabelaProdutos.put(produtoAtualizado.getId(), produtoAtualizado);
+            return produtoAtualizado;
         }
 
-        throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Produto não encontrado"
-        );
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não encontrado");
     }
 
-    public Produto changeCondition (Integer id, Integer condition){
-        Optional<Produto> produto = action.findById(id);
-        if (produto.isPresent()) {
-            produto.get().setCondicao(condition);
-            return action.save(produto.get());
+    public Produto changeCondition(Integer id, Integer condition) {
+        Optional<Produto> produtoOptional = action.findById(id);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            produto.setCondicao(condition);
+
+            Produto produtoAtualizado = action.save(produto);
+            tabelaProdutos.put(produto.getId(), produtoAtualizado);
+            return produtoAtualizado;
         }
 
-        throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Produto não encontrado"
-        );
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não encontrado");
     }
 
+    public void removeProduto(Integer id) {
+        tabelaProdutos.remove(id);
+        action.deleteById(id);
+    }
 }
