@@ -34,6 +34,8 @@ public class PedidoListagemDetalhadaDTO {
         private Integer quantidade;
         private Genero genero;
         private String faixaEtaria;
+        private String qrCodeToken;
+
 
         private List<String> itens;
 

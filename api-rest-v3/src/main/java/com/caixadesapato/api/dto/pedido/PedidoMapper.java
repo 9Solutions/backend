@@ -70,6 +70,7 @@ public class PedidoMapper {
         caixaDto.setQuantidade(caixa.getQuantidade());
         caixaDto.setFaixaEtaria(caixa.getFaixaEtaria().getFaixaNome());
         caixaDto.setGenero(caixa.getGenero());
+        caixaDto.setQrCodeToken(caixa.getQrCodeToken());
         caixaDto.setItens(
                 toItensDaCaixaDTO(caixa.getItens())
         );
