@@ -16,6 +16,7 @@ public class PedidoMapper {
         dto.setId(pedido.getId());
         dto.setDataPedido(pedido.getDataPedido());
         dto.setValorTotal(pedido.getValorTotal());
+        dto.setQuantidadeCaixas(pedido.getCaixas().size());
 
         PedidoListagemSimplesDTO.StatusPedidoDTO statusPedidoDTO = new PedidoListagemSimplesDTO.StatusPedidoDTO();
         statusPedidoDTO.setId(pedido.getStatusPedido().getId());

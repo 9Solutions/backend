@@ -1,6 +1,7 @@
 package com.caixadesapato.api.repository;
 
 import com.caixadesapato.api.model.Pedido;
+import com.caixadesapato.api.model.view.VwFiltroPedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

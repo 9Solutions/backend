@@ -24,8 +24,8 @@ public class FotoService {
     public String sendToFlask(MultipartFile file) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
-        factory.setConnectTimeout(20000);  // 20 seconds
-        factory.setReadTimeout(20000);  // 20 seconds
+        factory.setConnectTimeout(60000);  // 60 seconds
+        factory.setReadTimeout(60000);  // 60 seconds
 
         // Convert the file to a ByteArrayResource
         org.springframework.core.io.ByteArrayResource resource =

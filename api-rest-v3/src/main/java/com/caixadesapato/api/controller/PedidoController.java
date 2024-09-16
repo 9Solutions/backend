@@ -64,7 +64,9 @@ public class PedidoController {
             @RequestParam String data,
             @RequestParam String idPedido
     ){
+        status = status.replace("+", " ");
         List<VwFiltroPedido> pedidos =  service.listByStatus(status, data, idPedido);
+
         if(pedidos.isEmpty()){
             return ResponseEntity.noContent().build();
         }

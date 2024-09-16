@@ -14,6 +14,7 @@ public class PedidoListagemSimplesDTO {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dataPedido;
     private StatusPedidoDTO statusPedido;
+    private int quantidadeCaixas;
 
     private DoadorDTO doador;
 
