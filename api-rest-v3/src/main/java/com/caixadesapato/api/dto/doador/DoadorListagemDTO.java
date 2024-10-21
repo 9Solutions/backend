@@ -15,5 +15,4 @@ public class DoadorListagemDTO {
     private String email;
     private LocalDate dataCadastro;
     private String telefone;
-    private String senha;
 }

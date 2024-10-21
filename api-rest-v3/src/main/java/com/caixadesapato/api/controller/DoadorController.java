@@ -1,9 +1,7 @@
 package com.caixadesapato.api.controller;
 
-import com.caixadesapato.api.dto.doador.DoadorAlteracaoSenhaDTO;
-import com.caixadesapato.api.dto.doador.DoadorCriacaoDTO;
-import com.caixadesapato.api.dto.doador.DoadorLoginDTO;
-import com.caixadesapato.api.dto.doador.DoadorTokenDTO;
+import com.caixadesapato.api.dto.doador.*;
+import com.caixadesapato.api.model.Doador;
 import com.caixadesapato.api.service.DoadorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,9 +28,10 @@ public class DoadorController {
             @ApiResponse(responseCode = "201", description = "Doador cadastrado"),
             @ApiResponse(responseCode = "204", description = "Nenhuma caixa cadastrada"),
     })
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid DoadorCriacaoDTO doadorCriacaoDto) {
-        this.doadorService.cadastrar(doadorCriacaoDto);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<DoadorListagemDTO> cadastrar(@RequestBody @Valid DoadorCriacaoDTO doadorCriacaoDto) {
+        Doador doador = this.doadorService.cadastrar(doadorCriacaoDto);
+        DoadorListagemDTO doadorListagemDto = DoadorMapper.toDto(doador);
+        return ResponseEntity.status(201).body(doadorListagemDto);
     }
 
     //login do doador
