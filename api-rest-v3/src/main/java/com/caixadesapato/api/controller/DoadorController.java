@@ -1,9 +1,6 @@
 package com.caixadesapato.api.controller;
 
-import com.caixadesapato.api.dto.doador.DoadorAlteracaoSenhaDTO;
-import com.caixadesapato.api.dto.doador.DoadorCriacaoDTO;
-import com.caixadesapato.api.dto.doador.DoadorLoginDTO;
-import com.caixadesapato.api.dto.doador.DoadorTokenDTO;
+import com.caixadesapato.api.dto.doador.*;
 import com.caixadesapato.api.service.DoadorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doadores")
@@ -66,5 +64,9 @@ public class DoadorController {
         }
     }
 
-
+    @Operation(summary = "Retorna os usuarios pela permissao", tags = "Doadores")
+    @GetMapping("/usuarios/{permissao}")
+    public List<UsuarioListagemDTO> usuariosAdmin(@PathVariable String permissao){
+        return DoadorMapper.toUsuarioDto(doadorService.buscarPorPermissao(permissao));
+    }
 }
