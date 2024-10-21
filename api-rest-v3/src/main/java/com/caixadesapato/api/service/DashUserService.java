@@ -50,5 +50,4 @@ public class DashUserService {
         return vwQtdPedidosPorFaixaEtariaRepository.findByAno(ano);
     }
 
-
 }

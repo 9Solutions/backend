@@ -20,5 +20,4 @@ public class DashUser {
     private String email;
 
     private String senha;
-
 }
