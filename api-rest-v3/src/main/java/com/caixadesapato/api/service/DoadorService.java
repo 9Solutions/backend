@@ -28,14 +28,14 @@ public class DoadorService implements ChangeListener {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
-    public void cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
+    public Doador cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
         System.out.println(doadorCriacaoDto);
         final Doador novoDoador = DoadorMapper.toEntity(doadorCriacaoDto);
 
         String senhaCriptografada = passwordEncoder.encode(novoDoador.getSenha());
         novoDoador.setSenha(senhaCriptografada);
 
-        this.doadorRepository.save(novoDoador);
+        return this.doadorRepository.save(novoDoador);
     }
 
     public DoadorTokenDTO login(DoadorLoginDTO doadorLoginDto) {
