@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DoadorService implements ChangeListener {
@@ -72,6 +74,12 @@ public class DoadorService implements ChangeListener {
         return doadorRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
+    }
+
+    public List<Doador> buscarPorPermissao(String permissao){
+        List<Doador> doadores = doadorRepository.findAllByPermissaoEqualsIgnoreCase(permissao);
+        if (doadores == null) throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        return doadores;
     }
 
     @Override

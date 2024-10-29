@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doadores")
@@ -65,5 +66,9 @@ public class DoadorController {
         }
     }
 
-
+    @Operation(summary = "Retorna os usuarios pela permissao", tags = "Doadores")
+    @GetMapping("/usuarios/{permissao}")
+    public List<UsuarioListagemDTO> usuariosAdmin(@PathVariable String permissao){
+        return DoadorMapper.toUsuarioDto(doadorService.buscarPorPermissao(permissao));
+    }
 }

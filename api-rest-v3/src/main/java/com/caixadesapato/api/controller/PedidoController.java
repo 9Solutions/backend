@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,55 @@ import java.util.Map;
 public class PedidoController {
 
 	private final PedidoService service;
+
+	private String obterContentType(String tipo) {
+		switch (tipo.toLowerCase()) {
+			case "json":
+				return "application/json";
+			case "csv":
+				return "text/csv";
+			case "xml":
+				return "application/xml";
+			case "parquet":
+				return "application/octet-stream";
+			case "txt":
+				return "text/plain";
+			default:
+				throw new IllegalArgumentException("Tipo de arquivo não suportado: " + tipo);
+		}
+	}
+
+	@GetMapping("/exportar")
+	public ResponseEntity<byte[]> exportarPedidos(@RequestParam("tipo") String tipo) {
+		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
+
+		byte[] arquivoExportado = service.exportarPedidos(pedidos, tipo);
+
+		String filename = "pedidos." + tipo.toLowerCase();
+		String contentType = obterContentType(tipo);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentDispositionFormData("attachment", filename);
+		headers.setContentType(MediaType.parseMediaType(contentType));
+
+		return ResponseEntity.ok()
+			.headers(headers)
+			.body(arquivoExportado);
+	}
+
+	@GetMapping("/exportar-txt")
+	public ResponseEntity<byte[]> exportarPedidosParaTxt(@RequestParam String nomeAdmin) {
+		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
+
+		byte[] conteudoTxt = service.exportarParaTxt(pedidos, nomeAdmin);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.TEXT_PLAIN);
+		headers.setContentDispositionFormData("attachment", "pedidos.txt");
+
+		return new ResponseEntity<>(conteudoTxt, headers, HttpStatus.OK);
+	}
+
 
 	@Operation(summary = "Listar", description = "Método que retorna todos os dados de forma simplificada", tags = "Pedidos")
 	@ApiResponses(value = {
