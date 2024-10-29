@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class EmailService {
+public class    EmailService {
 
     private final JavaMailSender javaMailSender;
 
