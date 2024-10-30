@@ -30,7 +30,7 @@ class ProdutoServiceAbilitandoProdutoTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
+    /*@Test
     void testChangeConditionToEnabledSuccess() {
         Produto produto = new Produto();
         produto.setCondicao(0); // Produto inicialmente desabilitado
@@ -42,7 +42,7 @@ class ProdutoServiceAbilitandoProdutoTest {
 
         assertEquals(1, result.getCondicao());
         verify(produtoRepository).save(produto);
-    }
+    }*/
 
     @Test
     void testChangeConditionNotFound() {

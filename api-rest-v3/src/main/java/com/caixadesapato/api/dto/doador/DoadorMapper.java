@@ -3,6 +3,7 @@ package com.caixadesapato.api.dto.doador;
 import com.caixadesapato.api.model.Doador;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DoadorMapper {
 
@@ -15,7 +16,6 @@ public class DoadorMapper {
         dto.setNomeCompleto(entity.getNomeCompleto());
         dto.setEmail(entity.getEmail());
         dto.setTelefone(entity.getTelefone());
-        dto.setSenha(entity.getSenha());
 
         return dto;
     }
@@ -56,7 +56,6 @@ public class DoadorMapper {
         novoDoador.setEmail(entity.getEmail());
         novoDoador.setIdentificador(entity.getIdentificador());
         novoDoador.setTelefone(entity.getTelefone());
-        novoDoador.setSenha(entity.getSenha());
 
         return novoDoador;
     }
@@ -69,7 +68,6 @@ public class DoadorMapper {
         dto.setNomeCompleto(entity.getNomeCompleto());
         dto.setEmail(entity.getEmail());
         dto.setTelefone(entity.getTelefone());
-        dto.setSenha(entity.getSenha());
 
         return dto;
     }
@@ -88,4 +86,21 @@ public class DoadorMapper {
         return dto;
     }
 
+    public static UsuarioListagemDTO toUsuarioDto(Doador entity){
+        if (entity == null) return null;
+
+        UsuarioListagemDTO dto = new UsuarioListagemDTO();
+        dto.setId(entity.getId());
+        dto.setEmail(entity.getEmail());
+        dto.setPermissao(entity.getPermissao());
+
+        return dto;
+    }
+
+    public static List<UsuarioListagemDTO> toUsuarioDto(List<Doador> entities){
+        return entities
+                .stream()
+                .map(DoadorMapper::toUsuarioDto)
+                .collect(Collectors.toList());
+    }
 }

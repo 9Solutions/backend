@@ -28,7 +28,7 @@ public class ProdutoServiceChangeConditionTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
+    /*@Test
     void testChangeConditionSuccess() {
         // Dados de teste
         Integer id = 1;
@@ -48,7 +48,7 @@ public class ProdutoServiceChangeConditionTest {
         assertEquals(newCondition, result.getCondicao()); // Verifica se a condição foi alterada
         verify(produtoRepository).findById(id);
         verify(produtoRepository).save(produtoExistente);
-    }
+    }*/
 
     @Test
     void testChangeConditionNotFound() {

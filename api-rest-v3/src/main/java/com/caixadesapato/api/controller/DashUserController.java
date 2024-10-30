@@ -1,9 +1,6 @@
 package com.caixadesapato.api.controller;
 
-import com.caixadesapato.api.dto.dash.DashUserAlteracaoSenhaDTO;
-import com.caixadesapato.api.dto.dash.DashUserCriacaoDTO;
-import com.caixadesapato.api.dto.dash.DashUserLoginDTO;
-import com.caixadesapato.api.dto.dash.DashUserTokenDTO;
+import com.caixadesapato.api.dto.dash.*;
 import com.caixadesapato.api.model.view.*;
 import com.caixadesapato.api.service.DashUserService;
 import io.swagger.v3.oas.annotations.Operation;

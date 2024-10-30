@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DoadorService implements ChangeListener {
@@ -26,14 +28,14 @@ public class DoadorService implements ChangeListener {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
-    public void cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
+    public Doador cadastrar(DoadorCriacaoDTO doadorCriacaoDto) {
         System.out.println(doadorCriacaoDto);
         final Doador novoDoador = DoadorMapper.toEntity(doadorCriacaoDto);
 
         String senhaCriptografada = passwordEncoder.encode(novoDoador.getSenha());
         novoDoador.setSenha(senhaCriptografada);
 
-        this.doadorRepository.save(novoDoador);
+        return this.doadorRepository.save(novoDoador);
     }
 
     public DoadorTokenDTO login(DoadorLoginDTO doadorLoginDto) {
@@ -74,9 +76,16 @@ public class DoadorService implements ChangeListener {
         );
     }
 
+    public List<Doador> buscarPorPermissao(String permissao){
+        List<Doador> doadores = doadorRepository.findAllByPermissaoEqualsIgnoreCase(permissao);
+        if (doadores == null) throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        return doadores;
+    }
+
     @Override
     public void updateListener(String email, String eventType) {
-
+        String mensagem = String.format("Atualização: O(a) %s teve o status alterado", eventType);
+        emailService.sendMail(email, "Status alterado", mensagem, null);
     }
 
     /*@Override
