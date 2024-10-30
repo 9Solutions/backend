@@ -11,37 +11,28 @@ import com.caixadesapato.api.repository.view.VwFiltrosPedidosRepository;
 import com.caixadesapato.api.utils.interfaces.PublisherChange;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.parquet.example.data.Group;
-import org.apache.parquet.example.data.simple.SimpleGroupFactory;
-import org.apache.parquet.hadoop.ParquetWriter;
-import org.apache.parquet.hadoop.example.GroupWriteSupport;
-import org.apache.parquet.hadoop.metadata.CompressionCodecName;
-import org.apache.parquet.schema.MessageType;
-import org.apache.parquet.schema.MessageTypeParser;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.awt.*;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import java.io.OutputStreamWriter;
 import java.util.List;
-
-
 
 
 @Service
@@ -56,6 +47,49 @@ public class PedidoService implements PublisherChange {
 
 	public void adicionarPedido(Integer id, Pedido pedido) {
 		pedidoTable.put(id, pedido);
+	}
+
+	public List<PedidoListagemDetalhadaDTO> importarDeTxt(MultipartFile file) throws IOException {
+		List<PedidoListagemDetalhadaDTO> pedidos = new ArrayList<>();
+		PedidoListagemDetalhadaDTO pedidoAtual = null;
+
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+			String linha;
+
+			while ((linha = reader.readLine()) != null) {
+				String tipoRegistro = linha.substring(0, 2);
+
+				switch (tipoRegistro) {
+					case "00":
+						break;
+
+					case "01":
+						pedidoAtual = new PedidoListagemDetalhadaDTO();
+						pedidoAtual.setId(Integer.parseInt(linha.substring(2, 8).trim()));
+						pedidoAtual.setStatus(linha.substring(49, 59).trim());
+						pedidoAtual.setValorTotal(Double.parseDouble(linha.substring(69, 77).trim()) / 100.0);
+
+						PedidoListagemDetalhadaDTO.DoadorDTO doador = new PedidoListagemDetalhadaDTO.DoadorDTO();
+						doador.setNome(linha.substring(8, 38).trim());
+						doador.setId(Long.parseLong(linha.substring(38, 49).trim()));
+						pedidoAtual.setDoador(doador);
+
+						pedidos.add(pedidoAtual);
+						break;
+
+					case "02":  // Detalhes do Doador
+						if (pedidoAtual != null) {
+							pedidoAtual.getDoador().setEmail(linha.substring(43, 69).trim());
+							pedidoAtual.getDoador().setTelefone(linha.substring(32, 43).trim());
+						}
+						break;
+
+					default:
+						throw new IllegalArgumentException("Tipo de registro desconhecido: " + tipoRegistro);
+				}
+			}
+		}
+		return pedidos;
 	}
 
 	public void loadPedidosIntoTable() {
@@ -133,6 +167,7 @@ public class PedidoService implements PublisherChange {
 	}
 
 	public Pedido create(Pedido novoPedido, Long idDoador) {
+		System.out.println(idDoador);
 		Doador doador = doadorService.buscarPorId(idDoador);
 		StatusPedido statusPedido = statusPedidoService.findById(novoPedido.getStatusPedido().getId());
 		novoPedido.setDoador(doador);
@@ -183,9 +218,9 @@ public class PedidoService implements PublisherChange {
 			case "json":
 				return exportarParaJson(pedidos);
 			case "csv":
-				return exportarParaCsv(pedidos);
+				//return exportarParaCsv(pedidos);
 			case "xml":
-				return exportarParaXml(pedidos);
+				//return exportarParaXml(pedidos);
 			default:
 				throw new IllegalArgumentException("Tipo de arquivo não suportado: " + tipo);
 		}
@@ -200,7 +235,7 @@ public class PedidoService implements PublisherChange {
 		}
 	}
 
-	private byte[] exportarParaCsv(List<PedidoListagemDetalhadaDTO> pedidos) {
+	/*private byte[] exportarParaCsv(List<PedidoListagemDetalhadaDTO> pedidos) {
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
 		     CSVPrinter printer = new CSVPrinter(new OutputStreamWriter(out, StandardCharsets.UTF_8),
 			     CSVFormat.DEFAULT.withHeader("ID", "Status", "Doador", "Valor Total"))) {
@@ -212,9 +247,9 @@ public class PedidoService implements PublisherChange {
 		} catch (IOException e) {
 			throw new RuntimeException("Erro ao exportar para CSV", e);
 		}
-	}
+	}*/
 
-	private byte[] exportarParaXml(List<PedidoListagemDetalhadaDTO> pedidos) {
+	/*private byte[] exportarParaXml(List<PedidoListagemDetalhadaDTO> pedidos) {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -254,7 +289,7 @@ public class PedidoService implements PublisherChange {
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao exportar para XML", e);
 		}
-	}
+	}*/
 
 
 	public byte[] exportarParaTxt(List<PedidoListagemDetalhadaDTO> pedidos, String nomeAdmin) {

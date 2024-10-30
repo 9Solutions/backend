@@ -47,7 +47,7 @@ public class FotoController {
         Pedido pedido = pedidoService.listById(id);
         String email = pedido.getDoador().getEmail();
 
-        emailService.sendMail(email, assunto, file);
+        emailService.sendMail(email, assunto, mensagem, file);
 
         return new ResponseEntity<>("Email Enviado", HttpStatus.OK);
     }

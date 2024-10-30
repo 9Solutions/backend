@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,6 +24,21 @@ import java.util.List;
 public class CaixaController {
 
     private final CaixaService service;
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importCaixas(@RequestParam("file") MultipartFile file) {
+        try {
+            List<CaixaCriacaoDTO> caixas = service.processarArquivo(file);
+            for (CaixaCriacaoDTO caixa : caixas) {
+                Caixa caixaNova = CaixaMapper.toEntity(caixa);
+                service.save(caixaNova, caixa.getItensCaixa(), caixa.getIdPedido(), caixa.getIdFaixaEtaria());
+            }
+
+            return ResponseEntity.ok("Importação concluída com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro na importação: " + e.getMessage());
+        }
+    }
 
     @Operation(summary = "Listar caixas ", description = "Listar todas caixas", tags = "Caixas")
     @ApiResponses(value = {
