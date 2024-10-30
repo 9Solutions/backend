@@ -39,16 +39,16 @@ public class FotoController {
         }
     }
 
-    @PostMapping("/upload-email/{id}")
-    public ResponseEntity<String> handleFileUploadToEmail(@RequestParam("image") MultipartFile file, @PathVariable Integer id) {
-        String assunto = "Imagem enviada";
-        String mensagem = "Veja a imagem anexada.";
+    //@PostMapping("/upload-email/{id}")
+    //public ResponseEntity<String> handleFileUploadToEmail(@RequestParam("image") MultipartFile file, @PathVariable Integer id) {
+        //String assunto = "Imagem enviada";
+        //String mensagem = "Veja a imagem anexada.";
 
-        Pedido pedido = pedidoService.listById(id);
-        String email = pedido.getDoador().getEmail();
+        //Pedido pedido = pedidoService.listById(id);
+        //String email = pedido.getDoador().getEmail();
 
-        emailService.sendMail(email, assunto, mensagem, file);
+        //emailService.sendMail(email, assunto, mensagem, file);
 
-        return new ResponseEntity<>("Email Enviado", HttpStatus.OK);
-    }
+       // return new ResponseEntity<>("Email Enviado", HttpStatus.OK);
+    //}
 }

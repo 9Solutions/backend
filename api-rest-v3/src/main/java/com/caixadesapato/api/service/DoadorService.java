@@ -76,8 +76,13 @@ public class DoadorService implements ChangeListener {
 
     @Override
     public void updateListener(String email, String eventType) {
+
+    }
+
+    /*@Override
+    public void updateListener(String email, String eventType) {
         String mensagem = String.format("Atualização: O(a) %s teve o status alterado", eventType);
         emailService.sendMail(email, "Status alterado", mensagem, null);
-    }
+    }*/
 
 }
