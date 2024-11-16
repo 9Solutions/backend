@@ -1,17 +1,23 @@
 package com.caixadesapato.api.service;
 
+import com.caixadesapato.api.dto.doador.DoadorCriacaoDTO;
+import com.caixadesapato.api.dto.pedido.ImportPedidoDTO;
+import com.caixadesapato.api.dto.pedido.PedidoCriacaoDTO;
 import com.caixadesapato.api.dto.pedido.PedidoListagemDetalhadaDTO;
 import com.caixadesapato.api.dto.pedido.PedidoMapper;
+import com.caixadesapato.api.model.Caixa;
 import com.caixadesapato.api.model.Doador;
 import com.caixadesapato.api.model.Pedido;
 import com.caixadesapato.api.model.StatusPedido;
 import com.caixadesapato.api.model.view.VwFiltroPedido;
 import com.caixadesapato.api.repository.PedidoRepository;
 import com.caixadesapato.api.repository.view.VwFiltrosPedidosRepository;
+import com.caixadesapato.api.utils.enums.Genero;
 import com.caixadesapato.api.utils.interfaces.PublisherChange;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,19 +25,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.IOException;
+import java.io.*;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.OutputStreamWriter;
 import java.util.List;
 
 
@@ -49,47 +52,66 @@ public class PedidoService implements PublisherChange {
 		pedidoTable.put(id, pedido);
 	}
 
-	public List<PedidoListagemDetalhadaDTO> importarDeTxt(MultipartFile file) throws IOException {
-		List<PedidoListagemDetalhadaDTO> pedidos = new ArrayList<>();
-		PedidoListagemDetalhadaDTO pedidoAtual = null;
-
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+	public List<ImportPedidoDTO> importarDeTxt(MultipartFile file) throws IOException {
+		try {
+			Reader streamFile = new InputStreamReader(file.getInputStream());
+			BufferedReader reader = new BufferedReader(streamFile);
 			String linha;
+
+			List<ImportPedidoDTO> informacoesImport = new ArrayList<>();
 
 			while ((linha = reader.readLine()) != null) {
 				String tipoRegistro = linha.substring(0, 2);
 
 				switch (tipoRegistro) {
 					case "00":
+						String identificadorArquivo = linha.substring(2, 12).trim();
+						String dataHoraGeracao = linha.substring(12, 31).trim();
+						String versaoLayout = linha.substring(31, 33).trim();
+						String nomeAdmin = linha.substring(33, 63).trim();
+						Integer quantidadeRegistros = Integer.parseInt(linha.substring(64, 69).trim());
 						break;
 
 					case "01":
-						pedidoAtual = new PedidoListagemDetalhadaDTO();
-						pedidoAtual.setId(Integer.parseInt(linha.substring(2, 8).trim()));
-						pedidoAtual.setStatus(linha.substring(49, 59).trim());
-						pedidoAtual.setValorTotal(Double.parseDouble(linha.substring(69, 77).trim()) / 100.0);
+						String status = linha.substring(2, 12).trim();
+						String dataPedido = linha.substring(12, 24).trim();
+						Double valorTotal = Double.parseDouble(linha.substring(24, 32).trim());
+						String cpfDoador = linha.substring(32, 43).trim();
+						String emailDoador = linha.substring(43, 104).trim();
+						String nomeDoador = linha.substring(104, 134).trim();
 
-						PedidoListagemDetalhadaDTO.DoadorDTO doador = new PedidoListagemDetalhadaDTO.DoadorDTO();
-						doador.setNome(linha.substring(8, 38).trim());
-						doador.setId(Long.parseLong(linha.substring(38, 49).trim()));
-						pedidoAtual.setDoador(doador);
-
-						pedidos.add(pedidoAtual);
-						break;
-
-					case "02":  // Detalhes do Doador
-						if (pedidoAtual != null) {
-							pedidoAtual.getDoador().setEmail(linha.substring(43, 69).trim());
-							pedidoAtual.getDoador().setTelefone(linha.substring(32, 43).trim());
+						Doador doador = doadorService.buscarPorCpf(cpfDoador);
+						if(Objects.isNull(doador)) {
+							DoadorCriacaoDTO doadorDTO =
+									new DoadorCriacaoDTO(
+											nomeDoador,
+											cpfDoador,
+											emailDoador,
+											"(11) 91111-1111",
+											cpfDoador,
+											"User by Import"
+									);
+							doador = doadorService.cadastrar(doadorDTO);
 						}
+
+						StatusPedido searchedStatus = statusPedidoService.findByStatus(status.toLowerCase());
+
+						Pedido pedido = new Pedido();
+						pedido.setValorTotal(valorTotal);
+						pedido.setDoador(doador);
+						pedido.setStatusPedido(searchedStatus);
+						Pedido pedidoSalvo = action.save(pedido);
+						informacoesImport.add(new ImportPedidoDTO(pedidoSalvo.getId(), (int) Math.floor(valorTotal / 88)));
 						break;
 
 					default:
 						throw new IllegalArgumentException("Tipo de registro desconhecido: " + tipoRegistro);
 				}
 			}
+			return informacoesImport;
+		} catch (IOException e) {
+			throw new IOException("Erro ao processar arquivo");
 		}
-		return pedidos;
 	}
 
 	public void loadPedidosIntoTable() {
@@ -167,7 +189,6 @@ public class PedidoService implements PublisherChange {
 	}
 
 	public Pedido create(Pedido novoPedido, Long idDoador) {
-		System.out.println(idDoador);
 		Doador doador = doadorService.buscarPorId(idDoador);
 		StatusPedido statusPedido = statusPedidoService.findById(novoPedido.getStatusPedido().getId());
 		novoPedido.setDoador(doador);
@@ -234,63 +255,6 @@ public class PedidoService implements PublisherChange {
 			throw new RuntimeException("Erro ao exportar para JSON", e);
 		}
 	}
-
-	/*private byte[] exportarParaCsv(List<PedidoListagemDetalhadaDTO> pedidos) {
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-		     CSVPrinter printer = new CSVPrinter(new OutputStreamWriter(out, StandardCharsets.UTF_8),
-			     CSVFormat.DEFAULT.withHeader("ID", "Status", "Doador", "Valor Total"))) {
-			for (PedidoListagemDetalhadaDTO pedido : pedidos) {
-				printer.printRecord(pedido.getId(), pedido.getStatus(), pedido.getDoador().getNome(), pedido.getValorTotal());
-			}
-			printer.flush();
-			return out.toByteArray();
-		} catch (IOException e) {
-			throw new RuntimeException("Erro ao exportar para CSV", e);
-		}
-	}*/
-
-	/*private byte[] exportarParaXml(List<PedidoListagemDetalhadaDTO> pedidos) {
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.newDocument();
-
-			Element rootElement = doc.createElement("Pedidos");
-			doc.appendChild(rootElement);
-
-			for (PedidoListagemDetalhadaDTO pedido : pedidos) {
-				Element pedidoElement = doc.createElement("Pedido");
-				rootElement.appendChild(pedidoElement);
-
-				Element idElement = doc.createElement("ID");
-				idElement.appendChild(doc.createTextNode(String.valueOf(pedido.getId())));
-				pedidoElement.appendChild(idElement);
-
-				Element statusElement = doc.createElement("Status");
-				statusElement.appendChild(doc.createTextNode(pedido.getStatus()));
-				pedidoElement.appendChild(statusElement);
-
-				Element doadorElement = doc.createElement("Doador");
-				doadorElement.appendChild(doc.createTextNode(pedido.getDoador().getNome()));
-				pedidoElement.appendChild(doadorElement);
-
-				Element valorTotalElement = doc.createElement("ValorTotal");
-				valorTotalElement.appendChild(doc.createTextNode(String.valueOf(pedido.getValorTotal())));
-				pedidoElement.appendChild(valorTotalElement);
-			}
-
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			javax.xml.transform.Transformer transformer = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
-			javax.xml.transform.dom.DOMSource source = new javax.xml.transform.dom.DOMSource(doc);
-			javax.xml.transform.stream.StreamResult result = new javax.xml.transform.stream.StreamResult(outputStream);
-			transformer.transform(source, result);
-
-			return outputStream.toByteArray();
-		} catch (Exception e) {
-			throw new RuntimeException("Erro ao exportar para XML", e);
-		}
-	}*/
-
 
 	public byte[] exportarParaTxt(List<PedidoListagemDetalhadaDTO> pedidos, String nomeAdmin) {
 		StringBuilder txtBuilder = new StringBuilder();

@@ -6,7 +6,6 @@ import com.caixadesapato.api.dto.caixa.CaixaMapper;
 import com.caixadesapato.api.dto.caixa.CaixaUpdateDTO;
 import com.caixadesapato.api.model.Caixa;
 import com.caixadesapato.api.service.CaixaService;
-import com.caixadesapato.api.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,6 +30,7 @@ public class CaixaController {
             List<CaixaCriacaoDTO> caixas = service.processarArquivo(file);
             for (CaixaCriacaoDTO caixa : caixas) {
                 Caixa caixaNova = CaixaMapper.toEntity(caixa);
+                System.out.println(caixaNova);
                 service.save(caixaNova, caixa.getItensCaixa(), caixa.getIdPedido(), caixa.getIdFaixaEtaria());
             }
 
