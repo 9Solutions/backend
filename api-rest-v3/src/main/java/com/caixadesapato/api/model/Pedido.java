@@ -3,6 +3,7 @@ package com.caixadesapato.api.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name = "pedido", schema = "db_9solutions")
 public class Pedido {
 

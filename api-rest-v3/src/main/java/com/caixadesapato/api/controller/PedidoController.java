@@ -1,14 +1,20 @@
 package com.caixadesapato.api.controller;
 
+import com.caixadesapato.api.dto.caixa.CaixaCriacaoDTO;
+import com.caixadesapato.api.dto.caixa.CaixaMapper;
 import com.caixadesapato.api.dto.pedido.*;
+import com.caixadesapato.api.model.Caixa;
 import com.caixadesapato.api.model.Pedido;
 import com.caixadesapato.api.model.view.VwFiltroPedido;
+import com.caixadesapato.api.service.CaixaService;
+import com.caixadesapato.api.service.DefaultBoxService;
 import com.caixadesapato.api.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,81 +34,23 @@ import java.util.List;
 public class PedidoController {
 
 	private final PedidoService service;
+	private final CaixaService caixaService;
+	private final DefaultBoxService defaultBoxService;
 
-	@PostMapping("/importar-txt")
+	@PostMapping("/import")
 	public ResponseEntity<?> importarPedidosDeTxt(@RequestParam("file") MultipartFile file) {
-
-
 		if (file.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O arquivo está vazio.");
 		}
-
 		try {
-			String fileName = file.getOriginalFilename();
-
-			String filePath = System.getProperty("java.io.tmpdir") + "/" + fileName;
-			file.transferTo(new java.io.File(filePath));
-			leArquivoTxt(filePath);
-
-			return ResponseEntity.ok("Arquivo processado com sucesso.");
-		} catch (IOException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar o arquivo: " + e.getMessage());
-		}
-	}
-
-	public static void leArquivoTxt(String nomeArq) {
-
-		try (BufferedReader entrada = new BufferedReader(new FileReader(nomeArq))) {
-			List<String> listaRegistros = new ArrayList<>();
-			String linha;
-
-			while ((linha = entrada.readLine()) != null) {
-				String tipoRegistro = linha.substring(0, 2);
-
-				if (tipoRegistro.equals("00")) {
-					String identificador = linha.substring(2, 12).trim();
-					String dataGeracao = linha.substring(12, 31).trim();
-					String versao = linha.substring(31, 33).trim();
-					String nomeAdmin = linha.substring(33, 63).trim();
-					String quantidadeRegistros = linha.substring(63, 69).trim();
-
-					System.out.println("Registro Header:");
-					System.out.println("Identificador: " + identificador);
-					System.out.println("Data/Hora: " + dataGeracao);
-					System.out.println("Versão: " + versao);
-					System.out.println("Nome do Admin: " + nomeAdmin);
-					System.out.println("Quantidade de Registros: " + quantidadeRegistros);
-				} else if (tipoRegistro.equals("01")) {
-					int idPedido = Integer.parseInt(linha.substring(2, 8).trim());
-					String nomeDoador = linha.substring(8, 38).trim();
-					String cpfDoador = linha.substring(38, 49).trim();
-					String statusPedido = linha.substring(49, 59).trim();
-					String dataPedido = linha.substring(59, 69).trim();
-					double valorPedido = Double.parseDouble(linha.substring(69, 77).trim().replace(",", "."));
-
-					System.out.println("Detalhes do Pedido:");
-					System.out.println("ID do Pedido: " + idPedido);
-					System.out.println("Nome do Doador: " + nomeDoador);
-					System.out.println("CPF do Doador: " + cpfDoador);
-					System.out.println("Status do Pedido: " + statusPedido);
-					System.out.println("Data do Pedido: " + dataPedido);
-					System.out.println("Valor do Pedido: " + valorPedido);
-				} else if (tipoRegistro.equals("02")) {
-					String nomeDoador = linha.substring(2, 32).trim();
-					String cpfDoador = linha.substring(32, 43).trim();
-					String emailDoador = linha.substring(43, 69).trim();
-
-					System.out.println("Detalhes do Doador:");
-					System.out.println("Nome do Doador: " + nomeDoador);
-					System.out.println("CPF do Doador: " + cpfDoador);
-					System.out.println("Email do Doador: " + emailDoador);
-				} else {
-					System.out.println("Tipo de registro desconhecido: " + tipoRegistro);
-				}
-			}
+			List<ImportPedidoDTO> pedidosImport = service.importarDeTxt(file);
+			defaultBoxService.createDefaultBox(caixaService, pedidosImport);
+			return ResponseEntity.noContent().build();
 
 		} catch (IOException e) {
-			System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+					"Erro ao processar o arquivo: " + e.getMessage()
+			);
 		}
 	}
 
@@ -123,23 +71,24 @@ public class PedidoController {
 		}
 	}
 
-	@GetMapping("/exportar")
-	public ResponseEntity<byte[]> exportarPedidos(@RequestParam("tipo") String tipo) {
-		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
+//	@GetMapping("/exportar")
+//	public ResponseEntity<byte[]> exportarPedidos(@RequestParam("tipo") String tipo) {
+//		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
+//
+//		byte[] arquivoExportado = service.exportarPedidos(pedidos, tipo);
+//
+//		String filename = "pedidos." + tipo.toLowerCase();
+//		String contentType = obterContentType(tipo);
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentDispositionFormData("attachment", filename);
+//		headers.setContentType(MediaType.parseMediaType(contentType));
+//
+//		return ResponseEntity.ok()
+//			.headers(headers)
+//			.body(arquivoExportado);
+//	}
 
-		byte[] arquivoExportado = service.exportarPedidos(pedidos, tipo);
-
-		String filename = "pedidos." + tipo.toLowerCase();
-		String contentType = obterContentType(tipo);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDispositionFormData("attachment", filename);
-		headers.setContentType(MediaType.parseMediaType(contentType));
-
-		return ResponseEntity.ok()
-			.headers(headers)
-			.body(arquivoExportado);
-	}
 
 	@GetMapping("/exportar-txt")
 	public ResponseEntity<byte[]> exportarPedidosParaTxt(@RequestParam String nomeAdmin) {
@@ -152,6 +101,19 @@ public class PedidoController {
 		headers.setContentDispositionFormData("attachment", "pedidos.txt");
 
 		return new ResponseEntity<>(conteudoTxt, headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/exportar-csv")
+	public ResponseEntity<byte[]> exportarPedidosParaJson() {
+		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
+
+		byte[] conteudoCsv = service.exportarParaCsv();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.TEXT_PLAIN);
+		headers.setContentDispositionFormData("attachment", "pedidos.csv");
+
+		return new ResponseEntity<>(conteudoCsv, headers, HttpStatus.OK);
 	}
 
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +81,14 @@ public class DoadorService implements ChangeListener {
         List<Doador> doadores = doadorRepository.findAllByPermissaoEqualsIgnoreCase(permissao);
         if (doadores == null) throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         return doadores;
+    }
+
+    public Doador buscarPorCpf(String cpf) {
+        Optional<Doador> doador = doadorRepository.findByIdentificador(cpf);
+        if (doador.isEmpty()) {
+            return null;
+        }
+        return doador.get();
     }
 
     @Override

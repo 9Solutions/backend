@@ -16,4 +16,10 @@ public class StatusPedidoService {
         return statusPedidoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não Encontrado"));
     }
+
+    public StatusPedido findByStatus(String descricao) {
+        return statusPedidoRepository.findByStatus(descricao)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não Encontrado"));
+    }
+
 }

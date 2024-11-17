@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface DoadorRepository extends JpaRepository<Doador, Long> {
     Optional<Doador> findByEmail(String email);
     List<Doador> findAllByPermissaoEqualsIgnoreCase(String permissao);
+    Optional<Doador> findByIdentificador(String cpf);
 }

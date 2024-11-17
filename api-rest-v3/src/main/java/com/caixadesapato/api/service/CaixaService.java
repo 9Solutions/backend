@@ -7,6 +7,7 @@ import com.caixadesapato.api.repository.CaixaRepository;
 import com.caixadesapato.api.utils.enums.Genero;
 import com.caixadesapato.api.utils.interfaces.PublisherChange;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,17 +64,6 @@ public class CaixaService implements PublisherChange {
 			}
 		}
 		return caixasDto;
-	}
-
-	private int[] parseIntArray(String data) {
-		if (data.isEmpty()) return new int[0];
-
-		String[] itens = data.split(",");
-		int[] intArray = new int[itens.length];
-		for (int i = 0; i < itens.length; i++) {
-			intArray[i] = Integer.parseInt(itens[i].trim());
-		}
-		return intArray;
 	}
 
 	public Caixa save(
@@ -135,6 +125,16 @@ public class CaixaService implements PublisherChange {
 		);
 		etapaService.setEtapaCaixa(caixa, status);
 		notifyChange(caixa.getPedido().getDoador());
+	}
+
+	public void createDefaultBox(int idPedido) {
+		Caixa caixa = new Caixa();
+		caixa.setCarta("Quero te contar que você é uma pessoa muito especial e sempre que você sorri, o mundo fica mais bonito.");
+		caixa.setUrl("https://digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png");
+		caixa.setQuantidade(1);
+		caixa.setGenero(Genero.F);
+		int faixaEtaria = (int) Math.floor((Math.random() * 3));
+		save(caixa, new int[]{1, 2, 3, 4, 5, 6, 7}, idPedido, faixaEtaria);
 	}
 
 	@Override
