@@ -217,45 +217,6 @@ public class PedidoService implements PublisherChange {
 		doadorService.updateListener(entity.getEmail(), "Pedido");
 	}
 
-	private String obterContentType(String tipo) {
-		switch (tipo.toLowerCase()) {
-			case "json":
-				return "application/json";
-			case "csv":
-				return "text/csv";
-			case "xml":
-				return "application/xml";
-			case "parquet":
-				return "application/octet-stream";
-			case "txt":
-				return "text/plain";
-			default:
-				throw new IllegalArgumentException("Tipo de arquivo não suportado: " + tipo);
-		}
-	}
-
-	public byte[] exportarPedidos(List<PedidoListagemDetalhadaDTO> pedidos, String tipo) {
-		switch (tipo.toLowerCase()) {
-			case "json":
-				return exportarParaJson(pedidos);
-			case "csv":
-				//return exportarParaCsv(pedidos);
-			case "xml":
-				//return exportarParaXml(pedidos);
-			default:
-				throw new IllegalArgumentException("Tipo de arquivo não suportado: " + tipo);
-		}
-	}
-
-	private byte[] exportarParaJson(List<PedidoListagemDetalhadaDTO> pedidos) {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			return mapper.writeValueAsBytes(pedidos);
-		} catch (IOException e) {
-			throw new RuntimeException("Erro ao exportar para JSON", e);
-		}
-	}
-
 	public byte[] exportarParaTxt(List<PedidoListagemDetalhadaDTO> pedidos, String nomeAdmin) {
 		StringBuilder txtBuilder = new StringBuilder();
 
@@ -303,4 +264,19 @@ public class PedidoService implements PublisherChange {
 		return String.format("%011d", cpf);
 	}
 
+	public byte[] exportarParaCsv() {
+		// exportar para csv retornando um arquivo
+		StringBuilder txtBuilder = new StringBuilder();
+		try {
+			for (Pedido pedido : listAll()) {
+				txtBuilder.append(String.format("%d,%s,%s,%.2f\n",
+						pedido.getId(), pedido.getDoador().getNomeCompleto(),
+						pedido.getStatusPedido().getStatus(), pedido.getValorTotal())
+				);
+			}
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao exportar para CSV");
+		}
+		return txtBuilder.toString().getBytes(StandardCharsets.UTF_8);
+	}
 }

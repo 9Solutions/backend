@@ -71,39 +71,24 @@ public class PedidoController {
 		}
 	}
 
-//	@PostMapping("/import")
-//	public ResponseEntity<String> importCaixas(@RequestParam("file") MultipartFile file) {
-//		try {
-//			List<CaixaCriacaoDTO> caixas = service.processarArquivo(file);
-//			for (CaixaCriacaoDTO caixa : caixas) {
-//				Caixa caixaNova = CaixaMapper.toEntity(caixa);
-//				System.out.println(caixaNova);
-//				service.save(caixaNova, caixa.getItensCaixa(), caixa.getIdPedido(), caixa.getIdFaixaEtaria());
-//			}
+//	@GetMapping("/exportar")
+//	public ResponseEntity<byte[]> exportarPedidos(@RequestParam("tipo") String tipo) {
+//		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
 //
-//			return ResponseEntity.ok("Importação concluída com sucesso!");
-//		} catch (Exception e) {
-//			return ResponseEntity.status(500).body("Erro na importação: " + e.getMessage());
-//		}
+//		byte[] arquivoExportado = service.exportarPedidos(pedidos, tipo);
+//
+//		String filename = "pedidos." + tipo.toLowerCase();
+//		String contentType = obterContentType(tipo);
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setContentDispositionFormData("attachment", filename);
+//		headers.setContentType(MediaType.parseMediaType(contentType));
+//
+//		return ResponseEntity.ok()
+//			.headers(headers)
+//			.body(arquivoExportado);
 //	}
 
-	@GetMapping("/exportar")
-	public ResponseEntity<byte[]> exportarPedidos(@RequestParam("tipo") String tipo) {
-		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
-
-		byte[] arquivoExportado = service.exportarPedidos(pedidos, tipo);
-
-		String filename = "pedidos." + tipo.toLowerCase();
-		String contentType = obterContentType(tipo);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentDispositionFormData("attachment", filename);
-		headers.setContentType(MediaType.parseMediaType(contentType));
-
-		return ResponseEntity.ok()
-			.headers(headers)
-			.body(arquivoExportado);
-	}
 
 	@GetMapping("/exportar-txt")
 	public ResponseEntity<byte[]> exportarPedidosParaTxt(@RequestParam String nomeAdmin) {
@@ -116,6 +101,19 @@ public class PedidoController {
 		headers.setContentDispositionFormData("attachment", "pedidos.txt");
 
 		return new ResponseEntity<>(conteudoTxt, headers, HttpStatus.OK);
+	}
+
+	@GetMapping("/exportar-csv")
+	public ResponseEntity<byte[]> exportarPedidosParaJson() {
+		List<PedidoListagemDetalhadaDTO> pedidos = PedidoMapper.toListagemDetalhadaDTO(service.listAll());
+
+		byte[] conteudoCsv = service.exportarParaCsv();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.TEXT_PLAIN);
+		headers.setContentDispositionFormData("attachment", "pedidos.csv");
+
+		return new ResponseEntity<>(conteudoCsv, headers, HttpStatus.OK);
 	}
 
 
