@@ -17,10 +17,10 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'temurin'
-        java-version: '11'
+        java-version: '17'
 
     - name: Build com Maven
-      run: mvn -f api-rest-v3/pom.xml clean package
+      run: ./api-rest-v3/mvn -f api-rest-v3/pom.xml clean package
 
     - name: Gerar artefato Github com o .jar gerado
       uses: actions/upload-artifact@v4
