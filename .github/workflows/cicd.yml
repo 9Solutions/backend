@@ -20,7 +20,7 @@ jobs:
         java-version: '17'
 
     - name: Build com Maven
-      run: ./api-rest-v3/mvn -f api-rest-v3/pom.xml clean package
+      run: mvn -f api-rest-v3/pom.xml clean package
 
     - name: Gerar artefato Github com o .jar gerado
       uses: actions/upload-artifact@v4
