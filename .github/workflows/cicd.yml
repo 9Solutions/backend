@@ -57,7 +57,7 @@ jobs:
         env:
           ACCESS_WEBSERVER_KEY: ${{ secrets.ACCESS_WEBSERVER_KEY }}
         run: |
-          echo "$ACCESS_WEBSERVER_KEY" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          echo "${{ secrets.ACCESS_WEBSERVER_KEY }}" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
           chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
 
       - name: Enviar o JAR p/ a EC2
