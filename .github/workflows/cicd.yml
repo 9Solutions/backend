@@ -1,6 +1,6 @@
 name: Deploy BackEnd
 
-on:
+'on':
   push:
     branches:
       - main
@@ -10,77 +10,78 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Atualização do código
-      uses: actions/checkout@v2
+      - name: Atualização do código
+        uses: actions/checkout@v2
 
-    - name: Definindo a versão da JDK 
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+      - name: Definindo a versão da JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: '17'
 
-    - name: Build com Maven
-      run: mvn -f api-rest-v3/pom.xml clean package
+      - name: Build com Maven
+        run: mvn -f api-rest-v3/pom.xml clean package
 
-    - name: Gerar artefato Github com o .jar gerado
-      uses: actions/upload-artifact@v4
-      with:
-        name: aplicacao
-        path: api-rest-v3/target/*.jar
+      - name: Gerar artefato Github com o .jar gerado
+        uses: actions/upload-artifact@v4
+        with:
+          name: aplicacao
+          path: api-rest-v3/target/backend.jar
 
-    - name: Gerar artefato Github com os arquivos .sh
-      uses: actions/upload-artifact@v4        
-      with:
-        name: docker-scripts
-        path: .github/docker-scripts/*
+      - name: Gerar artefato Github com os arquivos .sh
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-scripts
+          path: .github/docker-scripts/*
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Recuperar artefato
-      uses: actions/download-artifact@v4
-      with:
-        name: aplicacao
-        path: ./
+      - name: Recuperar artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: aplicacao
+          path: ./
 
-    - name: Recuperar docker-scripts
-      uses: actions/download-artifact@v4
-      with:
-        name: docker-scripts
-        path: ./docker-scripts/
+      - name: Recuperar docker-scripts
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-scripts
+          path: ./docker-scripts/
 
-    - name: Criar arquivo .pem a partir da variável ACCESS_WEBSERVER_KEY e fazer o chmod 400 nele
-      id: setup-key
-      env:
-        ACCESS_WEBSERVER_KEY: ${{ secrets.ACCESS_WEBSERVER_KEY }}
-      run: |
-        echo "$ACCESS_WEBSERVER_KEY" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
-        chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+      - name: Criar arquivo .pem a partir da variável ACCESS_WEBSERVER_KEY e fazer o
+          chmod 400 nele
+        id: setup-key
+        env:
+          ACCESS_WEBSERVER_KEY: ${{ secrets.ACCESS_WEBSERVER_KEY }}
+        run: |
+          echo "$ACCESS_WEBSERVER_KEY" >> $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
+          chmod 400 $HOME/${{ secrets.NOME_ARQUIVO_PEM }}
 
-    - name: Enviar o JAR p/ a EC2
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ubuntu
-        key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
-        source: "./*.jar"
-        target: "/home/ubuntu/deploy-api/"
+      - name: Enviar o JAR p/ a EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
+          source: ./*.jar
+          target: /home/ubuntu/deploy-api/
 
-    - name: Enviar os docker-scripts p/ a EC2
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ubuntu
-        key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
-        source: "./docker-scripts/*"
-        target: "/home/ubuntu/deploy-api/"
+      - name: Enviar os docker-scripts p/ a EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ubuntu
+          key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
+          source: ./docker-scripts/*
+          target: /home/ubuntu/deploy-api/
 
-    - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
-      run: |
-        ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} '
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
-          scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/docker-scripts
-          ssh -i ${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"          
-        '
+      - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.DEPLOY_HOST }} '
+            scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
+            scp -i ${{ secrets.NOME_ARQUIVO_PEM }} deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/docker-scripts
+            ssh -i ${{ secrets.NOME_ARQUIVO_PEM }} ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"
+          '
