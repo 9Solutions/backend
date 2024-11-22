@@ -82,5 +82,6 @@ jobs:
             chmod 400 $HOME/deploy_key.pem
             scp -i $HOME/deploy_key.pem deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
             scp -i $HOME/deploy_key.pem deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/
+            ssh -i $HOME/deploy_key.pem ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker network create external_network"
             ssh -i $HOME/deploy_key.pem ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-compose.yml up -d --build"
           EOF
