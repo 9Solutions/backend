@@ -78,6 +78,8 @@ jobs:
       - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
         run: |
           ssh -T -o StrictHostKeyChecking=no -i $HOME/deploy_key.pem ubuntu@${{ secrets.DEPLOY_HOST }} << 'EOF'
+            echo "${{ secrets.ACCESS_WEBSERVER_KEY }}" >> $HOME/deploy_key.pem
+            chmod 400 $HOME/deploy_key.pem
             scp -i $HOME/deploy_key.pem deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
             scp -i $HOME/deploy_key.pem deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/docker-scripts
             ssh -i $HOME/deploy_key.pem ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"
