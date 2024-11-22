@@ -8,8 +8,8 @@ RUN apk add --no-cache git
 WORKDIR /app
 
 # Copia o script de inicialização para o container
-COPY ../backend.jar /app/backend.jar
+COPY backend.jar /app/backend.jar
 
 RUN chmod +x /app/backend.jar
 
-RUN java -jar /app/backend.jar
+CMD ["java", "-jar", "/app/backend.jar"]
