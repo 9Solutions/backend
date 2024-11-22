@@ -14,3 +14,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: urubu100
       SOLUTIONS_API_URL: http://127.0.0.1:5520/upload
     restart: unless-stopped
+
+networks:
+  internal_network:
+    external: true
