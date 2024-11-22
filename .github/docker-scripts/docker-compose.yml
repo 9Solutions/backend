@@ -9,10 +9,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/db_9solutions
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_9solutions
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: urubu100
-      SOLUTIONS_API_URL: http://127.0.0.1:5520/upload
+      SOLUTIONS_API_URL: http://python-app:5520/upload
     restart: unless-stopped
 
 networks:
