@@ -82,4 +82,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.DEPLOY_HOST }}
           scp deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
           scp deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/docker-scripts
-          ssh ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"
