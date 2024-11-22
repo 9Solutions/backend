@@ -69,18 +69,16 @@ jobs:
           source: ./docker-scripts/*
           target: /home/ubuntu/deploy-api/
 
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.ACCESS_WEBSERVER_KEY }}
-
-      - name: Add deploy host to known_hosts
-        run: ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
-
+      - name: Criar arquivo .pem a partir da variável ACCESS_WEBSERVER_KEY e fazer o chmod 400 nele
+        id: geracao-arquivo-pem
+        run: |
+          echo "${{ secrets.ACCESS_WEBSERVER_KEY }}" >> $HOME/deploy_key.pem
+          chmod 400 $HOME/deploy_key.pem
+    
       - name: Conectar via SSH à EC2 privada para implantar e reiniciar a API
         run: |
-          ssh -T -o StrictHostKeyChecking=no ubuntu@${{ secrets.DEPLOY_HOST }} << 'EOF'
-            scp deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
-            scp deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/docker-scripts
-            ssh ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"
+          ssh -T -o StrictHostKeyChecking=no -i $HOME/deploy_key.pem ubuntu@${{ secrets.DEPLOY_HOST }} << 'EOF'
+            scp -i $HOME/deploy_key.pem deploy-api/backend.jar ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api
+            scp -i $HOME/deploy_key.pem deploy-api/docker-scripts/* ubuntu@${{ secrets.IP_PRIVADO_EC2 }}:/home/ubuntu/deploy-api/docker-scripts
+            ssh -i $HOME/deploy_key.pem ubuntu@${{ secrets.IP_PRIVADO_EC2 }} "sudo docker-compose -f /home/ubuntu/deploy-api/docker-scripts/docker-compose.yml up -d --build"
           EOF
