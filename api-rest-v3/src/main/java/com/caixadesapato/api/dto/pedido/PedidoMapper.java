@@ -120,12 +120,12 @@ public class PedidoMapper {
 
 	public static List<PedidoListagemDetalhadaDTO.EtapaCaixaDTO> toListEtapasDTO(List<EtapaCaixa> etapas) {
 		List<PedidoListagemDetalhadaDTO.EtapaCaixaDTO> etapasDTO = new ArrayList<>();
-		for (EtapaCaixa etapaDaVez : etapas) {
+		etapas.stream().forEach(etapa -> {
 			PedidoListagemDetalhadaDTO.EtapaCaixaDTO etapaDTO = new PedidoListagemDetalhadaDTO.EtapaCaixaDTO();
-			etapaDTO.setStatus(etapaDaVez.getStatus().getStatus());
-			etapaDTO.setUpdate(etapaDaVez.getUpdateAt());
+			etapaDTO.setStatus(etapa.getStatus().getStatus());
+			etapaDTO.setUpdate(etapa.getUpdateAt());
 			etapasDTO.add(etapaDTO);
-		}
+		});
 		return etapasDTO;
 	}
 

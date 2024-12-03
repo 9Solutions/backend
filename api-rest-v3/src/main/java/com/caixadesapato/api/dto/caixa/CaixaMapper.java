@@ -2,7 +2,6 @@ package com.caixadesapato.api.dto.caixa;
 
 import com.caixadesapato.api.model.Caixa;
 import com.caixadesapato.api.model.EtapaCaixa;
-import com.caixadesapato.api.model.FaixaEtaria;
 import com.caixadesapato.api.model.ItemCaixa;
 
 import java.util.ArrayList;
@@ -50,13 +49,15 @@ public class CaixaMapper {
 
     public static List<CaixaListagemDTO.EtapaCaixaDTO> toListEtapasDTO(List<EtapaCaixa> etapas) {
         List<CaixaListagemDTO.EtapaCaixaDTO> etapasDTO = new ArrayList<>();
-        for (EtapaCaixa etapaDaVez : etapas) {
-            CaixaListagemDTO.EtapaCaixaDTO etapaDTO = new CaixaListagemDTO.EtapaCaixaDTO();
-            etapaDTO.setId(etapaDaVez.getStatus().getId());
-            etapaDTO.setStatus(etapaDaVez.getStatus().getStatus());
-            etapaDTO.setUpdate(etapaDaVez.getUpdateAt());
-            etapasDTO.add(etapaDTO);
-        }
+        etapas.stream().forEach(
+                etapa -> {
+                    CaixaListagemDTO.EtapaCaixaDTO etapaDTO = new CaixaListagemDTO.EtapaCaixaDTO();
+                    etapaDTO.setId(etapa.getStatus().getId());
+                    etapaDTO.setStatus(etapa.getStatus().getStatus());
+                    etapaDTO.setUpdate(etapa.getUpdateAt());
+                    etapasDTO.add(etapaDTO);
+                }
+        );
         return etapasDTO;
     }
 
