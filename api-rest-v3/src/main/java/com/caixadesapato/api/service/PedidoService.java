@@ -87,7 +87,7 @@ public class PedidoService implements PublisherChange {
 											nomeDoador,
 											cpfDoador,
 											emailDoador,
-											"Não Informado",
+											"00000000000",
 											cpfDoador,
 											"User by Import"
 									);
