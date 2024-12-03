@@ -25,7 +25,7 @@ public class DoadorCriacaoDTO {
     @Email
     private String email;
 
-    @NotBlank
+
     @Size(max = 20)
     private String telefone;
 
